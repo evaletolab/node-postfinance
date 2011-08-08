@@ -1,16 +1,20 @@
 # Daimyo: Samurai payment gateway integration library
 
 v0.0.1
+
 Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>.
+
 Some rights reserved.
-Licensed under MIT license (see LICENSE)
+
+Licensed under MIT license (see
+[LICENSE](https://github.com/HerdHound/Daimyo/blob/master/LICENSE))
 
 ## Overview
 
 Daimyo (pronounced as _dah-e-myoh_) is a client library for the 
 [Samurai payment gateway](http://feefighters.ca/samurai) from
 [Fee Fighters](http://feefighters.com/). By the time 1.0 release is made,
-Daimyo will support all of Samurai's API, but the current immediate goals is to
+Daimyo will support all of Samurai's API, but the current immediate goal is to
 support the sale transactions and provide robust error reporting facilities.
 
 ## Status
@@ -31,3 +35,11 @@ TODO
 ## API documentation
 
 TODO
+
+## Reporting bugs
+
+You may use the [issue tracker](https://github.com/HerdHound/Daimyo/issues) to
+report Daimyo bugs you find. Alternatively, you may contact the author directly
+at [branko@herdhound.com](mailto:branko@herdhound.com). Of course, feature
+requests are also welcome, but currently, the basic functionality is top
+priority.
