@@ -38,3 +38,10 @@ test['Issuer check'] = function(exit) {
     check.getIssuer(card).should.equal(validCardNos[card]);
   });
 };
+
+test['Mod-10 test'] = function(exit) {
+  // All test cards should pass (they are all valid numbers)
+  Object.keys(validCardNos).forEach(function(card) {
+    check.mod10check(card).should.equal(card);
+  });
+};
