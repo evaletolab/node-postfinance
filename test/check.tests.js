@@ -39,6 +39,15 @@ test['Issuer check'] = function(exit) {
   });
 };
 
+test['Issuer check with full details'] = function(exit) {
+  Object.keys(validCardNos).forEach(function(card) {
+    var issuerDetails = check.getIssuer(card, true);
+    issuerDetails[0] = validCardNos[card];
+    issuerDetails[1].should.be.instanceof(RegExp);
+    issuerDetails[2].should.be.instanceof(RegExp);
+  });
+};
+
 test['Mod-10 test'] = function(exit) {
   // All test cards should pass (they are all valid numbers)
   Object.keys(validCardNos).forEach(function(card) {
