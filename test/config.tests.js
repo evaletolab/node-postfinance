@@ -20,6 +20,15 @@ testKeyBases.forEach(function(base) {
   testKeys.push(helpers.generateKey(base));
 });
 
+// Function to reset settings as necessary
+function resetConfig() {
+  config.settings.merchantKey = '';
+  config.settings.apiPassword = '';
+  config.settings.processorId = '';
+  config.settings.enabled = true;
+  config.settings.debug = true;
+}
+
 // START TESTING
 
 test['Initial state'] = function(exit) {
@@ -35,6 +44,7 @@ test['Configuration requires all three keys'] = function(exit) {
   assert.throws(function() {
     config.configure({});
   });
+  resetConfig();
 
   assert.throws(function() {
     config.configure({
@@ -42,6 +52,7 @@ test['Configuration requires all three keys'] = function(exit) {
       processorId: testKeys[2]
     });
   }, 'Incomplete Samurai API credentials');
+  resetConfig();
 
   assert.throws(function() {
     config.configure({
@@ -49,6 +60,7 @@ test['Configuration requires all three keys'] = function(exit) {
       processorId: testKeys[2]
     });
   }, 'Incomplete Samurai API credentials');
+  resetConfig();
 
   assert.throws(function() {
     config.configure({
@@ -56,6 +68,7 @@ test['Configuration requires all three keys'] = function(exit) {
       apiPassword: testKeys[1]
     });
   }, 'Incomplete Samurai API credentials');
+  resetConfig();
 
 };
 
@@ -67,6 +80,7 @@ test['Configuration fails with invalid-looking keys'] = function(exit) {
       processorId: badKeys[0]
     });
   }, 'Not valid processorId');
+  resetConfig();
 
   assert.throws(function() {
     config.configure({
@@ -75,6 +89,7 @@ test['Configuration fails with invalid-looking keys'] = function(exit) {
       processorId: testKeys[1]
     });
   }, 'Not valid apiPassword');
+  resetConfig();
   
   assert.throws(function() {
     config.configure({
@@ -83,4 +98,6 @@ test['Configuration fails with invalid-looking keys'] = function(exit) {
       processorId: testKeys[1]
     });
   }, 'Not valid merchantKey');
+  resetConfig();
+};
 };
