@@ -54,3 +54,17 @@ test['Mod-10 test'] = function(exit) {
     check.mod10check(card).should.equal(card);
   });
 };
+
+test['CSC check using Amex and non-Amex card'] = function(exit) {
+  // MasterCard
+  check.cscCheck('5555555555554444', '111').should.be.ok;
+  check.cscCheck('5555555555554444', '11').should.not.be.ok;
+  check.cscCheck('5555555555554444', '1111').should.not.be.ok;
+  check.cscCheck('5555555555554444', 'foo').should.not.be.ok;
+  
+  // Amex
+  check.cscCheck('378282246310005', '111').should.not.be.ok;
+  check.cscCheck('378282246310005', '1111').should.be.ok;
+  check.cscCheck('378282246310005', '11111').should.not.be.ok;
+  check.cscCheck('378282246310005', 'foo').should.not.be.ok;
+};
