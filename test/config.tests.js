@@ -112,3 +112,45 @@ test['Proper configuration modifies settings correctly'] = function(exit) {
   config.settings.processorId.should.equal(testKeys[2]);
   resetConfig();
 };
+
+test['Setting individual configuration options'] = function(exit) {
+  config.settings.merchantKey.should.equal('');
+  config.option('merchantKey', testKeys[0]);
+  config.settings.merchantKey.should.equal(testKeys[0]);
+
+  config.settings.apiPassword.should.equal('');
+  config.option('apiPassword', testKeys[1]);
+  config.settings.apiPassword.should.equal(testKeys[1]);
+
+  config.settings.processorId.should.equal('');
+  config.option('processorId', testKeys[2]);
+  config.settings.processorId.should.equal(testKeys[2]);
+
+  config.settings.enabled = false;
+  config.option('enabled', true);
+  config.settings.enabled.should.equal(true);
+
+  config.settings.enabled = false;
+  config.option('enabled', 2); // truthy
+  config.settings.enabled.should.equal(true);
+
+  config.settings.debug = false;
+  config.option('debug', true);
+  config.settings.debug.should.equal(true);
+
+  config.settings.debug = false;
+  config.option('debug', 'yes'); // truthy
+  config.settings.debug.should.equal(true);
+
+  assert.throws(function() {
+    config.option('merchantKey', badKeys[0]);
+  }, 'Not valid merchantKey');
+
+  assert.throws(function() {
+    config.option('apiPassword', badKeys[0]);
+  }, 'Not valid apiPassword');
+
+  assert.throws(function() {
+    config.option('processorId', badKeys[0]);
+  }, 'Not valid processorId');
+};
