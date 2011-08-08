@@ -100,4 +100,15 @@ test['Configuration fails with invalid-looking keys'] = function(exit) {
   }, 'Not valid merchantKey');
   resetConfig();
 };
+
+test['Proper configuration modifies settings correctly'] = function(exit) {
+  config.configure({
+    merchantKey: testKeys[0],
+    apiPassword: testKeys[1],
+    processorId: testKeys[2]
+  });
+  config.settings.merchantKey.should.equal(testKeys[0]);
+  config.settings.apiPassword.should.equal(testKeys[1]);
+  config.settings.processorId.should.equal(testKeys[2]);
+  resetConfig();
 };
