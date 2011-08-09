@@ -40,7 +40,7 @@ TODO
 
 To run unit tests you need [Expresso](https://github.com/visionmedia/expresso),
 and [should.js](https://github.com/visionmedia/should.js). You also need to
-create a file called `test/config.js`, and add you keys there:
+create a file called `test/config.js`, and add your keys there:
 
     exports.merchantKey = 'xxxxxxxxxxxxxxxxxxxxxxxx';
     exports.apiPassword = 'xxxxxxxxxxxxxxxxxxxxxxxx';
@@ -50,6 +50,9 @@ The tests are run simply by simply typing `make` in the project directory.
 Alternatively, you can type:
 
     expresso /test/*.tests.js
+
+Do not run tests with your live processor. Make sure you are running in a
+sandbox.
 
 ## Reporting bugs
 
