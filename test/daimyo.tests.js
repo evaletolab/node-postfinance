@@ -96,9 +96,10 @@ test['Card validation'] = function(exit) {
 
   card = new Card(testCard);
 
-  card.should.respondTo('validate');
-  card.validate().should.be.ok;
+  card.should.respondTo('isValid');
+  card.isValid().should.be.ok;
 
   card = new Card(bogusCard);
-  card.validate().should.not.be.ok;
+  card.isValid().should.not.be.ok;
+};
 };
