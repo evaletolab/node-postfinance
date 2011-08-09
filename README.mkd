@@ -36,6 +36,21 @@ TODO
 
 TODO
 
+## Running unit tests
+
+To run unit tests you need [Expresso](https://github.com/visionmedia/expresso),
+and [should.js](https://github.com/visionmedia/should.js). You also need to
+create a file called `test/config.js`, and add you keys there:
+
+    exports.merchantKey = 'xxxxxxxxxxxxxxxxxxxxxxxx';
+    exports.apiPassword = 'xxxxxxxxxxxxxxxxxxxxxxxx';
+    exports.processorId = 'xxxxxxxxxxxxxxxxxxxxxxxx';
+
+The tests are run simply by simply typing `make` in the project directory.
+Alternatively, you can type:
+
+    expresso /test/*.tests.js
+
 ## Reporting bugs
 
 You may use the [issue tracker](https://github.com/HerdHound/Daimyo/issues) to
