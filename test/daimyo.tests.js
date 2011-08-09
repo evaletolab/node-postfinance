@@ -140,6 +140,23 @@ test['Year is normalized with setting year property'] = function(exit) {
   card.year.should.equal((Math.floor(new Date().getFullYear() / 10) * 10) + 3);
 };
 
+test['Cannot set invalid month'] = function(exit) {
+  var Card = daimyo.Card;
+
+  var card = new Card({
+    number: testCard.number,
+    csc: testCard.csc,
+    month: '123',
+  });
+  should.not.exist(card.month);
+
+  card.month = 'foo';
+  should.not.exist(card.month);
+
+  card.month = '13';
+  should.not.exist(card.month);
+};
+
 test['Card validation'] = function(exit) {
   var Card = daimyo.Card;
 
