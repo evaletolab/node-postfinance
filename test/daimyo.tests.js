@@ -9,8 +9,10 @@ var should = require('should');
 var getAdjustedDateparts = require('./helpers').getAdjustedDateparts;
 var daimyo = require('../index.js');
 var test = exports;
+
 var testNonExpiredDate = getAdjustedDateparts(12); // One year in future
 var testExpiredDate = getAdjustedDateparts(-12); // One year ago
+var testSettings = require('./config');
 
 var testCard = {
   number: '5555555555554444', // MasterCard
@@ -178,4 +180,20 @@ test['Card expiration check'] = function(exit) {
 
   card = new Card(bogusCard);
   card.isExpired().should.be.ok;
+};
+
+test['Create method sets a token'] = function(exit) {
+  var Card = daimyo.Card;
+  var card = new Card(testCard);
+  card.isValid().should.be.ok;
+  card.isExpired().should.not.be.ok;
+  card.should.respondTo('create');
+
+  // Configure with test configuration
+  // YOU NEED TO MODIFY/CREATE test/config.js (SEE README.mkd)
+  daimyo.configure(testSettings);
+  card.create(function(err) {
+    should.not.exist(err);
+    card.token.should.match(/^[0-9a-f]{24}$/);
+  });
 };
