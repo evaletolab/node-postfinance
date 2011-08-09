@@ -91,3 +91,14 @@ test['Creating a bogus card'] = function(exit) {
 
 };
 
+test['Card validation'] = function(exit) {
+  var Card = daimyo.Card;
+
+  card = new Card(testCard);
+
+  card.should.respondTo('validate');
+  card.validate().should.be.ok;
+
+  card = new Card(bogusCard);
+  card.validate().should.not.be.ok;
+};
