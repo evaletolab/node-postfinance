@@ -113,6 +113,25 @@ test['Creating card without card number or CSC throws'] = function(exit) {
 
 };
 
+test['2-digit or 1-digit year converts to 4-digits'] = function(exit) {
+  var Card = daimyo.Card;
+
+  var card = new Card({
+    number: testCard.number,
+    csc: testCard.csc,
+    year: '2' // Should convert to 2nd year of this decade
+  });
+  card.year.should.equal((Math.floor(new Date().getFullYear() / 10) * 10) + 2);
+
+  var card = new Card({
+    number: testCard.number,
+    csc: testCard.csc,
+    year: '15' // Should convert to year 15 of current century
+  });
+
+  card.year.should.equal((Math.floor(new Date().getFullYear() / 100) * 100) + 15);
+};
+
 test['Card validation'] = function(exit) {
   var Card = daimyo.Card;
 
