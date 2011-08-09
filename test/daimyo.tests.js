@@ -6,16 +6,17 @@
 
 var assert = require('assert');
 var should = require('should');
+var getAdjustedDateparts = require('./helpers').getAdjustedDateparts;
 var daimyo = require('../lib/daimyo.js');
 var test = exports;
-
-// FIXME: Set dates dynamically
+var testNonExpiredDate = getAdjustedDateparts(12); // One year in future
+var testExpiredDate = getAdjustedDateparts(-12); // One year ago
 
 var testCard = {
   number: '5555555555554444', // MasterCard
   csc: '111',
-  year: '2012',
-  month: '11',
+  year: testNonExpiredDate[0].toString(),
+  month: testNonExpiredDate[1].toString(),
   firstName: 'Foo',
   lastName: 'Bar',
   address1: '221 Foo st',
@@ -28,8 +29,8 @@ var testCard = {
 var bogusCard = {
   number: '2420318231',
   csc: '111',
-  year: '2011',
-  month: '02'
+  year: testExpiredDate[0].toString(),
+  month: testExpiredDate[1].toString()
 };
 
 test['daimyo module has Card constructor'] = function(exit) {
@@ -53,10 +54,10 @@ test['Creating a new card'] = function(exit) {
   card.issuer.should.equal('MasterCard');
 
   card.should.have.property('year');
-  card.year.should.equal(2012);
+  card.year.should.equal(testNonExpiredDate[0]);
 
   card.should.have.property('month');
-  card.month.should.equal(11);
+  card.month.should.equal(testNonExpiredDate[1]);
 
   card.should.have.property('firstName');
   card.firstName.should.equal('Foo');

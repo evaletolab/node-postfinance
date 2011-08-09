@@ -22,3 +22,43 @@ helpers.generateKey = function(base) {
   sha1.update(base.toString());
   return sha1.digest('hex').slice(0, 24);
 };
+
+/**
+ * Get date with specified number of months added
+ *
+ * @param {Number} months Number of months to add (positive or negative)
+ * @returns {Date} A new `Date` object
+ */
+helpers.getAdjustedDate = function(months) {
+  var today = new Date();
+  var newMonth;
+  var addYears;
+
+  today.setHours(0);
+  today.setMinutes(0);
+  today.setSeconds(0);
+  today.setMilliseconds(0);
+
+  newMonth = today.getMonth() + months;
+  if (newMonth > 11 || newMonth < 0) {
+    // Convert surplus months to years
+    addYears = Math.floor(newMonth / 12);
+    newMonth = newMonth % 12;
+  }
+  if (addYears) {
+    today.setYear(today.getFullYear() + addYears);
+  }
+  today.setMonth(newMonth);
+  return today;
+};
+
+/**
+ * Wrapper for getAdjustedDate that returns year and month
+ *
+ * @param {Number} months Number of months to add (positive or negative)
+ * @returns {Array} Array containing year and month
+ */
+helpers.getAdjustedDateparts = function(months) {
+  var newDate = helpers.getAdjustedDate(months);
+  return [newDate.getFullYear(), newDate.getMonth() + 1];
+};
