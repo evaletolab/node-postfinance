@@ -132,6 +132,14 @@ test['2-digit or 1-digit year converts to 4-digits'] = function(exit) {
   card.year.should.equal((Math.floor(new Date().getFullYear() / 100) * 100) + 15);
 };
 
+test['Year is normalized with setting year property'] = function(exit) {
+  var Card = daimyo.Card;
+  
+  var card = new Card(testCard);
+  card.year = '3';
+  card.year.should.equal((Math.floor(new Date().getFullYear() / 10) * 10) + 3);
+};
+
 test['Card validation'] = function(exit) {
   var Card = daimyo.Card;
 
