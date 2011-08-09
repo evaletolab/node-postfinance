@@ -92,6 +92,27 @@ test['Creating a bogus card'] = function(exit) {
 
 };
 
+test['Creating card without card number or CSC throws'] = function(exit) {
+  var Card = daimyo.Card;
+
+  assert.throws(function() {
+    card = new Card({});
+  }, 'Card number is required');
+
+  assert.throws(function() {
+    card = new Card({
+      number: testCard.number
+    });
+  }, 'CSC is required');
+
+  assert.throws(function() {
+    card = new Card({
+      csc: testCard.csc
+    });
+  }, 'Card number is required');
+
+};
+
 test['Card validation'] = function(exit) {
   var Card = daimyo.Card;
 
