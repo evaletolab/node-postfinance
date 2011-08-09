@@ -9,6 +9,8 @@ var should = require('should');
 var daimyo = require('../lib/daimyo.js');
 var test = exports;
 
+// FIXME: Set dates dynamically
+
 var testCard = {
   number: '5555555555554444', // MasterCard
   csc: '111',
