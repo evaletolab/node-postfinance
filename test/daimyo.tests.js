@@ -7,7 +7,7 @@
 var assert = require('assert');
 var should = require('should');
 var getAdjustedDateparts = require('./helpers').getAdjustedDateparts;
-var daimyo = require('../lib/daimyo.js');
+var daimyo = require('../index.js');
 var test = exports;
 var testNonExpiredDate = getAdjustedDateparts(12); // One year in future
 var testExpiredDate = getAdjustedDateparts(-12); // One year ago
