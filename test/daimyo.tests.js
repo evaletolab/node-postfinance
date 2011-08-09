@@ -23,6 +23,13 @@ var testCard = {
   zip: '99561'
 };
 
+var bogusCard = {
+  number: '2420318231',
+  csc: '111',
+  year: '2011',
+  month: '02'
+};
+
 test['daimyo module has Card constructor'] = function(exit) {
   var Card;
   var card;
@@ -65,3 +72,20 @@ test['Creating a new card'] = function(exit) {
   card.should.have.property('zip');
   card.zip.should.equal('99561');
 };
+
+test['Creating a bogus card'] = function(exit) {
+  var Card = daimyo.Card;
+
+  card = new Card(bogusCard);
+
+  card.should.have.property('number');
+  card.number.should.equal(bogusCard.number);
+
+  card.should.have.property('issuer');
+  card.issuer.should.equal('Unknown');
+
+  card.should.have.property('csc');
+  card.csc.should.equal('111');
+
+};
+
