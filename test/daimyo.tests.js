@@ -162,7 +162,7 @@ test['Cannot set invalid month'] = function(exit) {
 test['Card validation'] = function(exit) {
   var Card = daimyo.Card;
 
-  card = new Card(testCard);
+  var card = new Card(testCard);
 
   card.should.respondTo('isValid');
   card.isValid().should.be.ok;
