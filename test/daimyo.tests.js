@@ -102,4 +102,14 @@ test['Card validation'] = function(exit) {
   card = new Card(bogusCard);
   card.isValid().should.not.be.ok;
 };
+
+test['Card expiration check'] = function(exit) {
+  var Card = daimyo.Card;
+
+  card = new Card(testCard);
+  card.should.respondTo('isExpired');
+  card.isExpired().should.not.be.ok;
+
+  card = new Card(bogusCard);
+  card.isExpired().should.be.ok;
 };
