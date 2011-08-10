@@ -234,3 +234,39 @@ test['Created card can load payment method data'] = function(exit) {
     });
   });
 };
+
+test['Card has _dirty property which lists changed fields'] = function(exit) {
+  // Initially, all fields are dirty
+  var Card = daimyo.Card;
+  var card = new Card(testCard);
+  var token;
+
+  console.log(card.month, testCard.month);
+
+  card.should.have.property('_dirty');
+  card._dirty.should.not.be.empty;
+  card._dirty.should.contain('number');
+  card._dirty.should.contain('csc');
+  card._dirty.should.contain('year');
+  card._dirty.should.contain('month');
+  card._dirty.should.contain('firstName');
+  card._dirty.should.contain('lastName');
+  card._dirty.should.contain('address1');
+  card._dirty.should.contain('zip');
+
+  card.create(function(err) {
+    should.not.exist(err);
+    card._dirty.should.be.empty;
+    card.load(function(err) {
+      should.not.exist(err);
+      card._dirty.should.be.empty;
+      card.year = '17';
+      card._dirty.should.contain('year');
+      card.month = '10';
+      card._dirty.should.contain('month');
+      card.firstName = 'Foom';
+      card._dirty.should.contain('firstName');
+    });
+  });
+};
+
