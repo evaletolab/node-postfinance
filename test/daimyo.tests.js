@@ -70,9 +70,14 @@ test['Creating a new card'] = function(exit) {
   card.should.have.property('address1');
   card.address1.should.equal('221 Foo st');
 
-  card.should.not.have.property('address2');
-  card.should.not.have.property('city');
-  card.should.not.have.property('state');
+  card.should.have.property('address2');
+  card.address2.should.equal('');
+
+  card.should.have.property('city');
+  card.city.should.equal('');
+
+  card.should.have.property('state');
+  card.state.should.equal('');
 
   card.should.have.property('zip');
   card.zip.should.equal('99561');
