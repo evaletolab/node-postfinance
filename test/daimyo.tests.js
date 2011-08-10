@@ -196,3 +196,33 @@ test['Create method sets a token'] = function(exit) {
     card.token.should.match(/^[0-9a-f]{24}$/);
   });
 };
+
+test['Created card can load payment method data'] = function(exit) {
+  var Card = daimyo.Card;
+  var card = new Card(testCard);
+  var card1;
+  var token;
+  
+  card.should.respondTo('load');
+  assert.throws(function() {
+    card.load();
+  }, 'Cannot load payment method without token');
+  card.create(function(err) {
+    token = card.token;
+    card1 = new Card({token: token});
+    card1.load(function(err) {
+      should.not.exist(err);
+      card1.should.have.property('method');
+      card1.method.should.have.property('createdAt');
+      card1.method.createdAt.should.be.instanceof(Date);
+      card1.method.should.have.property('updatedAt');
+      card1.method.updatedAt.should.be.instanceof(Date);
+      card1.method.should.have.property('retained');
+      card1.method.retained.should.equal(false);
+      card1.method.should.have.property('redacted');
+      card1.method.redacted.should.equal(false);
+      card1.method.should.have.property('custom');
+      card1.should.have.property('messages');
+    });
+  });
+};
