@@ -270,3 +270,30 @@ test['Card has _dirty property which lists changed fields'] = function(exit) {
   });
 };
 
+test['Updating a modified card'] = function(exit) {
+  var Card = daimyo.Card;
+  var card;
+
+  function onCreate() {
+    card.city.should.not.equal('Smallville');
+    card.load(function() {
+      card.city = 'Smallville';
+      card.month = '12';
+      card._dirty.should.contain('city');
+      card._dirty.should.contain('month');
+      card.update(onUpdate);
+    });
+  }
+
+  function onUpdate() {
+    var updatedCard = new Card({token: card.token});
+    updatedCard.load(function() {
+      updatedCard._dirty.should.be.empty;
+      updatedCard.city.should.equal('Smallville');
+      updatedCard.month.should.equal(12);
+    });
+  }
+
+  card = new Card(testCard);
+  card.create(onCreate);
+};
