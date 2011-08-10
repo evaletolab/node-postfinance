@@ -185,8 +185,7 @@ test['Card expiration check'] = function(exit) {
 test['Create method sets a token'] = function(exit) {
   var Card = daimyo.Card;
   var card = new Card(testCard);
-  card.isValid().should.be.ok;
-  card.isExpired().should.not.be.ok;
+  
   card.should.respondTo('create');
 
   // Configure with test configuration
