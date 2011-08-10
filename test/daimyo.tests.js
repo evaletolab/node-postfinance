@@ -223,6 +223,9 @@ test['Created card can load payment method data'] = function(exit) {
       card1.method.redacted.should.equal(false);
       card1.method.should.have.property('custom');
       card1.should.have.property('messages');
+      card1.firstName.should.equal(testCard.firstName);
+      card1.lastName.should.equal(testCard.lastName);
+      card1.address1.should.equal(testCard.address1);
     });
   });
 };
