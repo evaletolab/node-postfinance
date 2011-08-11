@@ -308,9 +308,31 @@ test['Updating a modified card'] = function(exit) {
       card.method.should.have.property('updatedAt');
       card.method.updatedAt.should.be.instanceof(Date);
       card.method.should.have.property('retained');
+      card.method.retained.should.equal(false);
+      card.method.should.have.property('redacted');
+      card.method.redacted.should.equal(false);
+      card.method.should.have.property('custom');
+      card.firstName.should.equal(testCard.firstName);
+      card.lastName.should.equal(testCard.lastName);
+      card.address1.should.equal(testCard.address1);
+    });
+  });
+};
+
+test['Retain card'] = function(exit) {
+  var card = new daimyo.Card(testCard);
+
+  card.create(function(err) {
+    card.retain(function(err) {
+      card.should.have.property('method');
+      card.method.should.have.property('createdAt');
+      card.method.createdAt.should.be.instanceof(Date);
+      card.method.should.have.property('updatedAt');
+      card.method.updatedAt.should.be.instanceof(Date);
+      card.method.should.have.property('retained');
       card.method.retained.should.equal(true);
       card.method.should.have.property('redacted');
-      card.method.redacted.should.equal(true);
+      card.method.redacted.should.equal(false);
       card.method.should.have.property('custom');
       card.firstName.should.equal(testCard.firstName);
       card.lastName.should.equal(testCard.lastName);
