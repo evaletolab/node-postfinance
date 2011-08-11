@@ -14,6 +14,8 @@ testing, and you cannot actually process transactions using the sandbox. Keep
 in mind that you should only run unit tests that come with Daimyo using the
 sandbox processor ID.
 
+### Configuration
+
 Before you use any of the Daimyo's functions, you should configure Daimyo.
 
     var daimyo = require('daimyo');
@@ -42,6 +44,8 @@ One of the configuration options is `debug`, which enables logging of _all_
 data that passes through Daimyo. While it is disabled by default, you should
 take utmost care to ensure it remains disabled in production. Double-check
 you app's configuration.
+
+### Card object
 
 If you chose to use the server-to-server method of creating payment methods,
 you can create a new payment method using the `create` method. Suppse you have
@@ -83,10 +87,14 @@ details, you will get one more field:
 The issuer is detected from the card number, and you should not set the field
 manually (or allow the user to set it).
 
+### Basic validation
+
 Once you've created the card object, you can test its validity:
 
     card.isValid(); // returns true if card is valid
     card.isExpired(); // returns true if expired
+
+### Creating the payment method server-side
 
 The card, when initilized, is still not a valid _payment method_. You have to
 actually create in on Samurai gateway in order to make purchases. You can do 
@@ -97,6 +105,8 @@ that like so:
       // Card now has a payment method token associated with it
       console.log(card.token);
     });
+
+### Loading the payment method
 
 Now that the card object has a token associated with it, you can either save
 the token, or perform transactions with it. So, let's say you have stored the 
@@ -116,6 +126,8 @@ The card object has all the fields populated. There are also two new fields:
     + method: contains meta-information about the payment method
 
 See the API documentation for details on what these fields contain.
+
+### Updating the payment method
 
 If you want to update the card details, you can do so using the `update` 
 method:
