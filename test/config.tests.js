@@ -26,7 +26,7 @@ function resetConfig() {
   config.settings.apiPassword = '';
   config.settings.processorId = '';
   config.settings.enabled = true;
-  config.settings.debug = true;
+  config.settings.debug = false;
 }
 
 // START TESTING
@@ -37,7 +37,7 @@ test['Initial state'] = function(exit) {
   config.settings.apiPassword.should.equal('');
   config.settings.processorId.should.equal('');
   config.settings.enabled.should.be.ok;
-  config.settings.debug.should.be.ok;
+  config.settings.debug.should.not.be.ok;
 };
 
 test['Configuration requires all three keys'] = function(exit) {
