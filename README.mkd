@@ -36,6 +36,18 @@ TODO
 
 TODO
 
+## Offline documentation
+
+You can generate offline documentation for Daimyo using the
+[dox](https://github.com/visionmedia/dox/) utility from Visionmedia. Install
+dox by typing:
+
+    sudo npm install dox -g
+
+Now you can simpy type ``make docs`` in the project directory. The
+documentation will be generated in a newly created ``docs`` directory. To
+remove the documentation, just type ``make clean``.
+
 ## Running unit tests
 
 To run unit tests you need [Expresso](https://github.com/visionmedia/expresso),
