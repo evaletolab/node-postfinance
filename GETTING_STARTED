@@ -1,0 +1,58 @@
+## Getting started
+
+Fee Figters' [Samurai](http://feefighters.com/samurai) payment gateway is
+currently in beta. Before joining the beta program and getting an account, it
+is highly recommended that you get your merchant account first. After signing
+up with Samurai, you will receive three HEX tokens:
+
+ + Merchant key - used to identify your account on Samurai
+ + API password - password for you Samurai account
+ + Processor ID - the ID of the gateway that you will use for transactions
+
+Initially, you will receive a sandbox processor ID. The sandbox is used for
+testing, and you cannot actually process transactions using the sandbox. Keep
+in mind that you should only run unit tests that come with Daimyo using the
+sandbox processor ID.
+
+Before you use any of the Daimyo's functions, you should configure Daimyo.
+
+    var daimyo = require('daimyo');
+
+    daimyo.configure({
+      merchantKey: 'xxxxxxxxxxxxxxxxxxxxxxxx',
+      apiPassword: 'xxxxxxxxxxxxxxxxxxxxxxxx',
+      processorId: 'xxxxxxxxxxxxxxxxxxxxxxxx'
+    });
+
+If you want to test Daimyo, you can also enable the debug mode. Debug mode logs
+_all_ data that passes through Daimyo, and naturally, you don't want that if
+you want to remain PCI compliant, especially if you use Daimyo's create method
+(see API documentation on create method).
+
+Now you can create a new payment method. Suppse you have received billing and
+creadit card data from your user. You can now create a new Card object use that
+data.
+
+    var card = new daimyo.Card({
+      number: data.cardNumber,
+      csc: data.csc,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      year: data.expirationYear,
+      month: data.expirationMonth,
+      ....
+    });
+
+The card, when initilized, is still not a valid payment method. You have to
+actually create in on Samurai gateway. You can do that like so:
+
+    card.create(function(err) {
+      // Handle errors
+      // Card now has a payment method token associated with it
+      console.log(card.token);
+    });
+
+Now that the card object has a token associated with it, you can either save
+the token, or perform transactions with it.
+
+REST OF THE DOCS IS ON TODO LIST, SORRY!
