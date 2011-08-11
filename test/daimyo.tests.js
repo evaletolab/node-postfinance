@@ -339,17 +339,25 @@ test['Retain card'] = function(exit) {
       card.address1.should.equal(testCard.address1);
     });
   });
+
 };
 
-  function onUpdate() {
-    var updatedCard = new Card({token: card.token});
-    updatedCard.load(function() {
-      updatedCard._dirty.should.be.empty;
-      updatedCard.city.should.equal('Smallville');
-      updatedCard.month.should.equal(12);
+test['Redact card'] = function(exit) {
+  var card = new daimyo.Card(testCard);
+
+  card.create(function(err) {
+    card.retain(function(err) {
+      card.method.retained.should.equal(true);
+      card.method.redacted.should.equal(false);
+      card.redact(function(err) {
+        card.method.retained.should.equal(true);
+        card.method.redacted.should.equal(true);
+      });
     });
-  }
+  });
 
-  card = new Card(testCard);
-  card.create(onCreate);
 };
+
+
+
+
