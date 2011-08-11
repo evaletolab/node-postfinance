@@ -288,16 +288,36 @@ test['Updating a modified card'] = function(exit) {
   var Card = daimyo.Card;
   var card;
 
-  function onCreate() {
+  function onUpdate() {
+    }
+
+  card = new Card(testCard);
+  card.create(function() {
     card.city.should.not.equal('Smallville');
-    card.load(function() {
-      card.city = 'Smallville';
-      card.month = '12';
-      card._dirty.should.contain('city');
-      card._dirty.should.contain('month');
-      card.update(onUpdate);
+    card.city = 'Smallville';
+    card.month = '12';
+    card._dirty.should.contain('city');
+    card._dirty.should.contain('month');
+    card.update(function(err) {
+      card._dirty.should.be.empty;
+      card.city.should.equal('Smallville');
+      card.month.should.equal(12);
+      card.should.have.property('method');
+      card.method.should.have.property('createdAt');
+      card.method.createdAt.should.be.instanceof(Date);
+      card.method.should.have.property('updatedAt');
+      card.method.updatedAt.should.be.instanceof(Date);
+      card.method.should.have.property('retained');
+      card.method.retained.should.equal(true);
+      card.method.should.have.property('redacted');
+      card.method.redacted.should.equal(true);
+      card.method.should.have.property('custom');
+      card.firstName.should.equal(testCard.firstName);
+      card.lastName.should.equal(testCard.lastName);
+      card.address1.should.equal(testCard.address1);
     });
-  }
+  });
+};
 
   function onUpdate() {
     var updatedCard = new Card({token: card.token});
