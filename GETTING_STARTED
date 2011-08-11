@@ -24,14 +24,29 @@ Before you use any of the Daimyo's functions, you should configure Daimyo.
       processorId: 'xxxxxxxxxxxxxxxxxxxxxxxx'
     });
 
-If you want to test Daimyo, you can also enable the debug mode. Debug mode logs
-_all_ data that passes through Daimyo, and naturally, you don't want that if
-you want to remain PCI compliant, especially if you use Daimyo's create method
-(see API documentation on create method).
+Samurai gatway uses transparent redirect method to process credit card 
+information. The way it works is, user submits the card and billing data 
+directly to Samurai, and it redirects the user back to your site attaching a 
+payment method token to the request. You have to access to credit card data
+in any part of the work flow. While this is a good method to use in most 
+scnearios, it has one major drawback, and that is you cannot use this method 
+if you site is an AJAX-only web app (so-called single-page app). Daimyo 
+provides a `create` method, which allows you to create a payment method 
+without using the transparent redirect. You should keep in mind that you have
+to ensure that sensitive data passing through your site is properly secured.
+Use SSL for every connection that passes sensitive data, and do not use GET
+requests for such requests. Also make sure that no sensitive data is logged or 
+stored in any part of your application.
 
-Now you can create a new payment method. Suppse you have received billing and
-creadit card data from your user. You can now create a new Card object use that
-data.
+One of the configuration options is `debug`, which enables logging of _all_ 
+data that passes through Daimyo. While it is disabled by default, you should
+take utmost care to ensure it remains disabled in production. Double-check
+you app's configuration.
+
+If you chose to use the server-to-server method of creating payment methods,
+you can create a new payment method using the `create` method. Suppse you have
+received billing and creadit card data from your user. You can now create a new
+Card object use that data.
 
     var card = new daimyo.Card({
       number: data.cardNumber,
@@ -43,8 +58,39 @@ data.
       ....
     });
 
-The card, when initilized, is still not a valid payment method. You have to
-actually create in on Samurai gateway. You can do that like so:
+The card object has following fields:
+
+ + _number_: card number
+ + _csc_: card security code (called CCV, CVC, CVV, and various other names)
+ + _year_: expiration year (if any)
+ + _month_: expiration month
+ + _firstName_: card holder's first name
+ + _lastName_: card holder's last name
+ + _address1_: billing address line 1
+ + _address2_: billing address line 2
+ + _city_: billing address city
+ + _state_: billing address state/region
+ + _zip_: billing address zip/postal code
+
+You cannot create a card object unless you supply it a payment token, or credit 
+card number and CSC. If you supply it a token, all other fields are ignored. 
+Otherwise, card number and CSC are required, and you will get an error if you
+do not specify them. If you create a card object with credit card and billing
+details, you will get one more field:
+
+ + _issuer_: name of the credit card's issuer
+
+The issuer is detected from the card number, and you should not set the field
+manually (or allow the user to set it).
+
+Once you've created the card object, you can test its validity:
+
+    card.isValid(); // returns true if card is valid
+    card.isExpired(); // returns true if expired
+
+The card, when initilized, is still not a valid _payment method_. You have to
+actually create in on Samurai gateway in order to make purchases. You can do 
+that like so:
 
     card.create(function(err) {
       // Handle errors
@@ -53,6 +99,33 @@ actually create in on Samurai gateway. You can do that like so:
     });
 
 Now that the card object has a token associated with it, you can either save
-the token, or perform transactions with it.
+the token, or perform transactions with it. So, let's say you have stored the 
+payment token, either when doing the transparent redirect, or after you created
+the payment method using the `create` method. You can now use the `load` method
+to fetch payment method details from Samurai server.
+
+    var myToken = 'xxxxxxxxxxxxxxxxxxxxxxxx';
+    var card = new daimyo.Card({token: myToken});
+    card.load(function(err) {
+      // Handle error
+    });
+
+The card object has all the fields populated. There are also two new fields:
+
+    + messages: contains any Samurai gateway messages about the card
+    + method: contains meta-information about the payment method
+
+See the API documentation for details on what these fields contain.
+
+If you want to update the card details, you can do so using the `update` 
+method:
+
+    card.firstName = 'Foo';
+    card.lastName = 'Bar';
+    card.address1 = '241 Bar St.';
+    card.city = 'Fooville';
+    card.update(function(err) {
+      // Handle errors here
+    });
 
 REST OF THE DOCS IS ON TODO LIST, SORRY!
