@@ -8,6 +8,7 @@ var assert = require('assert');
 var should = require('should');
 var getAdjustedDateparts = require('./helpers').getAdjustedDateparts;
 var daimyo = require('../index.js');
+var messages = require('../lib/messages');
 var test = exports;
 
 var testNonExpiredDate = getAdjustedDateparts(12); // One year in future
@@ -30,7 +31,7 @@ var testCard = {
 
 var bogusCard = {
   number: '2420318231',
-  csc: '111',
+  csc: '14111',
   year: testExpiredDate[0].toString(),
   month: testExpiredDate[1].toString()
 };
@@ -95,8 +96,7 @@ test['Creating a bogus card'] = function(exit) {
   card.issuer.should.equal('Unknown');
 
   card.should.have.property('csc');
-  card.csc.should.equal('111');
-
+  card.csc.should.equal('14111');
 };
 
 test['Creating card without card number or CSC throws'] = function(exit) {
@@ -130,7 +130,7 @@ test['2-digit or 1-digit year converts to 4-digits'] = function(exit) {
   });
   card.year.should.equal((Math.floor(new Date().getFullYear() / 10) * 10) + 2);
 
-  var card = new Card({
+  card = new Card({
     number: testCard.number,
     csc: testCard.csc,
     year: '15' // Should convert to year 15 of current century
@@ -227,11 +227,26 @@ test['Created card can load payment method data'] = function(exit) {
       card1.method.should.have.property('redacted');
       card1.method.redacted.should.equal(false);
       card1.method.should.have.property('custom');
-      card1.should.have.property('messages');
       card1.firstName.should.equal(testCard.firstName);
       card1.lastName.should.equal(testCard.lastName);
       card1.address1.should.equal(testCard.address1);
     });
+  });
+};
+
+test['Create a bad payment method'] = function(exit) {
+  var card = new daimyo.Card(bogusCard);
+
+  function onLoad(err) {
+    card.should.have.property('messages');
+    card.messages.should.have.property('number');
+    card.messages.number.should.contain(messages.str.en_US.INVALID_NUMBER);
+    card.messages.should.have.property('csc');
+    card.messages.csc.should.contain(messages.str.en_US.INVALID_CSC);
+  }
+
+  card.create(function(err) {
+    card.load(onLoad);
   });
 };
 
@@ -240,8 +255,6 @@ test['Card has _dirty property which lists changed fields'] = function(exit) {
   var Card = daimyo.Card;
   var card = new Card(testCard);
   var token;
-
-  console.log(card.month, testCard.month);
 
   card.should.have.property('_dirty');
   card._dirty.should.not.be.empty;
