@@ -34,7 +34,10 @@ TODO
 
 ## API documentation
 
-TODO
+The dox-generated API documentation can be found at
+[herdhound.github.com/Daimyo/](http://herdhound.github.com/Daimyo/). You can
+also generate the documentation for offline use using the provided makefile.
+See _Offline documentaiton_ section for instructions.
 
 ## Offline documentation
 
