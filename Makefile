@@ -8,6 +8,6 @@ clean:
 	rm -rf docs
 
 docs:
-	mkdir docs && dox -p --title "Daimyo - Samurai payment gateway integration for Node.js" lib/config.js lib/daimyo.js lib/authpost.js lib/xmlutils.js lib/check.js lib/error.js > docs/daimyo.html
+	mkdir docs && dox -p --title "Daimyo API documentation" -i GETTING_STARTED lib/config.js lib/daimyo.js lib/check.js lib/xmlutils.js lib/authpost.js lib/messages.js lib/error.js > docs/daimyo.html
 
 .PHONY: test
