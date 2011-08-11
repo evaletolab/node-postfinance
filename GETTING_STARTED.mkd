@@ -140,4 +140,41 @@ method:
       // Handle errors here
     });
 
+### Retention and redaction
+
+Samurai has a built-in vault that can safely store your payment methods. Well,
+they aren't yours, but... you know what I mean. :) Usage of this vault is
+pretty much automatic. As soon as you create a new card, it is stored in the
+vault.
+
+By default, the stored payment methods will be deleted after 48 hours. If you
+wish to keep the payment methods stored for longer periods, you can use the
+`retain()` method. Let's say you have a newly created card. To retain it,
+simply instruct the Samurai to do so:
+
+    card.retain(function(err) {
+      // Error handling here
+      // The card now has a method property, 
+      // which contains metadata about
+      // the payment method. It has a `retained`
+      // property which is now set to true:
+      console.log(card.method.retained); // => true
+    });
+
+When your user supplies you a new card, or simply wants you to remove their 
+records, use the `redact()` method to have the card removed from the Samurai
+vault.
+
+    card.redact(function(err) {
+       // The card.method.retained is still true, but
+       // card.method.redacted is now also true.
+    });
+
+Generally, you should not keep using a redacted payment method, so make sure
+you check if the `card.method.redacted` is `true`. Updating the card data is
+usually more efficient using the `update()` method. While it _is_ more
+effiicient, if you are using the transparent redirect method, you should 
+redact the old card, and let the user enter a new one. Only use `update()` if 
+you are using the server-to-server method.
+
 REST OF THE DOCS IS ON TODO LIST, SORRY!
