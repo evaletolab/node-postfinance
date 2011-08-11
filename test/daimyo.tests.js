@@ -239,10 +239,11 @@ test['Create a bad payment method'] = function(exit) {
 
   function onLoad(err) {
     card.should.have.property('messages');
-    card.messages.should.have.property('number');
-    card.messages.number.should.contain(messages.str.en_US.INVALID_NUMBER);
-    card.messages.should.have.property('csc');
-    card.messages.csc.should.contain(messages.str.en_US.INVALID_CSC);
+    card.messages.should.have.property('errors');
+    card.messages.errors.should.have.property('number');
+    card.messages.errors.number.should.contain(messages.str.en_US.INVALID_NUMBER);
+    card.messages.errors.should.have.property('csc');
+    card.messages.errors.csc.should.contain(messages.str.en_US.INVALID_CSC);
   }
 
   card.create(function(err) {
