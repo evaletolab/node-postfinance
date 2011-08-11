@@ -122,8 +122,8 @@ to fetch payment method details from Samurai server.
 
 The card object has all the fields populated. There are also two new fields:
 
-    + messages: contains any Samurai gateway messages about the card
-    + method: contains meta-information about the payment method
+ + messages: contains any Samurai gateway messages about the card
+ + method: contains meta-information about the payment method
 
 See the API documentation for details on what these fields contain.
 
