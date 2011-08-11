@@ -1,6 +1,9 @@
 test:
 	expresso test/*.tests.js
 
+checkamd:
+	cat lib/check.js | sed 's/var check = exports;/define(function() {\nvar check = {};/' > check.js && echo "};" >> check.js
+
 clean:
 	rm -rf docs
 
