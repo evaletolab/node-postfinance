@@ -27,6 +27,7 @@ function resetConfig() {
   config.settings.processorId = '';
   config.settings.enabled = true;
   config.settings.debug = false;
+  config.settings.currency = 'USD';
 }
 
 // START TESTING
@@ -36,6 +37,7 @@ test['Initial state'] = function(exit) {
   config.settings.merchantKey.should.equal('');
   config.settings.apiPassword.should.equal('');
   config.settings.processorId.should.equal('');
+  config.settings.currency.should.equal('USD');
   config.settings.enabled.should.be.ok;
   config.settings.debug.should.not.be.ok;
 };
@@ -141,6 +143,10 @@ test['Setting individual configuration options'] = function(exit) {
   config.settings.debug = false;
   config.option('debug', 'yes'); // truthy
   config.settings.debug.should.equal(true);
+
+  config.settings.currency = 'USD';
+  config.option('currency', 'JPY');
+  config.settings.currency.should.equal('JPY');
 
   assert.throws(function() {
     config.option('merchantKey', badKeys[0]);
