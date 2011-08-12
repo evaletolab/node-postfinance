@@ -153,7 +153,7 @@ test['Cannot set invalid month'] = function(exit) {
   var card = new Card({
     number: testCard.number,
     csc: testCard.csc,
-    month: '123',
+    month: '123'
   });
   should.not.exist(card.month);
 
