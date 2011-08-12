@@ -414,7 +414,8 @@ test['New transaction has a few extra properties'] = function(exit) {
   }, errback, callback);
 
   transaction.should.have.property('data');
-  transaction.data.should.have.keys(['amount']);
+  transaction.data.should.have.keys(['amount', 'type']);
+  transaction.data.type.should.equal('purchase');
   transaction.should.have.property('path');
   transaction.should.respondTo('toXML');
   transaction.toXML().should.include.string('<amount>10</amount>');
