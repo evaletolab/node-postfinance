@@ -383,3 +383,23 @@ test['Creating new transaction throws with missing data'] = function(exit) {
     });
   });
 };
+
+test['New transaction throws on missing callbacks'] = function(exit) {
+  var transaction;
+
+  assert.throws(function() {
+    transaction = new daimyo.Transaction({
+      type: 'purchase',
+      data: {amount: 10},
+      error: function(err) {}
+    });
+  });
+
+  assert.throws(function() {
+    transaction = new daimyo.Transaction({
+      type: 'purchase',
+      data: {amount: 10},
+      success: function(message) {}
+    });
+  });
+};
