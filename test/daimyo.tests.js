@@ -403,3 +403,23 @@ test['New transaction throws on missing callbacks'] = function(exit) {
   });
 
 };
+
+test['New transaction has a few extra properties'] = function(exit) {
+  function callback() { return 'foo'; }
+  function errback() { return 'bar'; }
+  
+  var transaction = new daimyo.Transaction({
+    type: 'purchase',
+    data: {amount: 10}
+  }, errback, callback);
+
+  transaction.should.have.property('data');
+  transaction.data.should.have.keys(['amount']);
+  transaction.should.have.property('path');
+  transaction.should.respondTo('toXML');
+  transaction.toXML().should.include.string('<amount>10</amount>');
+  transaction.should.respondTo('onSuccess');
+  transaction.onSuccess.toString().should.equal(callback.toString());
+  transaction.should.respondTo('onError');
+  transaction.onError.toString().should.equal(errback.toString());
+};
