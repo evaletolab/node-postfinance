@@ -398,8 +398,8 @@ test['New transaction throws on missing callbacks'] = function(exit) {
   assert.throws(function() {
     transaction = new daimyo.Transaction({
       type: 'purchase',
-      data: {amount: 10},
-      success: function(message) {}
+      data: {amount: 10}
     });
   });
+
 };
