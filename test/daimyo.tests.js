@@ -358,6 +358,28 @@ test['Redact card'] = function(exit) {
 
 };
 
+test['Creating new transaction object throws if no type'] = function(exit) {
+  var transaction;
 
+  assert.throws(function() {
+    transaction = new daimyo.Transaction({
+      type: null, 
+      data: {amount: 10},
+      error: function(err) {},
+      success: function(messages) {}
+    });
+  });
+};
 
+test['Creating new transaction throws with missing data'] = function(exit) {
+  var transaction;
 
+  assert.throws(function() {
+    transaction = new daimyo.Transaction({
+      type: 'purchase',
+      data: null,
+      error: function(err) {},
+      success: function(message) {}
+    });
+  });
+};
