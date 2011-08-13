@@ -32,7 +32,10 @@
  * that contains the JSON response. A typical success response may look like 
  * this:
  *
- *     <body><script>{"status": "ok"}</script></body>
+ *     <body><script>({"status": "ok"})</script></body>
+ *
+ * Note that the JSON is wrapped in brackets to make it a valid object 
+ * expression. Otherwise, the browsers will complain.
  *
  * There is no need to add standard HTML markup because this response will
  * never be rendered. Once you have set up the server-side handler to work this
@@ -116,11 +119,15 @@
     // The result document should contain JSON data in a <script> tag
     jsonData = $.trim(resultDocument.find('body script').text());
 
-    if (jsonData[0] !== '{') {
+    if (jsonData.slice(0,2) !== '({' && jsonData.slice(-2) !== '})') {
       // No JSON here!
       callback('Could not find JSON data');
       return;
     }
+
+    // Remove the brackets ( and )
+    jsonData = jsonData.slice(1, -1);
+
     try {
       callback(null, JSON.parse(jsonData));
     } catch (e) {
