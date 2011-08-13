@@ -14,6 +14,7 @@ testing, and you cannot actually process transactions using the sandbox. Keep
 in mind that you should only run unit tests that come with Daimyo using the
 sandbox processor ID.
 
+
 ### Overview
 
 When using the Samurai payment gateway, you basically deal with two separate
@@ -41,6 +42,40 @@ constructor only has one method:
 
 This method takes a card object as its argument, and runs a transaction against
 the payment method associated with the card.
+
+### Notes on PCI compliance
+
+There are two ways you can use the Samurai gateway with Daimyo in terms of
+payment method. One is server-to-server, where you handle the cardholder data,
+and pass them on to the gateway. Another method is transparent redirect, where
+you set up a web form that submits directly to the gateway, and you only
+receive a _payment method token_ that is associated with whatever data the 
+user submitted. 
+
+While the server-to-server method is useful in cases a web form required for
+transparent redirect method cannot be set up (for example, for single-page AJAX
+apps, where cross-site request restrictions apply), you have to be aware that
+full PCI compliance for class C merchants is still required. Class C PCI
+compliance may involve on-site audits, or audits of any 3rd party
+infrastructure you might be using, and many other steps. You can read more
+about PCI compliance at
+[www.pcisecuritystandards.org](https://www.pcisecuritystandards.org/).
+
+Also note that Daimyo itself has _not_ been atested or tested for PCI
+compliance. While Daimyo's author sincerely believes that Daimyo is reasonably
+safe (or, rather, will be when a full release is made), we do not, and cannot
+make any guarantees to that effect, either explicit or implied, as noted in the
+[LICENSE](https://github.com/HerdHound/Daimyo/blob/master/LICENSE).
+
+### Ashigaru and single-page AJAX apps
+
+If you have an AJAX-intesive website that cannot make regular POST requests
+using web forms, you might want to try using the Ashigaru jQuery plugin. The
+plugin is included in the Daimyo project directory under `/support`
+subdirectory. For more information on how to set up your server for use with
+Ashigaru, and basic usage of this plugin, take a look at Ashigaru's
+documentation.
+
 ### Configuration
 
 Before you use any of the Daimyo's functions, you should configure Daimyo.
@@ -53,19 +88,18 @@ Before you use any of the Daimyo's functions, you should configure Daimyo.
       processorId: 'xxxxxxxxxxxxxxxxxxxxxxxx'
     });
 
-Samurai gatway uses transparent redirect method to process credit card 
-information. The way it works is, user submits the card and billing data 
-directly to Samurai, and it redirects the user back to your site attaching a 
-payment method token to the request. You have to access to credit card data
-in any part of the work flow. While this is a good method to use in most 
-scnearios, it has one major drawback, and that is you cannot use this method 
-if you site is an AJAX-only web app (so-called single-page app). Daimyo 
-provides a `create` method, which allows you to create a payment method 
-without using the transparent redirect. You should keep in mind that you have
-to ensure that sensitive data passing through your site is properly secured.
-Use SSL for every connection that passes sensitive data, and do not use GET
-requests for such requests. Also make sure that no sensitive data is logged or 
-stored in any part of your application.
+Samurai gatway uses transparent redirect method to process credit card
+information. The way it works is, user submits the card and billing data
+directly to Samurai, and it redirects the user back to your site attaching a
+payment method token to the request. You have to access to credit card data in
+any part of the work flow. Daimyo provides a `create` method, which allows you
+to create a payment method without using the transparent redirect. You may use
+this method if you really cannot use the transparent redirect, and you find
+Ashigaru to be broken or otherwise unusable for you. You should keep in mind,
+though, that you have to ensure that sensitive data passing through your site
+is properly secured.  Use SSL for every connection that passes sensitive data,
+and do not use GET requests for such requests. Also make sure that no sensitive
+data is logged or stored in any part of your application.
 
 One of the configuration options is `debug`, which enables logging of _all_ 
 data that passes through Daimyo. While it is disabled by default, you should
