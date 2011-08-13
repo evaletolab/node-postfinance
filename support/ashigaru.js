@@ -116,9 +116,6 @@
     // The result document should contain JSON data in a <script> tag
     jsonData = $.trim(resultDocument.find('body script').text());
 
-    // FIXME: Restore the original window domain
-    // window.document.domain = originalDomain;
-
     if (jsonData[0] !== '{') {
       // No JSON here!
       callback('Could not find JSON data');
