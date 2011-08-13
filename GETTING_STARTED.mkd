@@ -74,7 +74,8 @@ using web forms, you might want to try using the Ashigaru jQuery plugin. The
 plugin is included in the Daimyo project directory under `/support`
 subdirectory. For more information on how to set up your server for use with
 Ashigaru, and basic usage of this plugin, take a look at Ashigaru's
-documentation.
+documentation. You can also find a 
+[functional demo](http://herdhound.github.com/Daimyo/example/ashigaru/) online.
 
 ### Configuration
 
