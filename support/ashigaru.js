@@ -114,7 +114,7 @@
     removeForm();
 
     // The result document should contain JSON data in a <script> tag
-    jsonData = $.trim(resultDocument.find('body result').text());
+    jsonData = $.trim(resultDocument.find('body script').text());
 
     // FIXME: Restore the original window domain
     // window.document.domain = originalDomain;
