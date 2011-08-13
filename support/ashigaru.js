@@ -89,7 +89,7 @@
   var samuraiURI = 'https://samurai.feefighters.com/v1/payment_methods';
   var timeoutLabel;
   var timedOut = false;
-  var timeoutInterval = 3000;
+  var timeoutInterval = 20000; // 20 seconds
 
   /**
    * ## Remove the hidden form
