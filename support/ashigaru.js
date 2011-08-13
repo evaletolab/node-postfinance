@@ -216,7 +216,7 @@
 
     $.extend(fullData, data);
 
-    var formHTML = '<form id="samurai-form" style="display:hidden" ' +
+    var formHTML = '<form id="samurai-form" style="display:none" ' +
       'action="$requestURI" method="POST" target="samurai-iframe">' + 
       '<input type="hidden" name="merchant_key" value="$merchantkey">'+
       '<input type="hidden" name="redirect_url" value="$redirecturl">' +
