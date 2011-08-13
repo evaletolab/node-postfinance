@@ -156,8 +156,9 @@
     iFrame.load(function() {
 
       // Did we time out?
-      if (timeout) {
-        return;
+      if (timedOut) {
+        removeForm();
+        return false;
       }
 
       // Clear the timeout clock
