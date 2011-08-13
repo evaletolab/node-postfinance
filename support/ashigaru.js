@@ -87,6 +87,9 @@
 
   var originalDomain = window.document.domain;
   var samuraiURI = 'https://samurai.feefighters.com/v1/payment_methods';
+  var timeoutLabel;
+  var timedOut = false;
+  var timeoutInterval = 3000;
 
   /**
    * ## Remove the hidden form
@@ -151,6 +154,16 @@
     iFrame.appendTo('body');
     // Do the right thing when iframe loads
     iFrame.load(function() {
+
+      // Did we time out?
+      if (timeout) {
+        return;
+      }
+
+      // Clear the timeout clock
+      clearTimeout(timeoutLabel);
+
+      // Load the results and remove the form
       onResultLoad(this, callback);
       removeForm();
     });
@@ -267,6 +280,17 @@
       e.stopPropagation();
       return createIframe(callback);
     });
+
+    // Fire the timout clock at 3 seconds
+    timeoutLabel = setTimeout(function() {
+
+      // Set the timeout flag
+      timedOut = true;
+
+      // Execute callback with error message
+      callback('Connection timed out');
+
+    }, timeoutInterval);
 
     form.submit();
   };
