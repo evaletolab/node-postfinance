@@ -14,6 +14,33 @@ testing, and you cannot actually process transactions using the sandbox. Keep
 in mind that you should only run unit tests that come with Daimyo using the
 sandbox processor ID.
 
+### Overview
+
+When using the Samurai payment gateway, you basically deal with two separate
+concepts: payment methods (cards) and transactions (making/loosing money).
+Daimyo's API reflects this dualism. It provides two main constructors that you
+will use most of the time: `Card` and `Transaction` (and variants of
+`Transaction`).
+
+Once created the card objects have the following methods:
+
+ + `card.create()`: cretes a new payment methods
+ + `card.load()`: fetches payment method data from the Samurai vault
+ + `card.update()`: updates the payment method details
+ + `card.retain()`: instructs Samurai to permanently save the payment method
+ + `card.redact()`: instructs Samurai to remove the payment method from vault
+
+(See notes about PCI compliance before you start using some of these methods.)
+
+The transaction object is constructed using several constructors (they are not
+yet available, though) that are specialized for different types of
+transactions, or the generic `Transaction` constructor. In each case, the
+constructor only has one method:
+
+ + `transaction.process()`
+
+This method takes a card object as its argument, and runs a transaction against
+the payment method associated with the card.
 ### Configuration
 
 Before you use any of the Daimyo's functions, you should configure Daimyo.
