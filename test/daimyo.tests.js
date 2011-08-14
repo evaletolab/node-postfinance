@@ -425,3 +425,14 @@ test['New transaction has a few extra properties'] = function(exit) {
   transaction.should.respondTo('onError');
   transaction.onError.toString().should.equal(errback.toString());
 };
+
+test['Simple transactions do not set type and currency'] = function(exit) {
+  var transaction = new daimyo.Transaction({
+    type: 'void',
+    transactionId: '111111111111111111111111',
+    data: {}
+  }, function() {});
+
+  transaction.data.should.not.have.property('currency');
+  transaction.data.should.not.have.property('type');
+};
