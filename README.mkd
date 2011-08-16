@@ -19,7 +19,18 @@ support the sale transactions and provide robust error reporting facilities.
 
 ## Status
 
-### 0.0.1
+### 0.0.2 (not relased yet)
+
+_This version is still not production ready._
+
+ + `daimyo` no longer has `settings` property. You should use
+   `daimyo.option()` to access options instead.
+ + After calling `daimyo.configure()` successfully for the first time,
+   configuration will now be permanently locked until you restart the app.
+   This is a _feature_ not a bug. It prevents malicious code from tricking your
+   app into resetting some of the critical Daimyo options.
+
+### 0.0.1 (latest)
 
 The first release is a public preview release and it's not meant to be
 production-ready. There are still quite a few things to implement, and error
