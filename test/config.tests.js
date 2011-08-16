@@ -28,6 +28,7 @@ function resetConfig() {
   config.settings.enabled = true;
   config.settings.debug = false;
   config.settings.currency = 'USD';
+  config.settings.sandbox = false;
 }
 
 // START TESTING
@@ -40,6 +41,7 @@ test['Initial state'] = function(exit) {
   config.settings.currency.should.equal('USD');
   config.settings.enabled.should.be.ok;
   config.settings.debug.should.not.be.ok;
+  config.settings.sandbox.should.not.be.ok;
 };
 
 test['Configuration requires all three keys'] = function(exit) {
@@ -147,6 +149,10 @@ test['Setting individual configuration options'] = function(exit) {
   config.settings.currency = 'USD';
   config.option('currency', 'JPY');
   config.settings.currency.should.equal('JPY');
+
+  config.settings.sandbox = false;
+  config.option('sandbox', 'yes'); // truthy
+  config.settings.sandbox.should.equal(true);
 
   assert.throws(function() {
     config.option('merchantKey', badKeys[0]);
