@@ -30,7 +30,56 @@ TODO
 
 ## Basic usage
 
-TODO
+    var daimyo = require('daimyo');
+
+    // Configure Daimyo
+    daimyo.configure({
+      merchantKey: 'xxxxxxxxxxxxxxxxxxxxxxxx',
+      processorId: 'xxxxxxxxxxxxxxxxxxxxxxxx',
+      apiPassword: 'xxxxxxxxxxxxxxxxxxxxxxxx',
+      currency: 'USD', // default
+      debug: false, // default, should stay off in production at all costs
+      enabled: true, // default
+      sandbox: false // default
+    });
+
+    // Using transparent redirect with Express
+    app.get('/redirect_target', function(req, res, next) {
+        var token = req.param('payment_method_token');
+        var card = daimyo.Card({token: token});
+
+        // Create a new transaction
+        var transactionData = {
+            amount: 100,
+            billingReference: 'my billing ref #',
+            customerReference: "user's customer ref #',
+            type: 'purchase'
+        }
+
+        // Process the transaction using the card object
+        transaction.process(card, function(err) {
+           if (err) {
+             // Handle error and return error page
+             res.render('sorry', {});
+             return;
+           }
+           if (!transaction.messages.info || 
+               transaction.messages.info[0] === 'success') {
+             // The transaction was not successful
+             res.render('sorry, {messages: transaction.messages});
+             return;
+           }
+           // Ah, finally! All ur moneys are belong to us!
+           res.render('kthxbye', {});
+           // Don't forget to Email receipt!
+           emailReceipt({
+             issuer: card.issuer,
+             cardNo: '****-****-****-' + card.last4, 
+             date: transaction.receipt.createdAt,
+             amount: transaction.receipt.amount
+           });
+        });
+    });
 
 ## Using the ``check`` as AMD module in browsers
 
