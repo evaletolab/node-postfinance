@@ -35,7 +35,35 @@ is v0.1.
 
 ## Installation
 
-TODO
+Easiest way to install Daimyo is by using npm:
+
+    npm install daimyo
+
+That will install the latest release that we have made. Not that releases prior
+to 0.1 are not considered production-ready. See the _Status_ section of this 
+file to find out more about the current progress.
+
+Since Daimyo is currently still very beta, if you wish to get a newer version
+with more features (please don't do this in production, though), you can add it
+as a dependency to your packages.json like this:
+
+    dependencies: {
+       ....
+      ,"daimyo": "https://github.com/HerdHound/Daimyo/tarball/master"
+       ....
+    }
+
+Using the above method, it is also possible to address individual commits. Go
+to GitHub, switch to a commit you want to depend on, click the download link,
+and right-click the tarball button, copy URL, and paste it into your dependency
+list like above.
+
+Finally, you can clone the Daimyo repository using git and install from the
+cloned repository:
+    
+    git clone https://github.com/HerdHound/Daimyo.git
+    cd /your/project/dir
+    npm install /path/to/daimyo/clone
 
 ## Basic usage
 
