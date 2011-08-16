@@ -29,6 +29,18 @@ var testCard = {
   zip: '99561'
 };
 
+var sandboxValidCard = {
+  number: '4111-1111-1111-1111',
+  csc: '123'
+  // No other extra data, this is only for testing transactions
+};
+
+var sandboxInvalidCard = {
+  number: '4242-4242-4242-4242',
+  csc: '123'
+  // No other extra data, this is only for testing transactions
+};
+
 var bogusCard = {
   number: '2420318231',
   csc: '14111',
