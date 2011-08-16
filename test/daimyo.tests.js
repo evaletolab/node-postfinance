@@ -111,6 +111,15 @@ test['Creating a bogus card'] = function(exit) {
   card.csc.should.equal('14111');
 };
 
+// GH: #1
+test['Card number should be stripped of non-digit elements'] = function(exit) {
+  card = new daimyo.Card({
+    number: '4111-1111-1111-1111',
+    csc: '123'
+  });
+  card.number.should.equal('4111111111111111');
+};
+
 test['Creating card without card number or CSC throws'] = function(exit) {
   var Card = daimyo.Card;
 
