@@ -107,6 +107,30 @@ data that passes through Daimyo. While it is disabled by default, you should
 take utmost care to ensure it remains disabled in production. Double-check
 you app's configuration.
 
+### Configuration locking
+
+Note that Daimyo's performs configuration-locking after you call
+`daimyo.configure()` for the first time (and if that's successful). This
+means that you will not be able to call `daimyo.configure()` multiple times
+to set different options. You need to set all options beforehand. 
+
+This is a security feature that prevents accidental/malicious resetting of
+critical options. 
+
+Calling `daimyo.option()` will also fail after configuration has been locked,
+but you can use multiple calls to `daimyo.options()` to set an option
+multiple times and it won't lead to locking.
+
+Althoug using `daimyo.option()` may sound more convenient, you should set all
+critical core options (including `debug`, `enabled`, and `sandbox`) using the
+`daimyo.configure()` method for security reasons.
+
+Currently, the only exception to configuration locking is the `currency`
+parameter, which can be set any number of times. Future version of Daimyo may
+include more such non-critical options.
+
+See the ``config`` module documentation for more information.
+
 ### Card object
 
 If you chose to use the server-to-server method of creating payment methods,
