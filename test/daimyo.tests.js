@@ -15,8 +15,9 @@ var testNonExpiredDate = getAdjustedDateparts(12); // One year in future
 var testExpiredDate = getAdjustedDateparts(-12); // One year ago
 var testSettings = require('./config');
 
-// Sandbox mode
+// Enable sandbox, and debug
 daimyo.option('sandbox', true);
+daimyo.option('debug', true);
 
 var testCard = {
   number: '5555555555554444', // MasterCard
@@ -49,6 +50,17 @@ var bogusCard = {
   csc: '14111',
   year: testExpiredDate[0].toString(),
   month: testExpiredDate[1].toString()
+};
+
+test['Configure and lock configuration'] = function(exit) {
+  testSettings.allowMultipleSetOption = false;
+  daimyo.configure(testSettings);
+  assert.throws(function() {
+    daimyo.configure(testSettings);
+  });
+  assert.throws(function() {
+    daimyo.option('debug', false);
+  });
 };
 
 test['daimyo module has Card constructor'] = function(exit) {
@@ -217,9 +229,6 @@ test['Create method sets a token'] = function(exit) {
   
   card.should.respondTo('create');
 
-  // Configure with test configuration
-  // YOU NEED TO MODIFY/CREATE test/config.js (SEE README.mkd)
-  daimyo.configure(testSettings);
   card.create(function(err) {
     should.not.exist(err);
     card.token.should.match(/^[0-9a-f]{24}$/);
