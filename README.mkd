@@ -19,10 +19,19 @@ support the sale transactions and provide robust error reporting facilities.
 
 ## Status
 
-This library will be used in production at 
-[Herd Hound](http://www.herdhound.com/). Since Herd Hound itself is not yet
-released, this library has not yet seen any production use. We therefore
-recommend you test it well before Using it in production.
+### 0.0.1
+
+The first release is a public preview release and it's not meant to be
+production-ready. There are still quite a few things to implement, and error
+handling is not very robust. Note that API might change as well. For starters,
+you should not rely on any method that has the @private tag in the inline
+comments (that do not appear in API documentation, that is), but the public
+methods may change as well, as well as method signatures.
+
+Although there _are_ unit tests, and Daimyo's development is test-driven, the
+tests do not currently provide complete coverage, and it is expected that some
+functionality may break in production. Target for first production-ready Daimyo
+is v0.1.
 
 ## Installation
 
