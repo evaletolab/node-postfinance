@@ -15,6 +15,9 @@ var testNonExpiredDate = getAdjustedDateparts(12); // One year in future
 var testExpiredDate = getAdjustedDateparts(-12); // One year ago
 var testSettings = require('./config');
 
+// Sandbox mode
+daimyo.option('sandbox', true);
+
 var testCard = {
   number: '5555555555554444', // MasterCard
   csc: '111',
@@ -425,4 +428,35 @@ test['Simple transactions do not set type and currency'] = function(exit) {
 
   transaction.data.should.not.have.property('currency');
   transaction.data.should.not.have.property('type');
+};
+
+test['Execute transaction'] = function(exit) {
+  var transaction;
+
+  function callback(err) {
+    should.not.exist(err);
+    transaction.should.have.property('messages');
+    transaction.messages.should.have.property('info');
+    transaction.messages.info.should.have.property('transaction');
+    transaction.messages.info.transaction.should.contain('Success');
+  }
+  
+  transaction = new daimyo.Transaction({
+    type: 'purchase',
+    data: {
+      billingReference: '123',
+      customerReference: '123',
+      amount: 10
+    }
+  });
+
+  // First we need a card
+  var card = new daimyo.Card(sandboxValidCard);
+
+  card.create(function(err) {
+    // We have the token now.
+    card.should.have.property('token');
+    transaction.process(card, callback);
+  });
+
 };
