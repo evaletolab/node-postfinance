@@ -364,9 +364,7 @@ test['Creating new transaction object throws if no type'] = function(exit) {
   assert.throws(function() {
     transaction = new daimyo.Transaction({
       type: null, 
-      data: {amount: 10},
-      error: function(err) {},
-      success: function(messages) {}
+      data: {amount: 10}
     });
   });
 };
@@ -377,41 +375,16 @@ test['Creating new transaction throws with missing data'] = function(exit) {
   assert.throws(function() {
     transaction = new daimyo.Transaction({
       type: 'purchase',
-      data: null,
-      error: function(err) {},
-      success: function(message) {}
+      data: null
     });
   });
-};
-
-test['New transaction throws on missing callbacks'] = function(exit) {
-  var transaction;
-
-  assert.throws(function() {
-    transaction = new daimyo.Transaction({
-      type: 'purchase',
-      data: {amount: 10},
-      error: function(err) {}
-    });
-  });
-
-  assert.throws(function() {
-    transaction = new daimyo.Transaction({
-      type: 'purchase',
-      data: {amount: 10}
-    });
-  });
-
 };
 
 test['New transaction has a few extra properties'] = function(exit) {
-  function callback() { return 'foo'; }
-  function errback() { return 'bar'; }
-  
   var transaction = new daimyo.Transaction({
     type: 'purchase',
     data: {amount: 10}
-  }, errback, callback);
+  });
 
   transaction.should.have.property('data');
   transaction.data.should.have.keys(['amount', 'type', 'currency']);
@@ -420,10 +393,6 @@ test['New transaction has a few extra properties'] = function(exit) {
   transaction.should.have.property('path');
   transaction.should.respondTo('toXML');
   transaction.toXML().should.include.string('<amount>10</amount>');
-  transaction.should.respondTo('onSuccess');
-  transaction.onSuccess.toString().should.equal(callback.toString());
-  transaction.should.respondTo('onError');
-  transaction.onError.toString().should.equal(errback.toString());
 };
 
 test['Simple transactions do not set type and currency'] = function(exit) {
@@ -431,7 +400,7 @@ test['Simple transactions do not set type and currency'] = function(exit) {
     type: 'void',
     transactionId: '111111111111111111111111',
     data: {}
-  }, function() {});
+  });
 
   transaction.data.should.not.have.property('currency');
   transaction.data.should.not.have.property('type');
