@@ -67,19 +67,23 @@ TODO
 
         // Process the transaction using the card object
         transaction.process(card, function(err) {
+
            if (err) {
              // Handle error and return error page
              res.render('sorry', {});
              return;
            }
+
            if (!transaction.messages.info || 
                transaction.messages.info[0] === 'success') {
              // The transaction was not successful
              res.render('sorry, {messages: transaction.messages});
              return;
            }
+
            // Ah, finally! All ur moneys are belong to us!
            res.render('kthxbye', {});
+
            // Don't forget to Email receipt!
            emailReceipt({
              issuer: card.issuer,
