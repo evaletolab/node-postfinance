@@ -413,7 +413,7 @@ test['New transaction has a few extra properties'] = function(exit) {
   transaction.should.have.property('data');
   transaction.data.should.have.keys(['amount', 'type', 'currency']);
   transaction.data.type.should.equal('purchase');
-  transaction.data.currency.should.equal(daimyo.settings.currency);
+  transaction.data.currency.should.equal(daimyo.option('currency'));
   transaction.should.have.property('path');
   transaction.should.respondTo('toXML');
   transaction.toXML().should.include.string('<amount>10</amount>');

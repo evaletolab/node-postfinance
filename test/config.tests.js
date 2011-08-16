@@ -20,60 +20,45 @@ testKeyBases.forEach(function(base) {
   testKeys.push(helpers.generateKey(base));
 });
 
-// Function to reset settings as necessary
-function resetConfig() {
-  config.settings.merchantKey = '';
-  config.settings.apiPassword = '';
-  config.settings.processorId = '';
-  config.settings.enabled = true;
-  config.settings.debug = false;
-  config.settings.currency = 'USD';
-  config.settings.sandbox = false;
-}
-
 // START TESTING
 
 test['Initial state'] = function(exit) {
-  config.should.have.property('settings');
-  config.settings.merchantKey.should.equal('');
-  config.settings.apiPassword.should.equal('');
-  config.settings.processorId.should.equal('');
-  config.settings.currency.should.equal('USD');
-  config.settings.enabled.should.be.ok;
-  config.settings.debug.should.not.be.ok;
-  config.settings.sandbox.should.not.be.ok;
+  config.should.respondTo('option');
+  config.option('merchantKey').should.equal('');
+  config.option('apiPassword').should.equal('');
+  config.option('processorId').should.equal('');
+  config.option('currency').should.equal('USD');
+  config.option('enabled').should.equal(true);
+  config.option('debug').should.equal(false);
+  config.option('sandbox').should.equal(false);
+  config.option('allowMultipleSetOption').should.equal(false);
 };
 
 test['Configuration requires all three keys'] = function(exit) {
   assert.throws(function() {
     config.configure({});
   });
-  resetConfig();
 
   assert.throws(function() {
     config.configure({
       apiPassword: testKeys[1],
       processorId: testKeys[2]
     });
-  }, 'Incomplete Samurai API credentials');
-  resetConfig();
-
+  });
+  
   assert.throws(function() {
     config.configure({
       merchantKey: testKeys[0],
       processorId: testKeys[2]
     });
-  }, 'Incomplete Samurai API credentials');
-  resetConfig();
+  });
 
   assert.throws(function() {
     config.configure({
       merchantKey: testKeys[0],
       apiPassword: testKeys[1]
     });
-  }, 'Incomplete Samurai API credentials');
-  resetConfig();
-
+  });
 };
 
 test['Configuration fails with invalid-looking keys'] = function(exit) {
@@ -83,8 +68,7 @@ test['Configuration fails with invalid-looking keys'] = function(exit) {
       apiPassword: testKeys[1],
       processorId: badKeys[0]
     });
-  }, 'Not valid processorId');
-  resetConfig();
+  });
 
   assert.throws(function() {
     config.configure({
@@ -92,8 +76,7 @@ test['Configuration fails with invalid-looking keys'] = function(exit) {
       apiPassword: badKeys[0],
       processorId: testKeys[1]
     });
-  }, 'Not valid apiPassword');
-  resetConfig();
+  });
   
   assert.throws(function() {
     config.configure({
@@ -101,58 +84,54 @@ test['Configuration fails with invalid-looking keys'] = function(exit) {
       apiPassword: testKeys[0],
       processorId: testKeys[1]
     });
-  }, 'Not valid merchantKey');
-  resetConfig();
+  });
 };
 
 test['Proper configuration modifies settings correctly'] = function(exit) {
   config.configure({
     merchantKey: testKeys[0],
     apiPassword: testKeys[1],
-    processorId: testKeys[2]
+    processorId: testKeys[2],
+    allowMultipleSetOption: true // to prevent locking up settings
   });
-  config.settings.merchantKey.should.equal(testKeys[0]);
-  config.settings.apiPassword.should.equal(testKeys[1]);
-  config.settings.processorId.should.equal(testKeys[2]);
-  resetConfig();
+  config.option('merchantKey').should.equal(testKeys[0]);
+  config.option('apiPassword').should.equal(testKeys[1]);
+  config.option('processorId').should.equal(testKeys[2]);
 };
 
 test['Setting individual configuration options'] = function(exit) {
-  config.settings.merchantKey.should.equal('');
   config.option('merchantKey', testKeys[0]);
-  config.settings.merchantKey.should.equal(testKeys[0]);
+  config.option('merchantKey').should.equal(testKeys[0]);
 
-  config.settings.apiPassword.should.equal('');
   config.option('apiPassword', testKeys[1]);
-  config.settings.apiPassword.should.equal(testKeys[1]);
+  config.option('apiPassword').should.equal(testKeys[1]);
 
-  config.settings.processorId.should.equal('');
   config.option('processorId', testKeys[2]);
-  config.settings.processorId.should.equal(testKeys[2]);
+  config.option('processorId').should.equal(testKeys[2]);
 
-  config.settings.enabled = false;
+  config.option('enabled', false);
   config.option('enabled', true);
-  config.settings.enabled.should.equal(true);
+  config.option('enabled').should.equal(true);
 
-  config.settings.enabled = false;
+  config.option('enabled', false);
   config.option('enabled', 2); // truthy
-  config.settings.enabled.should.equal(true);
+  config.option('enabled').should.equal(true);
 
-  config.settings.debug = false;
+  config.option('debug', false);
   config.option('debug', true);
-  config.settings.debug.should.equal(true);
+  config.option('debug').should.equal(true);
 
-  config.settings.debug = false;
+  config.option('debug', false);
   config.option('debug', 'yes'); // truthy
-  config.settings.debug.should.equal(true);
+  config.option('debug').should.equal(true);
 
-  config.settings.currency = 'USD';
+  config.option('currency', 'USD');
   config.option('currency', 'JPY');
-  config.settings.currency.should.equal('JPY');
+  config.option('currency').should.equal('JPY');
 
-  config.settings.sandbox = false;
+  config.option('sandbox', false);
   config.option('sandbox', 'yes'); // truthy
-  config.settings.sandbox.should.equal(true);
+  config.option('sandbox').should.equal(true);
 
   assert.throws(function() {
     config.option('merchantKey', badKeys[0]);

@@ -8,7 +8,6 @@ var daimyo = require('./lib/daimyo');
 var transaction = require('./lib/transaction');
 var config = require('./lib/config');
 
-exports.settings = config.settings;
 exports.configure = config.configure;
 exports.option = config.option;
 exports.Card = daimyo.Card;
