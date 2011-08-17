@@ -78,7 +78,7 @@
  * Ashigaru currently has no mechanisms for retrying a failed connection. You 
  * should make sure you handle such unforeseen problems yourself.
  *
- * @version 0.0.1
+ * @version 0.0.2
  * @author Branko Vurkelic <branko@herdhound.com>
  * @license MIT (see LICENSE)
  */

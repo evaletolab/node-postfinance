@@ -1,6 +1,6 @@
 # Daimyo: Samurai payment gateway integration library
 
-v0.0.1
+v0.0.2
 
 Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>.
 
@@ -19,7 +19,7 @@ support the sale transactions and provide robust error reporting facilities.
 
 ## Status
 
-### 0.0.2 (not relased yet)
+### 0.0.2 (latest)
 
 _This version is still not production ready._
 
@@ -29,8 +29,9 @@ _This version is still not production ready._
    configuration will now be permanently locked until you restart the app.
    This is a _feature_ not a bug. It prevents malicious code from tricking your
    app into resetting some of the critical Daimyo options.
+ + Returns a proper 'Declined' error message when the card is declined.
 
-### 0.0.1 (latest)
+### 0.0.1
 
 The first release is a public preview release and it's not meant to be
 production-ready. There are still quite a few things to implement, and error
