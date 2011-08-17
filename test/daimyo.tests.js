@@ -424,8 +424,6 @@ test['New transaction has a few extra properties'] = function(exit) {
   transaction.data.type.should.equal('purchase');
   transaction.data.currency.should.equal(daimyo.option('currency'));
   transaction.should.have.property('path');
-  transaction.should.respondTo('toXML');
-  transaction.toXML().should.include.string('<amount>10</amount>');
 };
 
 test['Simple transactions do not set type and currency'] = function(exit) {
