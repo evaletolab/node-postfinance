@@ -444,10 +444,12 @@ test['Execute transaction'] = function(exit) {
 
   function callback(err) {
     should.not.exist(err);
+    transaction.should.have.property('receipt');
+    transaction.receipt.should.have.property('success');
+    transaction.receipt.success.should.equal(true);
     transaction.should.have.property('messages');
     transaction.messages.should.have.property('info');
-    transaction.messages.info.should.have.property('transaction');
-    transaction.messages.info.transaction.should.contain('Success');
+    transaction.messages.info.should.have.property('transaction'); transaction.messages.info.transaction.should.contain('Success');
   }
   
   transaction = new daimyo.Transaction({
@@ -461,6 +463,39 @@ test['Execute transaction'] = function(exit) {
 
   // First we need a card
   var card = new daimyo.Card(sandboxValidCard);
+
+  card.create(function(err) {
+    // We have the token now.
+    card.should.have.property('token');
+    transaction.process(card, callback);
+  });
+
+};
+
+test['Execute transaction with bad card'] = function(exit) {
+  var transaction;
+
+  function callback(err) {
+    should.not.exist(err); // Failed transaction is not an error
+    transaction.should.have.property('receipt');
+    transaction.receipt.should.have.property('success');
+    transaction.receipt.success.should.equal(false);
+    transaction.should.have.property('messages');
+    transaction.messages.should.have.property('errors');
+    transaction.messages.errors.should.have.property('transaction');
+    transaction.messages.errors.transaction.should.contain('Declined');
+  }
+
+  transaction = new daimyo.Transaction({
+    type: 'purchase',
+    data: {
+      billingReference: '123',
+      customerReference: '123',
+      amount: 10
+    }
+  });
+  
+  var card = new daimyo.Card(sandboxInvalidCard);
 
   card.create(function(err) {
     // We have the token now.
