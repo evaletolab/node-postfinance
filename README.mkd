@@ -19,9 +19,16 @@ support the sale transactions and provide robust error reporting facilities.
 
 ## Status
 
-### 0.0.2 (latest)
+### 0.0.3 (pre-release)
 
 _This version is still not production ready._
+
+ + Tamper-proofed all properties set with getters and setters in `daimyo` and
+   `transaction` modules.
+ + Made `data` and `path` properties on `transaction.Transaction` objects 
+   set-once properties similart to configuration locking.
+
+### 0.0.2 (latest)
 
  + `daimyo` no longer has `settings` property. You should use
    `daimyo.option()` to access options instead.
