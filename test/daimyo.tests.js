@@ -450,6 +450,9 @@ test['Execute transaction'] = function(exit) {
     transaction.should.have.property('receipt');
     transaction.receipt.should.have.property('success');
     transaction.receipt.success.should.equal(true);
+    transaction.receipt.should.have.property('custom');
+    transaction.receipt.custom.should.have.property('test');
+    transaction.receipt.custom.test.should.equal('custom');
     transaction.should.have.property('messages');
     transaction.messages.should.have.property('info');
     transaction.messages.info.should.have.property('transaction'); transaction.messages.info.transaction.should.contain('Success');
@@ -460,7 +463,8 @@ test['Execute transaction'] = function(exit) {
     data: {
       billingReference: '123',
       customerReference: '123',
-      amount: 10
+      amount: 10,
+      custom: {test: 'custom'}
     }
   });
 
@@ -483,9 +487,6 @@ test['Execute transaction with bad card'] = function(exit) {
     transaction.should.have.property('receipt');
     transaction.receipt.should.have.property('success');
     transaction.receipt.success.should.equal(false);
-    transaction.receipt.should.have.property('custom');
-    transaction.receipt.custom.should.have.property('test');
-    transaction.receipt.custom.test.should.equal('custom');
     transaction.should.have.property('messages');
     transaction.messages.should.have.property('errors');
     transaction.messages.errors.should.have.property('transaction');
