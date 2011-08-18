@@ -21,7 +21,9 @@
             "url": "https://github.com/HerdHound/Daimyo/blob/master/LICENSE"
         }
     ],
-    "dependencies": { },
+    "dependencies": { 
+        "mersenne": ">= 0.0.3"
+    },
     "devDependencies": {
         "should": ">= 0.2.0",
         "expresso": ">= 0.8.0",
