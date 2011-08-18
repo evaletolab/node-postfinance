@@ -240,7 +240,9 @@ test['Created card can load payment method data'] = function(exit) {
   var card = new Card(testCard);
   var card1;
   var token;
-  
+ 
+  card.custom = {test: 'custom'};
+
   card.should.respondTo('load');
   assert.throws(function() {
     card.load();
@@ -263,6 +265,9 @@ test['Created card can load payment method data'] = function(exit) {
       card1.firstName.should.equal(testCard.firstName);
       card1.lastName.should.equal(testCard.lastName);
       card1.address1.should.equal(testCard.address1);
+      card1.should.have.property('custom');
+      card1.custom.should.have.property('test');
+      card1.custom.test.should.equal('custom');
     });
   });
 };
@@ -478,6 +483,9 @@ test['Execute transaction with bad card'] = function(exit) {
     transaction.should.have.property('receipt');
     transaction.receipt.should.have.property('success');
     transaction.receipt.success.should.equal(false);
+    transaction.receipt.should.have.property('custom');
+    transaction.receipt.custom.should.have.property('test');
+    transaction.receipt.custom.test.should.equal('custom');
     transaction.should.have.property('messages');
     transaction.messages.should.have.property('errors');
     transaction.messages.errors.should.have.property('transaction');
