@@ -34,6 +34,9 @@ _This version is still not production ready._
  + All transaction requests embed a SHA1 hexdigest of 100-character random
    string, which is checked when the response is received. All transactions
    will fail the integrity check if this hash doesn't match.
+ + If methods like ``daimyo.Card.load()`` are missing a token, the error will
+   now _not_ be thrown, but passed to the callback instead, like all other
+   methods.
 
 ### 0.0.2 (latest)
 
