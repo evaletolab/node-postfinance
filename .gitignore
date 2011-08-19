@@ -2,3 +2,4 @@
 *.swp
 tmp
 test/config.js
+node_modules
