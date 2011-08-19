@@ -1,6 +1,6 @@
 # Daimyo: Samurai payment gateway integration library
 
-v0.0.2
+v0.0.3
 
 Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>.
 
@@ -19,7 +19,7 @@ support the sale transactions and provide robust error reporting facilities.
 
 ## Status
 
-### 0.0.3 (pre-release)
+### 0.0.3 (latest)
 
 _This version is still not production ready._
 
@@ -38,7 +38,7 @@ _This version is still not production ready._
    now _not_ be thrown, but passed to the callback instead, like all other
    methods.
 
-### 0.0.2 (latest)
+### 0.0.2
 
  + `daimyo` no longer has `settings` property. You should use
    `daimyo.option()` to access options instead.
