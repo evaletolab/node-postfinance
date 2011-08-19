@@ -23,10 +23,10 @@ support the sale transactions and provide robust error reporting facilities.
 
 _This version is still not production ready._
 
- + Tamper-proofed all properties set with getters and setters in `daimyo` and
-   `transaction` modules.
+ + Tamper-proofed all properties set with accessors in `daimyo.Card` and 
+   `transaction.Transaction` objects.
  + Made `data` and `path` properties on `transaction.Transaction` objects 
-   set-once properties similart to configuration locking.
+   set-once properties similar to configuration locking.
  + Custom fields are implemented in both `daimyo.Card` and
    `transaction.Transaction` objects. They can store any JSON-serializable
    object, and that will be stored in Samurai gateway, and restored later with
