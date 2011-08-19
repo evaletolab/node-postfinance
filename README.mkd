@@ -31,6 +31,9 @@ _This version is still not production ready._
    `transaction.Transaction` objects. They can store any JSON-serializable
    object, and that will be stored in Samurai gateway, and restored later with
    methods like ``card.load()`` or when transaction is completed.
+ + All transaction requests embed a SHA1 hexdigest of 100-character random
+   string, which is checked when the response is received. All transactions
+   will fail the integrity check if this hash doesn't match.
 
 ### 0.0.2 (latest)
 
