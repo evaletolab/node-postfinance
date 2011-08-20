@@ -109,7 +109,7 @@ you app's configuration.
 
 ### Configuration locking
 
-Note that Daimyo's performs configuration-locking after you call
+Note that Daimyo performs configuration-locking after you call
 `daimyo.configure()` for the first time (and if that's successful). This
 means that you will not be able to call `daimyo.configure()` multiple times
 to set different options. You need to set all options beforehand. 
@@ -117,13 +117,19 @@ to set different options. You need to set all options beforehand.
 This is a security feature that prevents accidental/malicious resetting of
 critical options. 
 
-Calling `daimyo.option()` will also fail after configuration has been locked,
-but you can use multiple calls to `daimyo.options()` to set an option
-multiple times and it won't lead to locking.
+Calling `daimyo.option()` will also fail after configuration has been locked.
+You can use multiple calls to `daimyo.options()` to set an option
+multiple times and it won't lead to locking if the configuration has not been
+locked already.
 
 Althoug using `daimyo.option()` may sound more convenient, you should set all
 critical core options (including `debug`, `enabled`, and `sandbox`) using the
 `daimyo.configure()` method for security reasons.
+
+Future version of Daimyo may simply lock any option that has been set once
+without errors using either `daimyo.configure()` or `daimyo.option()`, so you
+should not rely on the behavior of `daimyo.option()` to circumvent
+configuration locking.
 
 Currently, the only exception to configuration locking is the `currency`
 parameter, which can be set any number of times. Future version of Daimyo may
