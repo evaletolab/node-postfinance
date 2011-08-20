@@ -546,3 +546,27 @@ test['Using transactions with wrong currency'] = function(exit) {
   });
 
 };
+
+test['Card with no token cannot be used for transaction'] = function(exit) {
+  var transaction;
+
+  function callback(err) {
+    should.exist(err);
+    err.should.have.property('category');
+    err.category.should.equal('system');
+    err.should.have.property('message');
+    err.message.should.equal('Card has no token');
+    transaction.should.not.have.property('receipt');
+  }
+
+  transaction = new daimyo.Transaction({
+    type: 'purchase',
+    data: {
+      amount: 10,
+      currency: 'USD'
+    }
+  });
+
+  var card = new daimyo.Card(sandboxValidCard);
+  transaction.process(card, callback);
+};
