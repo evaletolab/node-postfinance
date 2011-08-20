@@ -18,6 +18,8 @@ var testSettings = require('./config');
 // Enable sandbox, and debug
 daimyo.option('sandbox', true);
 daimyo.option('debug', true);
+daimyo.option('currency', 'USD');
+daimyo.option('allowedCurrencies', ['USD']);
 
 var testCard = {
   number: '5555555555554444', // MasterCard
@@ -503,6 +505,39 @@ test['Execute transaction with bad card'] = function(exit) {
   });
   
   var card = new daimyo.Card(sandboxInvalidCard);
+
+  card.create(function(err) {
+    // We have the token now.
+    card.should.have.property('token');
+    transaction.process(card, callback);
+  });
+
+};
+
+test['Using transactions with wrong currency'] = function(exit) {
+  var transaction;
+
+  function callback(err) {
+    should.exist(err);
+    err.should.have.property('category');
+    err.category.should.equal('system');
+    err.should.have.property('message');
+    err.message.should.equal('Currency not allowed');
+    err.should.have.property('details');
+    err.details.should.equal('GBP');
+    transaction.should.not.have.property('receipt');
+  }
+
+  transaction = new daimyo.Transaction({
+    type: 'purchase',
+    data: {
+      amount: 10,
+      currency: 'GBP'
+    }
+  });
+
+  // First we need a card
+  var card = new daimyo.Card(sandboxValidCard);
 
   card.create(function(err) {
     // We have the token now.
