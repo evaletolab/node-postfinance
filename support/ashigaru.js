@@ -59,6 +59,8 @@
  *  + _csc_: card security code, CCV, CVV, CVC, etc (required)
  *  + _year_: expiration year (optional)
  *  + _month_: expiration month (optional)
+ *  + _custom_: JSON-serializable object containing any custom data that you 
+ *    want to have saved in the payment method (optional)
  *
  * As you can see, only card number and CSC (a.k.a CCV, CVC, CVV) are required,
  * and other fields are optional. To increase the chance of transactions 
@@ -83,7 +85,7 @@
  * @license MIT (see LICENSE)
  */
 
-(function($, window) {
+(function($, JSON, window) {
 
   var originalDomain = window.document.domain;
   var samuraiURI = 'https://samurai.feefighters.com/v1/payment_methods';
@@ -202,6 +204,7 @@
    *  + _csc_
    *  + _year_
    *  + _month_
+   *  + _custom_
    *
    * The callback is called from the load event handler on the iframe. See the
    * details of the ``onResultLoad`` function in this module.
@@ -229,15 +232,22 @@
       number: '',
       csc: '',
       year: '',
-      month: ''
+      month: '',
+      custom: {}
     };
 
     $.extend(fullData, data);
+
+    // Serialize custom data and ignore it on failure
+    try {
+      fullData.custom = JSON.stringify(fullData.custom);
+    } catch(e) { /* Fail silently */ }
 
     var formHTML = '<form id="samurai-form" style="display:none" ' +
       'action="$requestURI" method="POST" target="samurai-iframe">' + 
       '<input type="hidden" name="merchant_key" value="$merchantkey">'+
       '<input type="hidden" name="redirect_url" value="$redirecturl">' +
+      '<input type="hidden" name="custom" value="$custom">' +
       '<input type="hidden" name="credit_card[first_name]" value="$firstName">'+
       '<input type="hidden" name="credit_card[last_name]" value="$lastName">' +
       '<input type="hidden" name="credit_card[address_1]" value="$address1">' +
@@ -296,5 +306,5 @@
     form.submit();
   };
  
-}(jQuery, this));
+}(jQuery, JSON, this));
 
