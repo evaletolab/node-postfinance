@@ -31,6 +31,8 @@ test['Initial state'] = function(exit) {
   config.option('enabled').should.equal(true);
   config.option('debug').should.equal(false);
   config.option('sandbox').should.equal(false);
+  config.option('allowedCurrencies').should.not.be.empty;
+  config.option('allowedCurrencies').should.contain('USD');
   config.option('allowMultipleSetOption').should.equal(false);
 };
 
@@ -132,6 +134,14 @@ test['Setting individual configuration options'] = function(exit) {
   config.option('sandbox', false);
   config.option('sandbox', 'yes'); // truthy
   config.option('sandbox').should.equal(true);
+
+  config.option('allowedCurrencies', ['GBP']);
+  config.option('allowedCurrencies').should.contain('GBP');
+  config.option('allowedCurrencies').should.contain('JPY'); // includes default
+
+  config.option('allowedCurrencies', []);
+  config.option('allowedCurrencies').should.not.be.empty;
+  config.option('allowedCurrencies').should.contain('JPY');
 
   assert.throws(function() {
     config.option('merchantKey', badKeys[0]);
