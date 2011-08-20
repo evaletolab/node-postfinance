@@ -14,14 +14,12 @@ testing, and you cannot actually process transactions using the sandbox. Keep
 in mind that you should only run unit tests that come with Daimyo using the
 sandbox processor ID.
 
-
 ### Overview
 
 When using the Samurai payment gateway, you basically deal with two separate
 concepts: payment methods (cards) and transactions (making/loosing money).
 Daimyo's API reflects this dualism. It provides two main constructors that you
-will use most of the time: `Card` and `Transaction` (and variants of
-`Transaction`).
+will use most of the time: `Card` and `Transaction`.
 
 Once created the card objects have the following methods:
 
@@ -33,10 +31,8 @@ Once created the card objects have the following methods:
 
 (See notes about PCI compliance before you start using some of these methods.)
 
-The transaction object is constructed using several constructors (they are not
-yet available, though) that are specialized for different types of
-transactions, or the generic `Transaction` constructor. In each case, the
-constructor only has one method:
+The transaction object is constructed using the `Transaction` constructor. The
+transaction object only has one method:
 
  + `transaction.process()`
 
@@ -46,26 +42,32 @@ the payment method associated with the card.
 ### Notes on PCI compliance
 
 There are two ways you can use the Samurai gateway with Daimyo in terms of
-payment method. One is server-to-server, where you handle the cardholder data,
-and pass them on to the gateway. Another method is transparent redirect, where
-you set up a web form that submits directly to the gateway, and you only
-receive a _payment method token_ that is associated with whatever data the 
-user submitted. 
+payment methods management. One is server-to-server, where you handle the 
+cardholder data, and pass them on to the gateway. Another method is transparent
+redirect, where you set up a web form that submits directly to the gateway, and
+you only receive a _payment method token_ that is associated with whatever data
+the user submitted. 
 
 While the server-to-server method is useful in cases a web form required for
 transparent redirect method cannot be set up (for example, for single-page AJAX
 apps, where cross-site request restrictions apply), you have to be aware that
 full PCI compliance for class C merchants is still required. Class C PCI
-compliance may involve on-site audits, or audits of any 3rd party
+compliance may involve on-site audits and/or audits of any 3rd party
 infrastructure you might be using, and many other steps. You can read more
 about PCI compliance at
 [www.pcisecuritystandards.org](https://www.pcisecuritystandards.org/).
 
 Also note that Daimyo itself has _not_ been atested or tested for PCI
-compliance. While Daimyo's author sincerely believes that Daimyo is reasonably
-safe (or, rather, will be when a full release is made), we do not, and cannot
-make any guarantees to that effect, either explicit or implied, as noted in the
-[LICENSE](https://github.com/HerdHound/Daimyo/blob/master/LICENSE).
+compliance, so use of Daimyo in your environment may negatively affect your
+capacity to achieve PCI compliance. While Daimyo's author sincerely believes
+that Daimyo is reasonably safe (or, rather, will be when a full release is
+made), we do not, and cannot make any guarantees to that effect, either
+explicit or implied, as noted in the
+[LICENSE](https://github.com/HerdHound/Daimyo/blob/master/LICENSE). Daimyo is
+provided to you as is, with no implied and/or explicit warranties of any sort.
+In other words, you are on your own using Daimyo if you are looking for PCI
+compliance. Good news is, source code is availabe, so you can make any
+necessary adjustments. (Don't forget to send us a pull request if you do so.)
 
 ### Ashigaru and single-page AJAX apps
 
@@ -76,6 +78,19 @@ subdirectory. For more information on how to set up your server for use with
 Ashigaru, and basic usage of this plugin, take a look at Ashigaru's
 documentation. You can also find a 
 [functional demo](http://herdhound.github.com/Daimyo/example/ashigaru/) online.
+
+Ashigaru has been tested only on the latest browsers. Browsers that are
+currently supported by Ashigaru are:
+
+ + Firefox 5.0+ (probably works on 4.0 and older as well)
+ + Internet Explorer 8.0+ (probably works on older, but IE6 is probably broken)
+ + Opera 11.0+ (not sure it would work in older releases)
+ + Chrome 13.0+ (should work in most version of Chrome)
+
+Basically, ashigaru is a very simple plugin which uses technology that has been
+available for quite some time, so there is no reason to believe it wouldn't
+work on older browsers. If you bump into problems with older browsers, however,
+please file a bug report.
 
 ### Configuration
 
@@ -167,6 +182,8 @@ The card object has following fields:
  + _city_: billing address city
  + _state_: billing address state/region
  + _zip_: billing address zip/postal code
+ + _custom_: JSON-serializable object containing arbitrary data you may want to
+   store with your payment method (e.g., user ID)
 
 You cannot create a card object unless you supply it a payment token, or credit 
 card number and CSC. If you supply it a token, all other fields are ignored. 
@@ -179,12 +196,40 @@ details, you will get one more field:
 The issuer is detected from the card number, and you should not set the field
 manually (or allow the user to set it).
 
+Here is an example of initializing a new card object:
+
+    var card = new daimyo.Card({
+      number: '4111-1111-1111-1111',
+      csc: '123',
+      year: 2012,
+      month: 11,
+      firstName: 'John',
+      lastName: 'Doe',
+      address1: '123 Payment St',
+      custom: {
+        email: 'jdoe@example.com',
+        timestamp: new Date();
+      }
+    });
+
+    // The card now also has an issuer property:
+    console.log(card.issuer); // This logs 'Visa'
+
 ### Basic validation
 
-Once you've created the card object, you can test its validity:
+Before you call the `create` method, you can perform basic validation to
+increase the likelyhood of successful transaction.
 
     card.isValid(); // returns true if card is valid
     card.isExpired(); // returns true if expired
+
+In addition to these two methods, you should generally ensure that user
+supplies correct address and zip code (or postal number), and that expiration
+date is in future. Note that you are allowed to forward the expiration date 
+into future, as banks do not usually check if it's correct as long as it's in
+future. Generally, the more data you supply, your liability will be lower, so 
+it's a good idea to supply as much data as possible to the gateway if you
+cannot trust your users 100%.
 
 ### Creating the payment method server-side
 
@@ -197,6 +242,32 @@ that like so:
       // Card now has a payment method token associated with it
       console.log(card.token);
     });
+
+If there are any errors during the creation process, they will be passed to the 
+callback function. The error object will have following properties:
+
+ + _category_: Category of the error ('system' in most cases)
+ + _message_: Error message
+ + _details_: Any data that give you more details about the error
+
+Common error messages may include:
+
+ + 'Error making create payment method request': Daimyo is not properly
+   configured (e.g., missing Samurai gateway credentials), or the request
+   failed for some reason and the response was unreadable (e.g., Samurai was
+   offline)
+ + 'Gateway responded with non-302 status': This is rare, but means that
+   Samurai received malformed data. If this happens, please report it as a bug.
+ + 'Gateway failed to send the location header': This is a Samurai bug, but
+   report it to us anyway.
+
+In any case, you should consider receiving an error object with 'system'
+category a critical failure, and act accordingly. Depending on the nature of
+the error, you may want to retry, too.
+
+It is important to note that error related to the actual card information will
+_not_ be passed in error object. These will be available once you load the card
+from the gateway, or when you make a transaction.
 
 ### Loading the payment method
 
@@ -217,7 +288,26 @@ The card object has all the fields populated. There are also two new fields:
  + messages: contains any Samurai gateway messages about the card
  + method: contains meta-information about the payment method
 
-See the API documentation for details on what these fields contain.
+See the API documentation for details on what these fields contain. The error
+object passed to the callback has the same format as the error object passed to
+the `create` method. All methods except `create` also have two more possible
+error messages:
+
+ + 'Cannot ACTION payment method without token': (where ACTION is the action
+   you were trying to perform), this means that no token was provided and
+   action requires a valid payment method token.
+ + 'Loaded token does not equal the token that was requested': Gateway
+   responded with a token that does not match our token. This indicates a high
+   likelyhood of MITM attack, and you should immediately take the site offline
+   and perform security checks and forensic analysis to ensure no sensitive
+   data has been leaked. (Note that you will not be able to easily uncover a
+   _successful_ MITM attack.)
+
+In addition, the following error is different from the `create` method:
+
+ + 'Gateway responded with non-200 status': This means that the request was
+   malformed, and it is most likely due to a Daimyo bug. Please report full
+   error details along with your bug report.
 
 ### Updating the payment method
 
@@ -231,6 +321,8 @@ method:
     card.update(function(err) {
       // Handle errors here
     });
+
+Error messages are the same ones expected in `load` method callback.
 
 ### Retention and redaction
 
@@ -269,4 +361,78 @@ effiicient, if you are using the transparent redirect method, you should
 redact the old card, and let the user enter a new one. Only use `update()` if 
 you are using the server-to-server method.
 
-REST OF THE DOCS IS ON TODO LIST, SORRY!
+Again, error messages are the same as ones for the `load` and `update`
+methods.
+
+### Making transactions
+
+Transactions are made using the `daimyo.Transaction` constructor and resulting
+transaction objects.
+
+There are currenly 5 transaction types supported by Samurai: 
+
+ + _purchase_: make immediate authorization and capture of the funds
+   (immediately debit the user's credit card)
+ + _authorize_: instruct the bank to put a hold on specified amount (the funds
+   are reserved, but you do not get the money until you capture)
+ + _capture_: capture the funds that have been authorized
+ + _void_: void a previously authorized transaction (this releases the hold on
+   the funds)
+ + _credit_: reverse the capture (return funds to the user's card in the amount
+   that has been captured via _capture_ or _purchase_).
+
+The transaction object constructor takes an object with transaction options, 
+and the `type` option selects one of the transaction types. Depending on the
+transaction type, other options may differ.
+
+#### Purchase and Authorize transactions
+
+For purchase and authorize transactions, options other than `type` are the
+following:
+
+ + _amount_: The transaction amount
+ + _currency_: Optional (defaults to the one set in your initial configuration)
+ + _billingReference_
+ + _customerReference_
+ + _descriptor_: description of transaction that will appear in the user's bank
+   statement (if supported by the bank)
+ + _custom_: JSON-serializable object containing any data you want to attack to
+   a transaction
+
+#### Capture, Void, and Credit transactions
+
+These transactions require none of the extra options required by the purchase
+and authorize transactions. Instead they require a transaction ID (returned by
+successful purchase/authorize transactions, see details further below).
+
+ + _transactionId_
+
+In addition, capture and credit take an `amount` option.
+
+#### Transaction data locking
+
+Transaction data cannot be modified after the transaction object is
+initialized. This is done to prevent tampering by malicious code.
+
+#### Processing transactions
+
+Transaction constructor will not check if you have specified the appropriate
+options depending on the type of tranasaction. You are expected to be mindful
+about what options are passed.
+
+Once you have created the transaction object, you will also need a card object
+with a `token` (card has a token after creation, or after load).
+
+Given a transaction object, you can now:
+
+   transaction.process(card, function(err) {
+     // Success!
+   });
+
+Once the transaction is completed, and there are no errors, the transaction
+object will gain a `receipt` property which should contain data about the
+transaction, including `transactionId`, and `success` property. The latter
+tells you if the transaction was successful.
+
+In addition, transaction object will contain a `messages` property, which will
+contain more details about the transaction if it failed.
