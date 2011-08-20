@@ -19,6 +19,14 @@ support the sale transactions and provide robust error reporting facilities.
 
 ## Status
 
+### 0.0.4 (pre-release)
+
+ + `allowedCurrencies` setting which limits the currencies that can be used
+ + `transaciton.Transaction.process()` will check allowed currencies and block
+   transactions that use disallowed currency.
+ + `transaction.Transaction.process()` no longer throws exceptions. All errors
+   are passed to the callback instead.
+
 ### 0.0.3 (latest)
 
 _This version is still not production ready._
