@@ -1,6 +1,6 @@
 # Daimyo: Samurai payment gateway integration library
 
-v0.0.3
+v0.0.4
 
 Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>.
 
@@ -19,7 +19,7 @@ support the sale transactions and provide robust error reporting facilities.
 
 ## Status
 
-### 0.0.4 (pre-release)
+### 0.0.4 (latest)
 
  + `allowedCurrencies` setting which limits the currencies that can be used
  + `transaciton.Transaction.process()` will check allowed currencies and block
@@ -29,7 +29,7 @@ support the sale transactions and provide robust error reporting facilities.
  + Ashigaru now supports the `custom` field.
  + `checkamd` make target now generates file with version number.
 
-### 0.0.3 (latest)
+### 0.0.3
 
 _This version is still not production ready._
 
