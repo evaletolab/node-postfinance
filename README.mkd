@@ -19,6 +19,12 @@ support the sale transactions and provide robust error reporting facilities.
 
 ## Status
 
+### 0.0.6 (pre-release)
+
+ + Fixed `daimyo.Card` constructor not handling custom data.
+ + Removed `card.method.custom` which was returned after loading a payment
+   method, and which always contained unused, empty object.
+
 ### 0.0.5 (latest)
 
  + Prevents crash when invalid token is passed to daimyo.Card constructor.
