@@ -1,6 +1,6 @@
 # Daimyo: Samurai payment gateway integration library
 
-v0.0.4
+v0.0.5
 
 Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>.
 
@@ -19,7 +19,15 @@ support the sale transactions and provide robust error reporting facilities.
 
 ## Status
 
-### 0.0.4 (latest)
+### 0.0.5 (latest)
+
+ + Prevents crash when invalid token is passed to daimyo.Card constructor.
+ + If a token is provided, but it's invalid, an error will be thrown. Previous
+   behavior was that it is completely ignored if invalid.
+ + `daimyo.Card` constructor will throw a proper `DaimyoError` on errors,
+   instead of generic `Error` object as in previous versions.
+
+### 0.0.4
 
  + `allowedCurrencies` setting which limits the currencies that can be used
  + `transaciton.Transaction.process()` will check allowed currencies and block
