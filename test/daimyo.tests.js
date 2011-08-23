@@ -263,7 +263,7 @@ test['Created card can load payment method data'] = function(exit) {
       card1.method.retained.should.equal(false);
       card1.method.should.have.property('redacted');
       card1.method.redacted.should.equal(false);
-      card1.method.should.have.property('custom');
+      card1.should.have.property('custom');
       card1.firstName.should.equal(testCard.firstName);
       card1.lastName.should.equal(testCard.lastName);
       card1.address1.should.equal(testCard.address1);
@@ -351,7 +351,6 @@ test['Updating a modified card'] = function(exit) {
       card.method.retained.should.equal(false);
       card.method.should.have.property('redacted');
       card.method.redacted.should.equal(false);
-      card.method.should.have.property('custom');
       card.firstName.should.equal(testCard.firstName);
       card.lastName.should.equal(testCard.lastName);
       card.address1.should.equal(testCard.address1);
@@ -373,7 +372,6 @@ test['Retain card'] = function(exit) {
       card.method.retained.should.equal(true);
       card.method.should.have.property('redacted');
       card.method.redacted.should.equal(false);
-      card.method.should.have.property('custom');
       card.firstName.should.equal(testCard.firstName);
       card.lastName.should.equal(testCard.lastName);
       card.address1.should.equal(testCard.address1);
