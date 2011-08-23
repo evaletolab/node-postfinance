@@ -25,6 +25,9 @@ support the sale transactions and provide robust error reporting facilities.
  + Removed `card.method.custom` which was returned after loading a payment
    method, and which always contained unused, empty object.
  + Fixed previously broken `checkamd` makefile target.
+ + Fixed Ashigaru not properly handling custom field.
+ + Made Ashigaru's timeout checking more robust.
+ + Fixed Daimyo crashing looking for messages in wrong places.
 
 ### 0.0.5 (latest)
 
