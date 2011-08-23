@@ -2,7 +2,7 @@ test:
 	expresso test/*.tests.js
 
 checkamd:
-	cat lib/check.js | sed 's/var check = exports;/define(function() {\nvar check = {};/' > check-`cat VERSION`.js && echo "});" >> check-`cat VERSION`.js
+	cat lib/check.js | sed 's/var check = exports;/define(function() {\nvar check = {};/' > check-`cat VERSION`.js && echo -e "\n\nreturn check;\n\n});" >> check-`cat VERSION`.js
 
 clean:
 	rm -rf docs
