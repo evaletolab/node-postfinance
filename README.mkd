@@ -1,6 +1,6 @@
 # Daimyo: Samurai payment gateway integration library
 
-v0.0.5
+v0.0.6
 
 Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>.
 
@@ -19,7 +19,7 @@ support the sale transactions and provide robust error reporting facilities.
 
 ## Status
 
-### 0.0.6 (pre-release)
+### 0.0.6 (latest)
 
  + Fixed `daimyo.Card` constructor not handling custom data.
  + Removed `card.method.custom` which was returned after loading a payment
@@ -29,7 +29,7 @@ support the sale transactions and provide robust error reporting facilities.
  + Made Ashigaru's timeout checking more robust.
  + Fixed Daimyo crashing looking for messages in wrong places.
 
-### 0.0.5 (latest)
+### 0.0.5
 
  + Prevents crash when invalid token is passed to daimyo.Card constructor.
  + If a token is provided, but it's invalid, an error will be thrown. Previous
