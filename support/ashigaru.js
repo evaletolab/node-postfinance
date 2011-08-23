@@ -91,7 +91,8 @@
   var samuraiURI = 'https://samurai.feefighters.com/v1/payment_methods';
   var timeoutLabel;
   var timedOut = false;
-  var timeoutInterval = 20000; // 20 seconds
+  var dataReceived = false;
+  var timeoutInterval = 40000; // 40 seconds
 
   /**
    * ## Remove the hidden form
@@ -117,6 +118,8 @@
   function onResultLoad(iFrame, callback) {
     var resultDocument = $(iFrame).contents();
     var jsonData;
+
+    dataDatareceived = true;
 
     // Remove the form
     removeForm();
@@ -164,7 +167,7 @@
       }
 
       // Clear the timeout clock
-      clearTimeout(timeoutLabel);
+      window.clearTimeout(timeoutLabel);
 
       // Load the results and remove the form
       onResultLoad(this, callback);
@@ -296,13 +299,15 @@
     });
 
     // Fire the timout clock at 3 seconds
-    timeoutLabel = setTimeout(function() {
+    timeoutLabel = window.setTimeout(function() {
 
       // Set the timeout flag
       timedOut = true;
 
       // Execute callback with error message
-      callback('Connection timed out');
+      if (!dataReceived) {
+        callback('Connection timed out');
+      }
 
     }, timeoutInterval);
 
