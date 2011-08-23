@@ -24,6 +24,7 @@ support the sale transactions and provide robust error reporting facilities.
  + Fixed `daimyo.Card` constructor not handling custom data.
  + Removed `card.method.custom` which was returned after loading a payment
    method, and which always contained unused, empty object.
+ + Fixed previously broken `checkamd` makefile target.
 
 ### 0.0.5 (latest)
 
