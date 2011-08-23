@@ -240,14 +240,17 @@
 
     // Serialize custom data and ignore it on failure
     try {
+      // JSON-ify data
       fullData.custom = JSON.stringify(fullData.custom);
+      // Escape single quotes
+      fullData.custom = fullData.custom.replace("'", "\\'");
     } catch(e) { /* Fail silently */ }
 
     var formHTML = '<form id="samurai-form" style="display:none" ' +
       'action="$requestURI" method="POST" target="samurai-iframe">' + 
       '<input type="hidden" name="merchant_key" value="$merchantkey">'+
       '<input type="hidden" name="redirect_url" value="$redirecturl">' +
-      '<input type="hidden" name="custom" value="$custom">' +
+      '<input type="hidden" name="custom" value=\'$custom\'>' +
       '<input type="hidden" name="credit_card[first_name]" value="$firstName">'+
       '<input type="hidden" name="credit_card[last_name]" value="$lastName">' +
       '<input type="hidden" name="credit_card[address_1]" value="$address1">' +
@@ -270,7 +273,7 @@
     // Replace placeholders in form HTML with real data
     for (var key in fullData) {
       if (fullData.hasOwnProperty(key)) {
-        formHTML = formHTML.replace('$' + key, fullData[key]);
+        formHTML = formHTML.replace('$' + key, fullData[key] || '');
       }
     }
 
