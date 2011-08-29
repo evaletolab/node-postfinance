@@ -21,6 +21,8 @@ support the sale transactions and provide robust error reporting facilities.
 
 ### 0.0.7 (pre-release)
 
+ + Ashigaru now supports `sandbox` parameter for creating sandbox payment
+   methods.
  + Fixed failing tests which weren't updated to reflect the changes in 0.0.6
    API. The 0.0.6 version of tests are expected to fail (see issue #15), but
    that doesn't affect correct behavior of documented API.
