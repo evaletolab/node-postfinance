@@ -61,6 +61,8 @@
  *  + _month_: expiration month (optional)
  *  + _custom_: JSON-serializable object containing any custom data that you 
  *    want to have saved in the payment method (optional)
+ *  + _sandbox_: Whether the payment method will be marked as sandbox method 
+ *    (sandbox methods cannot be used to process transactions)
  *
  * As you can see, only card number and CSC (a.k.a CCV, CVC, CVV) are required,
  * and other fields are optional. To increase the chance of transactions 
@@ -254,6 +256,7 @@
       '<input type="hidden" name="merchant_key" value="$merchantkey">'+
       '<input type="hidden" name="redirect_url" value="$redirecturl">' +
       '<input type="hidden" name="custom" value=\'$custom\'>' +
+      (data.sandbox && '<input type="hidden" name="sandbox" value="true">' || '') +
       '<input type="hidden" name="credit_card[first_name]" value="$firstName">'+
       '<input type="hidden" name="credit_card[last_name]" value="$lastName">' +
       '<input type="hidden" name="credit_card[address_1]" value="$address1">' +
