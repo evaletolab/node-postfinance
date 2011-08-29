@@ -385,6 +385,23 @@ The transaction object constructor takes an object with transaction options,
 and the `type` option selects one of the transaction types. Depending on the
 transaction type, other options may differ.
 
+Transaction-specific data are specified in `data` property of the constructor
+options object. The data to be passed via this parameter depends on the
+transaction type, and they are discussed further below. The layout of the
+options object looks like this:
+
+    var transaction = new daimyo.Transaction({
+      type: 'purchase',
+      data: {
+        amount: 123.45,
+        currency: 'USD',
+        billingReference: 'AX-0002-13',
+        customerReference: 'ab551f23',
+        descriptor: 'Spiffy bike',
+        custom: {originalDate: new Date('2011-06-12 UTC')}
+      }
+    });
+
 #### Purchase and Authorize transactions
 
 For purchase and authorize transactions, options other than `type` are the
