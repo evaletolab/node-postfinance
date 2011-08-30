@@ -1,6 +1,6 @@
 # Daimyo: Samurai payment gateway integration library
 
-v0.0.6
+v0.0.7
 
 Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>.
 
@@ -19,15 +19,16 @@ support the sale transactions and provide robust error reporting facilities.
 
 ## Status
 
-### 0.0.7 (pre-release)
+### 0.0.7 (latest)
 
+ + Resolved issue with `success` flag in transaction responses.
  + Ashigaru now supports `sandbox` parameter for creating sandbox payment
    methods.
  + Fixed failing tests which weren't updated to reflect the changes in 0.0.6
    API. The 0.0.6 version of tests are expected to fail (see issue #15), but
    that doesn't affect correct behavior of documented API.
 
-### 0.0.6 (latest)
+### 0.0.6
 
  + Fixed `daimyo.Card` constructor not handling custom data.
  + Removed `card.method.custom` which was returned after loading a payment
