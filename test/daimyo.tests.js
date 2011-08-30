@@ -37,13 +37,17 @@ var testCard = {
 
 var sandboxValidCard = {
   number: '4111-1111-1111-1111',
-  csc: '123'
+  csc: '123',
+  year: testNonExpiredDate[0].toString(),
+  month: testNonExpiredDate[1].toString()
   // No other extra data, this is only for testing transactions
 };
 
 var sandboxInvalidCard = {
   number: '4242-4242-4242-4242',
-  csc: '123'
+  csc: '123',
+  year: testNonExpiredDate[0].toString(),
+  month: testNonExpiredDate[1].toString()
   // No other extra data, this is only for testing transactions
 };
 
