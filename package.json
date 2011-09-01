@@ -1,8 +1,8 @@
 {
     "name": "daimyo",
     "description": "Samurai payment gateway API client library for Node.js",
-    "version": "0.0.7",
-    "author" : "Branko Vukelic <branko@herdhound.com>",
+    "version": "0.0.8",
+    "author" : "Herd Hound <branko@herdhound.com>",
     "maintainers":[
         {
             "name":"Branko Vukelic",

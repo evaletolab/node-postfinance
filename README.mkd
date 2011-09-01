@@ -1,7 +1,8 @@
 # Daimyo: Samurai payment gateway integration library
 
-v0.0.7
+v0.0.8
 
+Created at [Herd Hound](http://www.herdhound.com/)
 Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>.
 
 Some rights reserved.
@@ -19,7 +20,17 @@ support the sale transactions and provide robust error reporting facilities.
 
 ## Status
 
-### 0.0.7 (latest)
+For now, Daimyo is used in production at 
+[Herd Hound](http://www.herdhound.com/). It is still being polished for prime
+time, but the core functionality should work as documented/expected since
+v0.0.7. Keep track of changes on Github, and keep an eye on the issue tracker
+there.
+
+### 0.0.8 (latest)
+
+ + Rebranded to Herd Hound
+
+### 0.0.7
 
  + Resolved issue with `success` flag in transaction responses.
  + Ashigaru now supports `sandbox` parameter for creating sandbox payment
@@ -57,8 +68,6 @@ support the sale transactions and provide robust error reporting facilities.
  + `checkamd` make target now generates file with version number.
 
 ### 0.0.3
-
-_This version is still not production ready._
 
  + Tamper-proofed all properties set with accessors in `daimyo.Card` and 
    `transaction.Transaction` objects.
