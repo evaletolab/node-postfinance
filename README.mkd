@@ -1,6 +1,6 @@
 # Daimyo: Samurai payment gateway integration library
 
-v0.0.8
+v0.0.9
 
 Created at [Herd Hound](http://www.herdhound.com/)
 Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>.
@@ -26,7 +26,11 @@ time, but the core functionality should work as documented/expected since
 v0.0.7. Keep track of changes on Github, and keep an eye on the issue tracker
 there.
 
-### 0.0.8 (latest)
+### 0.0.9 (latest)
+
+ + samurai/developers/api_reference#processing-payments-complex
+
+### 0.0.8
 
  + Rebranded to Herd Hound
 
