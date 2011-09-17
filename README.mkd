@@ -1,6 +1,6 @@
 # Daimyo: Samurai payment gateway integration library
 
-v0.0.9
+v0.1.0
 
 Created at [Herd Hound](http://www.herdhound.com/)
 Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>.
@@ -26,7 +26,13 @@ time, but the core functionality should work as documented/expected since
 v0.0.7. Keep track of changes on Github, and keep an eye on the issue tracker
 there.
 
-### 0.0.9 (latest)
+### 0.1.0 (latest)
+
+ + Fixed issue where ``_check`` token verification would fail for credit and
+   void transaction because Samurai does not honor custom data for those
+   transaction types.
+
+### 0.0.9
 
  + samurai/developers/api_reference#processing-payments-complex
 
