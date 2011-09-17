@@ -1,6 +1,6 @@
 # Daimyo: Samurai payment gateway integration library
 
-v0.1.0
+v0.1.1
 
 Created at [Herd Hound](http://www.herdhound.com/)
 Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>.
@@ -26,7 +26,12 @@ time, but the core functionality should work as documented/expected since
 v0.0.7. Keep track of changes on Github, and keep an eye on the issue tracker
 there.
 
-### 0.1.0 (latest)
+### 0.1.1 (latest)
+
+ + Payment token (card object) is no longer required for processing
+   transactions that do not use them (credit, void).
+
+### 0.1.0
 
  + Fixed issue where ``_check`` token verification would fail for credit and
    void transaction because Samurai does not honor custom data for those
