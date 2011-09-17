@@ -428,6 +428,8 @@ test['New transaction has a few extra properties'] = function(exit) {
     data: {amount: 10}
   });
 
+  transaction.should.have.property('type');
+  transaction.type.should.equal('purchase');
   transaction.should.have.property('data');
   transaction.data.should.have.keys(['amount', 'type', 'currency']);
   transaction.data.type.should.equal('purchase');
