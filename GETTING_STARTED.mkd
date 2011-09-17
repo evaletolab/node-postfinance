@@ -438,7 +438,9 @@ options depending on the type of tranasaction. You are expected to be mindful
 about what options are passed.
 
 Once you have created the transaction object, you will also need a card object
-with a `token` (card has a token after creation, or after load).
+with a `token` (card has a token after creation, or after load). Card object is
+not required for _credit_ and _void_ transactions. You may pass `null` instead
+of the card object, or omit the first argument for those transactions.
 
 Given a transaction object, you can now:
 
