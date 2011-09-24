@@ -90,7 +90,7 @@
 (function($, JSON, window) {
 
   var originalDomain = window.document.domain;
-  var samuraiURI = 'https://samurai.feefighters.com/v1/payment_methods';
+  var samuraiURI = 'https://api.samurai.feefighters.com/v1/payment_methods';
   var timeoutLabel;
   var timedOut = false;
   var dataReceived = false;
