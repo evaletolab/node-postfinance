@@ -455,3 +455,32 @@ tells you if the transaction was successful.
 
 In addition, transaction object will contain a `messages` property, which will
 contain more details about the transaction if it failed.
+
+#### AVS status messages
+
+AVS (Address Verification System) can return as many as 26 different messages.
+If you simply want to know if the address was verified or not, you can check if
+`transaction.messages.errors` object contains an `address` key:
+
+    transaction.process(card, function(err) {
+      if (transaction.messages.error && transaction.messages.error.address) {
+        console.error('AVS check failed!');
+      }
+    });
+
+In some cases, AVS will fail despite the card being valid. This is a common
+case with non-US cards, or when the issuing bank doesn't support AVS. You can
+test these conditions by checking the first character of the avs message:
+
+    transaction.process(card, function(err) {
+      var inf = transaction.messages.info || {};
+      if (inf && inf.avs && ['G','E','S','U'].indexOf(inf.avs[0] > -1) {
+        // Try updating the card by removing the address
+        // (but not postal code!)
+      } else if (inf && inf.avs) {
+        // Transaction failed because of AVS
+      }
+    });
+
+For more information on AVS, check the 
+[Wikipedia aticle](http://en.wikipedia.org/wiki/Address_Verification_System).
