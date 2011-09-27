@@ -1,6 +1,6 @@
 # Daimyo: Samurai payment gateway integration library
 
-v0.1.4
+v0.1.5
 
 Created at [Herd Hound](http://www.herdhound.com/)
 Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>.
@@ -26,7 +26,12 @@ time, but the core functionality should work as documented/expected since
 v0.0.7. Keep track of changes on Github, and keep an eye on the issue tracker
 there.
 
-### 0.1.4 (latest)
+### 0.1.5 (latest)
+
+ + Transactions will now return AVS results as info messages. The actual
+   messages returend by Daimyo will have the AVS result code prepended.
+
+### 0.1.4
 
  + Fixed bad API URL in transaction module
 
