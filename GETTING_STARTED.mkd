@@ -474,7 +474,7 @@ test these conditions by checking the first character of the avs message:
 
     transaction.process(card, function(err) {
       var inf = transaction.messages.info || {};
-      if (inf && inf.avs && ['G','E','S','U'].indexOf(inf.avs[0] > -1) {
+      if (inf && inf.avs && ['G','E','S','U'].indexOf(inf.avs[0][0] > -1) {
         // Try updating the card by removing the address
         // (but not postal code!)
       } else if (inf && inf.avs) {
