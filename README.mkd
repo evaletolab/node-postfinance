@@ -13,10 +13,31 @@ Licensed under MIT license (see
 ## Overview
 
 Daimyo (pronounced as _dah-e-myoh_) is a client library for the 
-[Samurai payment gateway](http://feefighters.ca/samurai) from
+[Samurai payment gateway](http://samurai.feefighters.com/) from
 [Fee Fighters](http://feefighters.com/). By the time 1.0 release is made,
 Daimyo will support all of Samurai's API, but the current immediate goal is to
 support the sale transactions and provide robust error reporting facilities.
+
+## Daimyo vs samurai-client-nodejs
+
+Daimyo is an _unofficial_ client library for the Samurai gateway. Fee Fighters
+maintain a fork of Daimyo that is called
+[samurai-client-nodejs](https://github.com/FeeFighters/samurai-client-nodejs).
+While the latter is meant to address every possible scenario required by all
+Samurai users, Daimyo was written for the sole purpose of catering the needs of
+[Herd Hound](http://www.herdhound.com/). While I tried to cover the whole
+Samurai API with Daimyo, not all parts of the API will get equal attention, as
+Herd Hound itself doesn't use all Samurai functionality.
+
+Of course, this does not mean that Daimyo's developer will not respond to bug
+reports or refuse to answer your emails. On the contrary, I would be very happy
+to help you out. 
+
+This also doesn't mean that we don't keep an eye on the samurai-client-nodejs.
+We will merge or copy anything and everything that can benefit Daimyo users
+(ourselves included). What we _won't_ do is break the Daimyo API for the sake
+of synchornizing with samurai-client-nodejs, because that would break software
+that already uses Daimyo.
 
 ## Status
 
