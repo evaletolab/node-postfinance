@@ -305,6 +305,26 @@ Alternatively, you can type:
 Do not run tests with your live processor. Make sure you are running in a
 sandbox.
 
+## Known issues and solutions
+
+### RangeError: Maximum call stack size exceeded
+
+In some cases, you may see this error when trying to process a transaction.
+This is a known issue when any of the options passed to the 
+``daimyo.Transaction`` constructor is a Mongoose document key (or
+similar complex type). Mongoose document keys are not simple types (String,
+Number, etc) and they have to be converted first. Simple way to do it is to
+call ``valueOf()`` or ``toString()`` on the key first:
+
+    var transaction == new daimyo.Transaction({
+      type: 'purchase',
+      billingReference: myMongooseDocument.someKey.valueOf(),
+      customerReference: myMongooseDocument.id.toString()
+    });
+
+This also applies to situations where you are passing values that are not
+simple types (String, Number), Object, or Array instances.
+
 ## Reporting bugs
 
 You may use the [issue tracker](https://github.com/HerdHound/Daimyo/issues) to
