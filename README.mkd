@@ -196,7 +196,7 @@ cloned repository:
         var transactionData = {
             amount: 100,
             billingReference: 'my billing ref #',
-            customerReference: "user's customer ref #',
+            customerReference: "user's customer ref #",
             type: 'purchase'
         }
 
@@ -212,7 +212,7 @@ cloned repository:
            if (!transaction.messages.info || 
                transaction.messages.info[0] === 'success') {
              // The transaction was not successful
-             res.render('sorry, {messages: transaction.messages});
+             res.render('sorry', {messages: transaction.messages});
              return;
            }
 
