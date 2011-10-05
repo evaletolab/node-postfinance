@@ -190,7 +190,7 @@ cloned repository:
     // Using transparent redirect with Express
     app.get('/redirect_target', function(req, res, next) {
         var token = req.param('payment_method_token');
-        var card = daimyo.Card({token: token});
+        var card = new daimyo.Card({token: token});
 
         // Create a new transaction
         var transactionData = {
