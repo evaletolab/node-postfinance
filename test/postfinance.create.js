@@ -7,22 +7,19 @@
 var assert = require('assert');
 var should = require('should');
 var getAdjustedDateparts = require('./fixtures/helpers').getAdjustedDateparts;
-var postfinance = require('../index.js');
-var messages = require('../lib/messages');
-var testNonExpiredDate = getAdjustedDateparts(12); // One year in future
-var testExpiredDate = getAdjustedDateparts(-12); // One year ago
-
-var testSettings = require('../config');
-
-
-// testSettings.sandbox = true;
-testSettings.enabled = false; // Does not make any actual API calls if false
-testSettings.debug = true; // Enables *blocking* debug output to STDOUT
-
-
-
 
 describe("postfinance.create", function(){
+  var postfinance = require('../index.js');
+  var messages = require('../lib/messages');
+  var testNonExpiredDate = getAdjustedDateparts(12); // One year in future
+  var testExpiredDate = getAdjustedDateparts(-12); // One year ago
+
+  var testSettings = require('../config');
+
+
+  // testSettings.sandbox = true;
+  testSettings.enabled = false; // Does not make any actual API calls if false
+  testSettings.debug = true; // Enables *blocking* debug output to STDOUT
 
 
   before(function(done){
@@ -33,7 +30,7 @@ describe("postfinance.create", function(){
   var testAlias={
     alias:"testalias.1",
     aliasUsage:"karibou payment",
-    orderId:'AS'+Date.now()
+    orderId:'BS'+Date.now()
   }
 
 var requestPaymentPage = {
@@ -105,13 +102,13 @@ var requestPaymentPage = {
     var Card = postfinance.Card;
     var card = new Card(testCard);
     
-    card.should.have.property('createAlias');
+    card.should.have.property('create');
 
     var testAlias={
       alias:"testalias",
       aliasUsage:"karibou payment"
     };
-    card.createAlias(testAlias,function(err) {
+    card.create(testAlias,function(err) {
       should.exist(err);
       debug(err.message)
       debug(err.details)
@@ -129,14 +126,14 @@ var requestPaymentPage = {
     var Card = postfinance.Card;
     globalCard = new Card(testCard);
     
-    globalCard.should.have.property('createAlias');
+    globalCard.should.have.property('create');
 
 
-    var testAlias={
-        orderId:'AS'+Date.now()
-      }
+    // var testAlias={
+    //     orderId:'AS'+Date.now()
+    //   }
 
-    globalCard.createAlias(testAlias,function(err) {
+    globalCard.create(testAlias,function(err) {
       // ORDERID="00123" 
       // PAYID="35562138" 
       // NCSTATUS="0" 
@@ -160,7 +157,7 @@ var requestPaymentPage = {
   });
 
 
-  it.skip("Load alias to this card", function(done){    
+  it("Load alias to this card", function(done){    
     this.timeout(10000);
     var Card = postfinance.Card;
     var card = new Card(testAlias);
@@ -406,42 +403,31 @@ var requestPaymentPage = {
     done()
   });
 
-  it.skip("Execute transaction", function(done){
+  it("Execute transaction with alias", function(done){
+    this.timeout(10000)
     var transaction;
 
-    function callback(err) {
-      should.not.exist(err);
-      transaction.should.have.property('receipt');
-      transaction.receipt.should.have.property('success');
-      transaction.receipt.success.should.equal(true);
-      transaction.receipt.should.have.property('custom');
-      transaction.receipt.custom.should.have.property('test');
-      transaction.receipt.custom.test.should.equal('custom');
-      transaction.should.have.property('messages');
-      transaction.messages.should.have.property('info');
-      transaction.messages.info.should.have.property('transaction'); transaction.messages.info.transaction.should.contain('Success');
-    }
     
     transaction = new postfinance.Transaction({
-      type: 'purchase',
-      data: {
-        billingReference: '123',
-        customerReference: '123',
-        amount: 10,
-        custom: {test: 'custom'}
-      }
+      type: 'capture',
+      amount:23400,
+      orderId: 'TX'+Date.now(),
+      email:'test@transaction.ch',
+      groupId:'6 apr. 2014'
     });
 
     // First we need a card
-    var card = new postfinance.Card(sandboxValidCard);
+    var card = new postfinance.Card(testAlias);
 
-    card.createAlias(testAlias,function(err) {
+    card.create(testAlias,function(err) {
       // We have the alias now.
       card.should.have.property('alias');
-      transaction.process(card, callback);
+      transaction.process(card, function(err){
+        should.not.exist(err);
+        done()        
+      });
     });
 
-    done()
   });
 
   it.skip("Execute transaction with bad card", function(done){

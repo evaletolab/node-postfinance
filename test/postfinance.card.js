@@ -7,25 +7,26 @@
 var assert = require('assert');
 var should = require('should');
 var getAdjustedDateparts = require('./fixtures/helpers').getAdjustedDateparts;
-var postfinance = require('../index.js');
-var messages = require('../lib/messages');
-var test = exports;
-
-var testNonExpiredDate = getAdjustedDateparts(12); // One year in future
-var testExpiredDate = getAdjustedDateparts(-12); // One year ago
-var testSettings = {}
-
-
-testSettings.pspid = 'test';
-testSettings.apiUser='test1'
-testSettings.apiPassword = 'testabc';
-testSettings.shaSecret = '2345';
-testSettings.sandbox = true;
-testSettings.enabled = false; // Does not make any actual API calls if false
-testSettings.debug = false; // Enables *blocking* debug output to STDOUT
 
 
 describe("postfinance.card", function(){
+
+  var postfinance = require('../index.js');
+  var messages = require('../lib/messages');
+  var test = exports;
+
+  var testNonExpiredDate = getAdjustedDateparts(12); // One year in future
+  var testExpiredDate = getAdjustedDateparts(-12); // One year ago
+  var testSettings = {}
+
+
+  testSettings.pspid = 'test';
+  testSettings.apiUser='test1'
+  testSettings.apiPassword = 'testabc';
+  testSettings.shaSecret = '2345';
+  testSettings.sandbox = true;
+  testSettings.enabled = false; // Does not make any actual API calls if false
+  testSettings.debug = false; // Enables *blocking* debug output to STDOUT
 
 
   before(function(done){
@@ -33,7 +34,7 @@ describe("postfinance.card", function(){
   });
   var card;
 
-var requestPaymentPage = {
+  var requestPaymentPage = {
     //Credit
     paymentMethod: 'Postfinance card',
     orderId:'oidYYYY1',
