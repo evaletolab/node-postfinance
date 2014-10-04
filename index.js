@@ -4,11 +4,11 @@
  * Licensed under MIT license (see LICENSE)
  */
 
-var daimyo = require('./lib/daimyo');
+var postfinance = require('./lib/postfinance');
 var transaction = require('./lib/transaction');
 var config = require('./lib/config');
 
 exports.configure = config.configure;
 exports.option = config.option;
-exports.Card = daimyo.Card;
+exports.Card = postfinance.Card;
 exports.Transaction = transaction.Transaction;

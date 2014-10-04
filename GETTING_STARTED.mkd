@@ -1,33 +1,33 @@
 ## Getting started
 
-Fee Figters' [Samurai](http://feefighters.com/samurai) payment gateway is
-currently in beta. Before joining the beta program and getting an account, it
+Karibou-payment gateway is currently in beta. Before joining the beta program it 
 is highly recommended that you get your merchant account first. After signing
-up with Samurai, you will receive three HEX tokens:
+up with PostFinance, you will receive thoses tokens:
 
- + Merchant key - used to identify your account on Samurai
- + API password - password for you Samurai account
- + Processor ID - the ID of the gateway that you will use for transactions
+ + PSID - used to identify your account on PostFinance
+ + API password - password for you PostFinance account
+ (+ Processor ID - the ID of the gateway that you will use for transactions)
 
 Initially, you will receive a sandbox processor ID. The sandbox is used for
 testing, and you cannot actually process transactions using the sandbox. Keep
-in mind that you should only run unit tests that come with Daimyo using the
+in mind that you should only run unit tests that come with Karibou-payment using the
 sandbox processor ID.
 
 ### Overview
 
-When using the Samurai payment gateway, you basically deal with two separate
+When using the Karibou-payment gateway, you basically deal with two separate
 concepts: payment methods (cards) and transactions (making/loosing money).
-Daimyo's API reflects this dualism. It provides two main constructors that you
+Karibou-payment's API reflects this dualism. It provides two main constructors that you
 will use most of the time: `Card` and `Transaction`.
 
 Once created the card objects have the following methods:
 
- + `card.create()`: cretes a new payment methods
- + `card.load()`: fetches payment method data from the Samurai vault
- + `card.update()`: updates the payment method details
- + `card.retain()`: instructs Samurai to permanently save the payment method
- + `card.redact()`: instructs Samurai to remove the payment method from vault
+ + `card.create()`      : creates a new payment methods
+ + `card.createAlias()` : creates a secure field for *
+ + `card.load()`        : fetches payment method data from the PostFinance vault
+ + `card.update()`      : updates the payment method details
+ + `card.retain()`      : instructs PostFinance to permanently save the payment method
+ + `card.redact()`      : instructs PostFinance to remove the payment method from vault
 
 (See notes about PCI compliance before you start using some of these methods.)
 
@@ -41,7 +41,7 @@ the payment method associated with the card.
 
 ### Notes on PCI compliance
 
-There are two ways you can use the Samurai gateway with Daimyo in terms of
+There are two ways you can use the PostFinance gateway with Daimyo in terms of
 payment methods management. One is server-to-server, where you handle the 
 cardholder data, and pass them on to the gateway. Another method is transparent
 redirect, where you set up a web form that submits directly to the gateway, and
@@ -96,17 +96,17 @@ please file a bug report.
 
 Before you use any of the Daimyo's functions, you should configure Daimyo.
 
-    var daimyo = require('daimyo');
+    var postfinance = require('postfinance');
 
-    daimyo.configure({
-      merchantKey: 'xxxxxxxxxxxxxxxxxxxxxxxx',
+    postfinance.configure({
+      pspid: 'xxxxxxxxxxxxxxxxxxxxxxxx',
       apiPassword: 'xxxxxxxxxxxxxxxxxxxxxxxx',
       processorId: 'xxxxxxxxxxxxxxxxxxxxxxxx'
     });
 
-Samurai gatway uses transparent redirect method to process credit card
+PostFinance gatway uses transparent redirect method to process credit card
 information. The way it works is, user submits the card and billing data
-directly to Samurai, and it redirects the user back to your site attaching a
+directly to PostFinance, and it redirects the user back to your site attaching a
 payment method token to the request. You have to access to credit card data in
 any part of the work flow. Daimyo provides a `create` method, which allows you
 to create a payment method without using the transparent redirect. You may use
@@ -125,25 +125,25 @@ you app's configuration.
 ### Configuration locking
 
 Note that Daimyo performs configuration-locking after you call
-`daimyo.configure()` for the first time (and if that's successful). This
-means that you will not be able to call `daimyo.configure()` multiple times
+`postfinance.configure()` for the first time (and if that's successful). This
+means that you will not be able to call `postfinance.configure()` multiple times
 to set different options. You need to set all options beforehand. 
 
 This is a security feature that prevents accidental/malicious resetting of
 critical options. 
 
-Calling `daimyo.option()` will also fail after configuration has been locked.
-You can use multiple calls to `daimyo.options()` to set an option
+Calling `postfinance.option()` will also fail after configuration has been locked.
+You can use multiple calls to `postfinance.options()` to set an option
 multiple times and it won't lead to locking if the configuration has not been
 locked already.
 
-Althoug using `daimyo.option()` may sound more convenient, you should set all
+Althoug using `postfinance.option()` may sound more convenient, you should set all
 critical core options (including `debug`, `enabled`, and `sandbox`) using the
-`daimyo.configure()` method for security reasons.
+`postfinance.configure()` method for security reasons.
 
 Future version of Daimyo may simply lock any option that has been set once
-without errors using either `daimyo.configure()` or `daimyo.option()`, so you
-should not rely on the behavior of `daimyo.option()` to circumvent
+without errors using either `postfinance.configure()` or `postfinance.option()`, so you
+should not rely on the behavior of `postfinance.option()` to circumvent
 configuration locking.
 
 Currently, the only exception to configuration locking is the `currency`
@@ -159,7 +159,7 @@ you can create a new payment method using the `create` method. Suppse you have
 received billing and creadit card data from your user. You can now create a new
 Card object use that data.
 
-    var card = new daimyo.Card({
+    var card = new postfinance.Card({
       number: data.cardNumber,
       csc: data.csc,
       firstName: data.firstName,
@@ -198,7 +198,7 @@ manually (or allow the user to set it).
 
 Here is an example of initializing a new card object:
 
-    var card = new daimyo.Card({
+    var card = new postfinance.Card({
       number: '4111-1111-1111-1111',
       csc: '123',
       year: 2012,
@@ -234,7 +234,7 @@ cannot trust your users 100%.
 ### Creating the payment method server-side
 
 The card, when initilized, is still not a valid _payment method_. You have to
-actually create in on Samurai gateway in order to make purchases. You can do 
+actually create in on PostFinance gateway in order to make purchases. You can do 
 that like so:
 
     card.create(function(err) {
@@ -253,12 +253,12 @@ callback function. The error object will have following properties:
 Common error messages may include:
 
  + 'Error making create payment method request': Daimyo is not properly
-   configured (e.g., missing Samurai gateway credentials), or the request
-   failed for some reason and the response was unreadable (e.g., Samurai was
+   configured (e.g., missing PostFinance gateway credentials), or the request
+   failed for some reason and the response was unreadable (e.g., PostFinance was
    offline)
  + 'Gateway responded with non-302 status': This is rare, but means that
-   Samurai received malformed data. If this happens, please report it as a bug.
- + 'Gateway failed to send the location header': This is a Samurai bug, but
+   PostFinance received malformed data. If this happens, please report it as a bug.
+ + 'Gateway failed to send the location header': This is a PostFinance bug, but
    report it to us anyway.
 
 In any case, you should consider receiving an error object with 'system'
@@ -275,17 +275,17 @@ Now that the card object has a token associated with it, you can either save
 the token, or perform transactions with it. So, let's say you have stored the 
 payment token, either when doing the transparent redirect, or after you created
 the payment method using the `create` method. You can now use the `load` method
-to fetch payment method details from Samurai server.
+to fetch payment method details from PostFinance server.
 
     var myToken = 'xxxxxxxxxxxxxxxxxxxxxxxx';
-    var card = new daimyo.Card({token: myToken});
+    var card = new postfinance.Card({token: myToken});
     card.load(function(err) {
       // Handle error
     });
 
 The card object has all the fields populated. There are also two new fields:
 
- + messages: contains any Samurai gateway messages about the card
+ + messages: contains any PostFinance gateway messages about the card
  + method: contains meta-information about the payment method
 
 See the API documentation for details on what these fields contain. The error
@@ -326,7 +326,7 @@ Error messages are the same ones expected in `load` method callback.
 
 ### Retention and redaction
 
-Samurai has a built-in vault that can safely store your payment methods. Well,
+PostFinance has a built-in vault that can safely store your payment methods. Well,
 they aren't yours, but... you know what I mean. :) Usage of this vault is
 pretty much automatic. As soon as you create a new card, it is stored in the
 vault.
@@ -334,7 +334,7 @@ vault.
 By default, the stored payment methods will be deleted after 48 hours. If you
 wish to keep the payment methods stored for longer periods, you can use the
 `retain()` method. Let's say you have a newly created card. To retain it,
-simply instruct the Samurai to do so:
+simply instruct the PostFinance to do so:
 
     card.retain(function(err) {
       // Error handling here
@@ -346,7 +346,7 @@ simply instruct the Samurai to do so:
     });
 
 When your user supplies you a new card, or simply wants you to remove their 
-records, use the `redact()` method to have the card removed from the Samurai
+records, use the `redact()` method to have the card removed from the PostFinance
 vault.
 
     card.redact(function(err) {
@@ -366,10 +366,10 @@ methods.
 
 ### Making transactions
 
-Transactions are made using the `daimyo.Transaction` constructor and resulting
+Transactions are made using the `postfinance.Transaction` constructor and resulting
 transaction objects.
 
-There are currenly 5 transaction types supported by Samurai: 
+There are currenly 5 transaction types supported by PostFinance: 
 
  + _purchase_: make immediate authorization and capture of the funds
    (immediately debit the user's credit card)
@@ -390,7 +390,7 @@ options object. The data to be passed via this parameter depends on the
 transaction type, and they are discussed further below. The layout of the
 options object looks like this:
 
-    var transaction = new daimyo.Transaction({
+    var transaction = new postfinance.Transaction({
       type: 'purchase',
       data: {
         amount: 123.45,

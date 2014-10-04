@@ -25,10 +25,10 @@
         "mersenne": ">= 0.0.3"
     },
     "devDependencies": {
-        "should": ">= 0.2.0",
-        "expresso": ">= 0.8.0",
-        "uglify-js": ">= 1.0.1"
+        "should": ">= 4.x.x",
+        "mocha": ">= 1.x.x",
+        "uglify-js": ">= 2.x.x"
     },
-    "engine": [ "node >=0.4.0" ],
+    "engine": [ "node >=1.x.0" ],
     "keywords": ["payment gateway", "payment processing", "samurai", "feefighters"]
 }

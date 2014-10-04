@@ -94,7 +94,7 @@ there.
 
 ### 0.0.6
 
- + Fixed `daimyo.Card` constructor not handling custom data.
+ + Fixed `postfinance.Card` constructor not handling custom data.
  + Removed `card.method.custom` which was returned after loading a payment
    method, and which always contained unused, empty object.
  + Fixed previously broken `checkamd` makefile target.
@@ -104,10 +104,10 @@ there.
 
 ### 0.0.5
 
- + Prevents crash when invalid token is passed to daimyo.Card constructor.
+ + Prevents crash when invalid token is passed to postfinance.Card constructor.
  + If a token is provided, but it's invalid, an error will be thrown. Previous
    behavior was that it is completely ignored if invalid.
- + `daimyo.Card` constructor will throw a proper `DaimyoError` on errors,
+ + `postfinance.Card` constructor will throw a proper `PostFinanceError` on errors,
    instead of generic `Error` object as in previous versions.
 
 ### 0.0.4
@@ -122,26 +122,26 @@ there.
 
 ### 0.0.3
 
- + Tamper-proofed all properties set with accessors in `daimyo.Card` and 
+ + Tamper-proofed all properties set with accessors in `postfinance.Card` and 
    `transaction.Transaction` objects.
  + Made `data` and `path` properties on `transaction.Transaction` objects 
    set-once properties similar to configuration locking.
- + Custom fields are implemented in both `daimyo.Card` and
+ + Custom fields are implemented in both `postfinance.Card` and
    `transaction.Transaction` objects. They can store any JSON-serializable
    object, and that will be stored in Samurai gateway, and restored later with
    methods like ``card.load()`` or when transaction is completed.
  + All transaction requests embed a SHA1 hexdigest of 100-character random
    string, which is checked when the response is received. All transactions
    will fail the integrity check if this hash doesn't match.
- + If methods like ``daimyo.Card.load()`` are missing a token, the error will
+ + If methods like ``postfinance.Card.load()`` are missing a token, the error will
    now _not_ be thrown, but passed to the callback instead, like all other
    methods.
 
 ### 0.0.2
 
- + `daimyo` no longer has `settings` property. You should use
-   `daimyo.option()` to access options instead.
- + After calling `daimyo.configure()` successfully for the first time,
+ + `postfinance` no longer has `settings` property. You should use
+   `postfinance.option()` to access options instead.
+ + After calling `postfinance.configure()` successfully for the first time,
    configuration will now be permanently locked until you restart the app.
    This is a _feature_ not a bug. It prevents malicious code from tricking your
    app into resetting some of the critical Daimyo options.
@@ -165,7 +165,7 @@ is v0.1.
 
 Easiest way to install Daimyo is by using npm:
 
-    npm install daimyo
+    npm install postfinance
 
 That will install the latest release that we have made. Not that releases prior
 to 0.1 are not considered production-ready. See the _Status_ section of this 
@@ -177,7 +177,7 @@ as a dependency to your packages.json like this:
 
     dependencies: {
        ....
-      ,"daimyo": "https://github.com/HerdHound/Daimyo/tarball/master"
+      ,"postfinance": "https://github.com/HerdHound/Daimyo/tarball/master"
        ....
     }
 
@@ -191,15 +191,15 @@ cloned repository:
     
     git clone https://github.com/HerdHound/Daimyo.git
     cd /your/project/dir
-    npm install /path/to/daimyo/clone
+    npm install /path/to/postfinance/clone
 
 ## Basic usage
 
-    var daimyo = require('daimyo');
+    var postfinance = require('postfinance');
 
     // Configure Daimyo
-    daimyo.configure({
-      merchantKey: 'xxxxxxxxxxxxxxxxxxxxxxxx',
+    postfinance.configure({
+      pspid: 'xxxxxxxxxxxxxxxxxxxxxxxx',
       processorId: 'xxxxxxxxxxxxxxxxxxxxxxxx',
       apiPassword: 'xxxxxxxxxxxxxxxxxxxxxxxx',
       currency: 'USD', // default
@@ -211,7 +211,7 @@ cloned repository:
     // Using transparent redirect with Express
     app.get('/redirect_target', function(req, res, next) {
         var token = req.param('payment_method_token');
-        var card = new daimyo.Card({token: token});
+        var card = new postfinance.Card({token: token});
 
         // Create a new transaction
         var transactionData = {
@@ -314,7 +314,7 @@ To run unit tests you need [Expresso](https://github.com/visionmedia/expresso),
 and [should.js](https://github.com/visionmedia/should.js). You also need to
 create a file called `test/config.js`, and add your keys there:
 
-    exports.merchantKey = 'xxxxxxxxxxxxxxxxxxxxxxxx';
+    exports.pspid = 'xxxxxxxxxxxxxxxxxxxxxxxx';
     exports.apiPassword = 'xxxxxxxxxxxxxxxxxxxxxxxx';
     exports.processorId = 'xxxxxxxxxxxxxxxxxxxxxxxx';
 
@@ -332,12 +332,12 @@ sandbox.
 
 In some cases, you may see this error when trying to process a transaction.
 This is a known issue when any of the options passed to the 
-``daimyo.Transaction`` constructor is a Mongoose document key (or
+``postfinance.Transaction`` constructor is a Mongoose document key (or
 similar complex type). Mongoose document keys are not simple types (String,
 Number, etc) and they have to be converted first. Simple way to do it is to
 call ``valueOf()`` or ``toString()`` on the key first:
 
-    var transaction == new daimyo.Transaction({
+    var transaction == new postfinance.Transaction({
       type: 'purchase',
       billingReference: myMongooseDocument.someKey.valueOf(),
       customerReference: myMongooseDocument.id.toString()

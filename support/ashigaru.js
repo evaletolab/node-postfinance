@@ -23,7 +23,7 @@
  * plugin, it will redirect the user to the redirect URL. The redirect URL will
  * have an URL parameter called `payment_method_token` which should be a 
  * 24-digit hexdigest. That token identifies the payment method created by the
- * user. (See the documentation for the `daimyo` module for more information
+ * user. (See the documentation for the `postfinance` module for more information
  * on how to use this token.)
  *
  * Once you have performed any operations you want, you can respond to the 
@@ -73,7 +73,7 @@
  * Once you have created the object containing the cardholder data, you can 
  * call Ashigaru like this:
  *
- *     $.ashigaru(cardData, merchantKey, redirectURL, function(err, data) {
+ *     $.ashigaru(cardData, pspid, redirectURL, function(err, data) {
  *       // err means there was an error parsing the JSON or no data
  *       // was ever returned. If all went fine, err should be null.
  *       // data will contain a fully parsed JSON response.
@@ -192,7 +192,7 @@
 
 
   /**
-   * ## jQuery.ashigaru(data, merchantKey, redirectURI, callback)
+   * ## jQuery.ashigaru(data, pspid, redirectURI, callback)
    * *Create and submit hidden form to make request with*
    *
    * The data argument is used to populate form with data. It can have any of 
@@ -215,14 +215,14 @@
    * details of the ``onResultLoad`` function in this module.
    *
    * @param {Object} data Object containing the data for the form
-   * @param {String} merchantKey Samurai gateway merchant key
+   * @param {String} pspid Samurai gateway merchant key
    * @param {String} redirectURI URI of the transparent redirect handler
    * @param {Function} callback Called with error and results
    */
-  $.ashigaru = function(data, merchantKey, redirectURI, callback) {
+  $.ashigaru = function(data, pspid, redirectURI, callback) {
     var form;
 
-    if (!data || !merchantKey || !redirectURI || !callback) {
+    if (!data || !pspid || !redirectURI || !callback) {
       throw ('All arguments are required');
     }
 
@@ -253,7 +253,7 @@
 
     var formHTML = '<form id="samurai-form" style="display:none" ' +
       'action="$requestURI" method="POST" target="samurai-iframe">' + 
-      '<input type="hidden" name="merchant_key" value="$merchantkey">'+
+      '<input type="hidden" name="PSPID" value="$merchantkey">'+
       '<input type="hidden" name="redirect_url" value="$redirecturl">' +
       '<input type="hidden" name="custom" value=\'$custom\'>' +
       (data.sandbox && '<input type="hidden" name="sandbox" value="true">' || '') +
@@ -273,7 +273,7 @@
 
     // Replace non-data field placeholders and form attribute placeholders
     formHTML = formHTML.replace('$requestURI', samuraiURI);
-    formHTML = formHTML.replace('$merchantkey', merchantKey);
+    formHTML = formHTML.replace('$merchantkey', pspid);
     formHTML = formHTML.replace('$redirecturl', redirectURI);
 
     // Replace placeholders in form HTML with real data

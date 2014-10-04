@@ -1,5 +1,5 @@
 *.swo
 *.swp
 tmp
-test/config.js
+config.js
 node_modules
