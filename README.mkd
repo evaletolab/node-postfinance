@@ -1,3 +1,5 @@
+Node postfinance is based on the original idea from [Daimyo](https://github.com/HerdHound/Daimyo) because it's well documented and tested.
+
 ## Installation
 
 Easiest way to install node-postfinance is by using npm:
