@@ -1,20 +1,20 @@
 ## Installation
 
-Easiest way to install Daimyo is by using npm:
+Easiest way to install node-postfinance is by using npm:
 
     npm install node-postfinance
 
 That will install the latest release that we have made. Not that releases prior
-to 0.1 are not considered production-ready. See the _Status_ section of this 
+to 0.0.1 are not considered production-ready. See the _Status_ section of this 
 file to find out more about the current progress.
 
-Since Daimyo is currently still very beta, if you wish to get a newer version
+Since node-postfinance is currently still very beta, if you wish to get a newer version
 with more features (please don't do this in production, though), you can add it
 as a dependency to your packages.json like this:
 
     dependencies: {
        ....
-      ,"postfinance": "https://github.com/HerdHound/Daimyo/tarball/master"
+      ,"postfinance": "https://github.com/evaletolab/node-postfinance/tarball/master"
        ....
     }
 
@@ -23,10 +23,10 @@ to GitHub, switch to a commit you want to depend on, click the download link,
 and right-click the tarball button, copy URL, and paste it into your dependency
 list like above.
 
-Finally, you can clone the Daimyo repository using git and install from the
+Finally, you can clone the node-postfinance repository using git and install from the
 cloned repository:
     
-    git clone https://github.com/HerdHound/Daimyo.git
+    git clone https://github.com/evaletolab/node-postfinance.git
     cd /your/project/dir
     npm install /path/to/postfinance/clone
 
@@ -34,7 +34,7 @@ cloned repository:
 
     var postfinance = require('postfinance');
 
-    // Configure Daimyo
+    // Configure node-postfinance
     postfinance.configure({
       pspid: 'xxxxxxxxxxxxxxxxxxxxxxxx',
       apiUser: 'xxxxxxxxxxxxxxxxxxxxxxxx',
@@ -126,13 +126,13 @@ To use it, simply require it from your module as usual:
 ## API documentation
 
 The dox-generated API documentation can be found at
-[herdhound.github.com/Daimyo/](http://herdhound.github.com/Daimyo/). You can
+[evaletolab.github.com/node-postfinance/](http://evaletolab.github.com/node-postfinance/). You can
 also generate the documentation for offline use using the provided makefile.
 See _Offline documentaiton_ section for instructions.
 
 ## Offline documentation
 
-You can generate offline documentation for Daimyo using the
+You can generate offline documentation for node-postfinance using the
 [dox](https://github.com/visionmedia/dox/) utility from Visionmedia. Install
 dox by typing:
 
