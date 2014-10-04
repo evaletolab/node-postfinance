@@ -34,7 +34,7 @@ cloned repository:
     npm install /path/to/postfinance/clone
 
 ## Basic usage
-
+```javascript
     var postfinance = require('postfinance');
 
     // Configure node-postfinance
@@ -88,7 +88,7 @@ cloned repository:
            });
         });
     });
-
+```
 ## Using the ``check`` as AMD module in browsers
 
 The `lib/check.js`` module contains generic functions for performing various
