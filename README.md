@@ -1,4 +1,5 @@
-Node postfinance is based on the original idea from [Daimyo](https://github.com/HerdHound/Daimyo) because it's well documented and tested.
+Node postfinance gateway is based on the original idea from [Daimyo](https://github.com/HerdHound/Daimyo).
+
 
 ## Installation
 
