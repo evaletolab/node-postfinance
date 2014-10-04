@@ -1,171 +1,8 @@
-# Daimyo: Samurai payment gateway integration library
-
-v0.1.5
-
-Created at [Herd Hound](http://www.herdhound.com/)
-Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>.
-
-Some rights reserved.
-
-Licensed under MIT license (see
-[LICENSE](https://github.com/HerdHound/Daimyo/blob/master/LICENSE))
-
-## Overview
-
-Daimyo (pronounced as _dah-e-myoh_) is a client library for the 
-[Samurai payment gateway](http://samurai.feefighters.com/) from
-[Fee Fighters](http://feefighters.com/). By the time 1.0 release is made,
-Daimyo will support all of Samurai's API, but the current immediate goal is to
-support the sale transactions and provide robust error reporting facilities.
-
-## Daimyo vs samurai-client-nodejs
-
-Daimyo is an _unofficial_ client library for the Samurai gateway. Fee Fighters
-maintain a fork of Daimyo that is called
-[samurai-client-nodejs](https://github.com/FeeFighters/samurai-client-nodejs).
-While the latter is meant to address every possible scenario required by all
-Samurai users, Daimyo was written for the sole purpose of catering the needs of
-[Herd Hound](http://www.herdhound.com/). While I tried to cover the whole
-Samurai API with Daimyo, not all parts of the API will get equal attention, as
-Herd Hound itself doesn't use all Samurai functionality.
-
-Of course, this does not mean that Daimyo's developer will not respond to bug
-reports or refuse to answer your emails. On the contrary, I would be very happy
-to help you out. 
-
-This also doesn't mean that we don't keep an eye on the samurai-client-nodejs.
-We will merge or copy anything and everything that can benefit Daimyo users
-(ourselves included). What we _won't_ do is break the Daimyo API for the sake
-of synchornizing with samurai-client-nodejs, because that would break software
-that already uses Daimyo.
-
-## Status
-
-For now, Daimyo is used in production at 
-[Herd Hound](http://www.herdhound.com/). It is still being polished for prime
-time, but the core functionality should work as documented/expected since
-v0.0.7. Keep track of changes on Github, and keep an eye on the issue tracker
-there.
-
-### 0.1.5 (latest)
-
- + Transactions will now return AVS results as info messages. The actual
-   messages returend by Daimyo will have the AVS result code prepended.
-
-### 0.1.4
-
- + Fixed bad API URL in transaction module
-
-### 0.1.3
-
- + Changed API URL for Ashigaru
-
-### 0.1.2
-
- + Prevent Daimyo from crashing when Samurai responds with HTTP 500.
-
-### 0.1.1
-
- + Payment token (card object) is no longer required for processing
-   transactions that do not use them (credit, void).
-
-### 0.1.0
-
- + Fixed issue where ``_check`` token verification would fail for credit and
-   void transaction because Samurai does not honor custom data for those
-   transaction types.
-
-### 0.0.9
-
- + samurai/developers/api_reference#processing-payments-complex
-
-### 0.0.8
-
- + Rebranded to Herd Hound
-
-### 0.0.7
-
- + Resolved issue with `success` flag in transaction responses.
- + Ashigaru now supports `sandbox` parameter for creating sandbox payment
-   methods.
- + Fixed failing tests which weren't updated to reflect the changes in 0.0.6
-   API. The 0.0.6 version of tests are expected to fail (see issue #15), but
-   that doesn't affect correct behavior of documented API.
-
-### 0.0.6
-
- + Fixed `postfinance.Card` constructor not handling custom data.
- + Removed `card.method.custom` which was returned after loading a payment
-   method, and which always contained unused, empty object.
- + Fixed previously broken `checkamd` makefile target.
- + Fixed Ashigaru not properly handling custom field.
- + Made Ashigaru's timeout checking more robust.
- + Fixed Daimyo crashing looking for messages in wrong places.
-
-### 0.0.5
-
- + Prevents crash when invalid token is passed to postfinance.Card constructor.
- + If a token is provided, but it's invalid, an error will be thrown. Previous
-   behavior was that it is completely ignored if invalid.
- + `postfinance.Card` constructor will throw a proper `PostFinanceError` on errors,
-   instead of generic `Error` object as in previous versions.
-
-### 0.0.4
-
- + `allowedCurrencies` setting which limits the currencies that can be used
- + `transaciton.Transaction.process()` will check allowed currencies and block
-   transactions that use disallowed currency.
- + `transaction.Transaction.process()` no longer throws exceptions. All errors
-   are passed to the callback instead.
- + Ashigaru now supports the `custom` field.
- + `checkamd` make target now generates file with version number.
-
-### 0.0.3
-
- + Tamper-proofed all properties set with accessors in `postfinance.Card` and 
-   `transaction.Transaction` objects.
- + Made `data` and `path` properties on `transaction.Transaction` objects 
-   set-once properties similar to configuration locking.
- + Custom fields are implemented in both `postfinance.Card` and
-   `transaction.Transaction` objects. They can store any JSON-serializable
-   object, and that will be stored in Samurai gateway, and restored later with
-   methods like ``card.load()`` or when transaction is completed.
- + All transaction requests embed a SHA1 hexdigest of 100-character random
-   string, which is checked when the response is received. All transactions
-   will fail the integrity check if this hash doesn't match.
- + If methods like ``postfinance.Card.load()`` are missing a token, the error will
-   now _not_ be thrown, but passed to the callback instead, like all other
-   methods.
-
-### 0.0.2
-
- + `postfinance` no longer has `settings` property. You should use
-   `postfinance.option()` to access options instead.
- + After calling `postfinance.configure()` successfully for the first time,
-   configuration will now be permanently locked until you restart the app.
-   This is a _feature_ not a bug. It prevents malicious code from tricking your
-   app into resetting some of the critical Daimyo options.
- + Returns a proper 'Declined' error message when the card is declined.
-
-### 0.0.1
-
-The first release is a public preview release and it's not meant to be
-production-ready. There are still quite a few things to implement, and error
-handling is not very robust. Note that API might change as well. For starters,
-you should not rely on any method that has the @private tag in the inline
-comments (that do not appear in API documentation, that is), but the public
-methods may change as well, as well as method signatures.
-
-Although there _are_ unit tests, and Daimyo's development is test-driven, the
-tests do not currently provide complete coverage, and it is expected that some
-functionality may break in production. Target for first production-ready Daimyo
-is v0.1.
-
 ## Installation
 
 Easiest way to install Daimyo is by using npm:
 
-    npm install postfinance
+    npm install node-postfinance
 
 That will install the latest release that we have made. Not that releases prior
 to 0.1 are not considered production-ready. See the _Status_ section of this 
@@ -200,18 +37,17 @@ cloned repository:
     // Configure Daimyo
     postfinance.configure({
       pspid: 'xxxxxxxxxxxxxxxxxxxxxxxx',
-      processorId: 'xxxxxxxxxxxxxxxxxxxxxxxx',
+      apiUser: 'xxxxxxxxxxxxxxxxxxxxxxxx',
       apiPassword: 'xxxxxxxxxxxxxxxxxxxxxxxx',
-      currency: 'USD', // default
+      currency: 'CHF', // default
       debug: false, // default, should stay off in production at all costs
       enabled: true, // default
-      sandbox: false // default
     });
 
     // Using transparent redirect with Express
     app.get('/redirect_target', function(req, res, next) {
         var token = req.param('payment_method_token');
-        var card = new postfinance.Card({token: token});
+        var card = new postfinance.Card({alias: alias});
 
         // Create a new transaction
         var transactionData = {
@@ -286,8 +122,6 @@ To use it, simply require it from your module as usual:
         alert('Your card was issued by ' + issuer);
     });
 
-You can find more details on this module in the 
-[API documentation](http://herdhound.github.com/Daimyo/).
 
 ## API documentation
 
@@ -310,18 +144,20 @@ remove the documentation, just type ``make clean``.
 
 ## Running unit tests
 
-To run unit tests you need [Expresso](https://github.com/visionmedia/expresso),
+To run unit tests you need [Mocha](https://github.com/visionmedia/mocha),
 and [should.js](https://github.com/visionmedia/should.js). You also need to
-create a file called `test/config.js`, and add your keys there:
+create a file called `config.js`, and add your keys there:
 
     exports.pspid = 'xxxxxxxxxxxxxxxxxxxxxxxx';
+    exports.apiUser = 'xxxxxxxxxxxxxxxxxxxxxxxx';
     exports.apiPassword = 'xxxxxxxxxxxxxxxxxxxxxxxx';
-    exports.processorId = 'xxxxxxxxxxxxxxxxxxxxxxxx';
+    exports.shaSecret = 'xxxxxxxxxxxxxxxxxxxxxxxx';
 
 The tests are run simply by simply typing `make` in the project directory.
 Alternatively, you can type:
 
-    expresso /test/*.tests.js
+    mocha /test/file-to-test.js 
+    mocha
 
 Do not run tests with your live processor. Make sure you are running in a
 sandbox.
@@ -347,9 +183,3 @@ This also applies to situations where you are passing values that are not
 simple types (String, Number), Object, or Array instances.
 
 ## Reporting bugs
-
-You may use the [issue tracker](https://github.com/HerdHound/Daimyo/issues) to
-report Daimyo bugs you find. Alternatively, you may contact the author directly
-at [branko@herdhound.com](mailto:branko@herdhound.com). Of course, feature
-requests are also welcome, but currently, the basic functionality is top
-priority.
