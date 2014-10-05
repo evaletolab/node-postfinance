@@ -19,7 +19,7 @@ describe("postfinance.create", function(){
 
   // testSettings.sandbox = true;
   testSettings.enabled = false; // Does not make any actual API calls if false
-  testSettings.debug = true; // Enables *blocking* debug output to STDOUT
+  testSettings.debug = false; // Enables *blocking* debug output to STDOUT
 
 
   before(function(done){
@@ -87,25 +87,11 @@ var requestPaymentPage = {
 
   var globalCard;
 
+  it("Configure and lock configuration", function(done){
+    testSettings.allowMultipleSetOption = false;
+    postfinance.configure(testSettings);
 
-  it("Create an alias (1) and get missing orderid", function(done){
-    this.timeout(10000);
-    var Card = postfinance.Card;
-    var card = new Card(testCard);
-    
-    card.should.have.property('create');
-
-    var testAlias={
-      alias:"testalias",
-      aliasUsage:"karibou payment"
-    };
-    card.create(testAlias,function(err) {
-      should.exist(err);
-      debug(err.message)
-      debug(err.details)
-      err.code.should.equal(50001111) // missing order id
-      done()
-    });
+    done()
   });
 
 
@@ -135,7 +121,6 @@ var requestPaymentPage = {
       // amount="1" currency="CHF" PM="CreditCard" BRAND="MasterCard" 
       // ALIAS="testalias" 
       // NCERRORPLUS="!"
-      console.log(res.body)
       should.not.exist(err);
       card.alias.should.equal(testAlias.alias);
       card.should.have.property('payId');
@@ -144,7 +129,7 @@ var requestPaymentPage = {
   });
 
 
-  it("Alias can load payment method", function(done){    
+  it.skip("Alias can load payment method", function(done){    
     this.timeout(10000);
     var Card = postfinance.Card;
     var card = new Card(testAlias);
@@ -177,7 +162,6 @@ var requestPaymentPage = {
     var card = new postfinance.Card(bogusCard);
 
     function onLoad(err) {
-      console.log('---------------',err)
       done()
     }
 
@@ -304,7 +288,7 @@ var requestPaymentPage = {
   it("New transaction has a few extra properties", function(done){
     var transaction = new postfinance.Transaction({
       operation: 'purchase',
-      orderId:'abc'
+      orderId:'abc',
       amount: 10
     });
 
@@ -342,7 +326,6 @@ var requestPaymentPage = {
     var card = new postfinance.Card(testAlias);
 
     transaction.process(card, function(err){
-      console.log(err)
       should.not.exist(err);
       done()        
     });

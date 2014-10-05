@@ -126,7 +126,7 @@ describe("postfinance.card", function(){
     payload.OWNERCITY.should.equal('genève'), 
     payload.OWNERZIP.should.equal('1208'),
     payload.GLOBORDERID.should.equal('groupXXXXXX'),
-    payload.COM.should.equal('hello world')
+    payload.COM.should.equal('"hello world"')
 
     // card format
     card.paymentMethod.should.equal('Postfinance card'),
