@@ -29,8 +29,7 @@ describe("postfinance.create", function(){
 
   var testAlias={
     alias:"testalias.1",
-    aliasUsage:"karibou payment",
-    orderId:'BS'+Date.now()
+    aliasUsage:"karibou payment"
   }
 
 var requestPaymentPage = {
@@ -97,7 +96,7 @@ var requestPaymentPage = {
   var globalCard;
 
 
-  it("Create an alias (1) and get missing orderid", function(done){
+  it.skip("Create an alias (1) and get missing orderid", function(done){
     this.timeout(10000);
     var Card = postfinance.Card;
     var card = new Card(testCard);
@@ -157,7 +156,7 @@ var requestPaymentPage = {
   });
 
 
-  it("Load alias to this card", function(done){    
+  it.skip("Load alias to this card", function(done){    
     this.timeout(10000);
     var Card = postfinance.Card;
     var card = new Card(testAlias);
@@ -419,14 +418,12 @@ var requestPaymentPage = {
     // First we need a card
     var card = new postfinance.Card(testAlias);
 
-    card.create(testAlias,function(err) {
-      // We have the alias now.
-      card.should.have.property('alias');
-      transaction.process(card, function(err){
-        should.not.exist(err);
-        done()        
-      });
+    transaction.process(card, function(err){
+      console.log(err)
+      should.not.exist(err);
+      done()        
     });
+
 
   });
 
