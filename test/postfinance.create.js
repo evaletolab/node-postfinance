@@ -99,7 +99,7 @@ var requestPaymentPage = {
 
 
   it("Create an alias", function(done){    
-    this.timeout(10000);
+    this.timeout(20000);
     var Card = postfinance.Card;
     var card = new Card(testCard);
     
@@ -130,7 +130,7 @@ var requestPaymentPage = {
 
 
   it.skip("Alias can load payment method", function(done){    
-    this.timeout(10000);
+    this.timeout(20000);
     var Card = postfinance.Card;
     var card = new Card(testAlias);
 
@@ -298,7 +298,7 @@ var requestPaymentPage = {
     done()
   });
 
-  it.skip("Simple maintenance transactions do not set currency", function(done){
+  it("Simple maintenance transactions do not set amount", function(done){
     var transaction = new postfinance.Transaction({
       operation: 'cancel',
       payId:'abc'
@@ -310,7 +310,7 @@ var requestPaymentPage = {
   });
 
   it("Execute transaction with alias", function(done){
-    this.timeout(10000)
+    this.timeout(20000)
     var transaction;
 
     
