@@ -85,18 +85,10 @@ var requestPaymentPage = {
     month: testExpiredDate[1].toString()
   };
 
-  it("Unlock configuration", function(done){
-    testSettings.allowMultipleSetOption = true;
-    postfinance.configure(testSettings);
-    postfinance.option('debug', postfinance.option('debug'));
-
-    done()
-  });
-
   var globalCard;
 
 
-  it.skip("Create an alias (1) and get missing orderid", function(done){
+  it("Create an alias (1) and get missing orderid", function(done){
     this.timeout(10000);
     var Card = postfinance.Card;
     var card = new Card(testCard);
@@ -123,16 +115,11 @@ var requestPaymentPage = {
   it("Create an alias", function(done){    
     this.timeout(10000);
     var Card = postfinance.Card;
-    globalCard = new Card(testCard);
+    var card = new Card(testCard);
     
-    globalCard.should.have.property('create');
+    card.should.have.property('create');
 
-
-    // var testAlias={
-    //     orderId:'AS'+Date.now()
-    //   }
-
-    globalCard.create(testAlias,function(err) {
+    card.create(testAlias,function(err,res) {
       // ORDERID="00123" 
       // PAYID="35562138" 
       // NCSTATUS="0" 
@@ -148,15 +135,16 @@ var requestPaymentPage = {
       // amount="1" currency="CHF" PM="CreditCard" BRAND="MasterCard" 
       // ALIAS="testalias" 
       // NCERRORPLUS="!"
+      console.log(res.body)
       should.not.exist(err);
-      globalCard.alias.should.equal(testAlias.alias);
-      globalCard.should.have.property('payId');
+      card.alias.should.equal(testAlias.alias);
+      card.should.have.property('payId');
       done()
     });
   });
 
 
-  it.skip("Load alias to this card", function(done){    
+  it("Alias can load payment method", function(done){    
     this.timeout(10000);
     var Card = postfinance.Card;
     var card = new Card(testAlias);
@@ -173,17 +161,6 @@ var requestPaymentPage = {
   });
 
 
-  it.skip("Delete alias", function(done){    
-    this.timeout(10000);
-    var Card = postfinance.Card;
-    var card = new Card(testAlias);
-
-    card.should.have.property('redact');
-    card.redact(function(err) {
-      should.not.exist(err);
-      done()
-    });
-  });
 
 
 
@@ -193,35 +170,6 @@ var requestPaymentPage = {
     var card1;
     var alias;
    
-    card.custom = {test: 'custom'};
-
-    card.should.have.property('load');
-    assert.throws(function() {
-      card.load();
-    }, 'Cannot load payment method without alias');
-    card.createAlias(testAlias,function(err) {
-      alias = card.alias;
-      card1 = new Card({alias: alias});
-      card1.load(function(err) {
-        should.not.exist(err);
-        card1.should.have.property('method');
-        card1.method.should.have.property('createdAt');
-        card1.method.createdAt.should.be.instanceof(Date);
-        card1.method.should.have.property('updatedAt');
-        card1.method.updatedAt.should.be.instanceof(Date);
-        card1.method.should.have.property('retained');
-        card1.method.retained.should.equal(false);
-        card1.method.should.have.property('redacted');
-        card1.method.redacted.should.equal(false);
-        card1.should.have.property('custom');
-        card1.firstName.should.equal(testCard.firstName);
-        card1.lastName.should.equal(testCard.lastName);
-        card1.address1.should.equal(testCard.address1);
-        card1.should.have.property('custom');
-        card1.custom.should.have.property('test');
-        card1.custom.test.should.equal('custom');
-      });
-    });
     done()
   });
 
@@ -229,18 +177,13 @@ var requestPaymentPage = {
     var card = new postfinance.Card(bogusCard);
 
     function onLoad(err) {
-      card.should.have.property('messages');
-      card.messages.should.have.property('errors');
-      card.messages.errors.should.have.property('number');
-      card.messages.errors.number.should.contain(messages.str.en_US.INVALID_NUMBER);
-      card.messages.errors.should.have.property('csc');
-      card.messages.errors.csc.should.contain(messages.str.en_US.INVALID_CSC);
+      console.log('---------------',err)
+      done()
     }
 
-    card.createAlias(testAlias,function(err) {
+    card.create(testAlias,function(err) {
       card.load(onLoad);
     });
-    done()
   });
 
   it.skip("Card has _dirty property which lists changed fields", function(done){
@@ -314,91 +257,71 @@ var requestPaymentPage = {
 
   it.skip("Retain card", function(done){
     var card = new postfinance.Card(testCard);
-
-    card.createAlias(testAlias,function(err) {
-      card.retain(function(err) {
-        card.should.have.property('method');
-        card.method.should.have.property('createdAt');
-        card.method.createdAt.should.be.instanceof(Date);
-        card.method.should.have.property('updatedAt');
-        card.method.updatedAt.should.be.instanceof(Date);
-        card.method.should.have.property('retained');
-        card.method.retained.should.equal(true);
-        card.method.should.have.property('redacted');
-        card.method.redacted.should.equal(false);
-        card.firstName.should.equal(testCard.firstName);
-        card.lastName.should.equal(testCard.lastName);
-        card.address1.should.equal(testCard.address1);
-      });
-    });
     done()
   });
 
   it.skip("Redact card", function(done){
     var card = new postfinance.Card(testCard);
-
-    card.createAlias(testAlias,function(err) {
-      card.retain(function(err) {
-        card.method.retained.should.equal(true);
-        card.method.redacted.should.equal(false);
-        card.redact(function(err) {
-          card.method.retained.should.equal(true);
-          card.method.redacted.should.equal(true);
-        });
-      });
-    });
     done()
   });
 
-  it.skip("Creating new transaction object throws if no type", function(done){
+  it("Creating new transaction object throws if no operation", function(done){
     var transaction;
 
     assert.throws(function() {
       transaction = new postfinance.Transaction({
-        type: null, 
-        data: {amount: 10}
+        operation: null, 
+        amount: 10
       });
     });
     done()
   });
 
-  it.skip("Creating new transaction throws with missing data", function(done){
+  it("Creating new transaction throws with missing orderid", function(done){
     var transaction;
 
     assert.throws(function() {
       transaction = new postfinance.Transaction({
-        type: 'purchase',
-        data: null
+        operation: 'purchase',
+        amount:10
       });
     });
     done()
   });
 
-  it.skip("New transaction has a few extra properties", function(done){
+
+  it("Maintenance of transaction throws with missing payId", function(done){
+    var transaction;
+    assert.throws(function() {
+      transaction = new postfinance.Transaction({
+        operation: 'cancel',
+        amount:10
+      });
+    });
+    done()
+  });
+
+  it("New transaction has a few extra properties", function(done){
     var transaction = new postfinance.Transaction({
-      type: 'purchase',
-      data: {amount: 10}
+      operation: 'purchase',
+      orderId:'abc'
+      amount: 10
     });
 
-    transaction.should.have.property('type');
-    transaction.type.should.equal('purchase');
+    transaction.should.have.property('operation');
+    transaction.operation.should.equal('purchase');
     transaction.should.have.property('data');
-    transaction.data.should.have.keys(['amount', 'type', 'currency']);
-    transaction.data.type.should.equal('purchase');
-    transaction.data.currency.should.equal(postfinance.option('currency'));
-    transaction.should.have.property('path');
     done()
   });
 
-  it.skip("Simple transactions do not set type and currency", function(done){
+  it.skip("Simple maintenance transactions do not set currency", function(done){
     var transaction = new postfinance.Transaction({
-      type: 'void',
-      transactionId: '111111111111111111111111',
-      data: {}
+      operation: 'cancel',
+      payId:'abc'
     });
 
     transaction.data.should.not.have.property('currency');
-    transaction.data.should.not.have.property('type');
+    transaction.data.should.not.have.property('operation');
     done()
   });
 
@@ -408,11 +331,11 @@ var requestPaymentPage = {
 
     
     transaction = new postfinance.Transaction({
-      type: 'capture',
+      operation: 'purchase',
       amount:13400,
-      orderId: 'TX'+Date.now()
-//      email:'test@transaction.ch'
-//      groupId:'6 apr. 2014'
+      orderId: 'TX'+Date.now(),
+      email:'test@transaction.ch',
+      groupId:'gp-6 apr. 2014'
     });
 
     // First we need a card
@@ -442,7 +365,7 @@ var requestPaymentPage = {
     }
 
     transaction = new postfinance.Transaction({
-      type: 'purchase',
+      operation: 'purchase',
       data: {
         billingReference: '123',
         customerReference: '123',
@@ -476,7 +399,7 @@ var requestPaymentPage = {
     }
 
     transaction = new postfinance.Transaction({
-      type: 'purchase',
+      operation: 'purchase',
       data: {
         amount: 10,
         currency: 'GBP'
@@ -507,7 +430,7 @@ var requestPaymentPage = {
     }
 
     transaction = new postfinance.Transaction({
-      type: 'purchase',
+      operation: 'purchase',
       data: {
         amount: 10,
         currency: 'USD'
