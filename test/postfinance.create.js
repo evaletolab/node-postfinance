@@ -409,10 +409,10 @@ var requestPaymentPage = {
     
     transaction = new postfinance.Transaction({
       type: 'capture',
-      amount:23400,
-      orderId: 'TX'+Date.now(),
-      email:'test@transaction.ch',
-      groupId:'6 apr. 2014'
+      amount:13400,
+      orderId: 'TX'+Date.now()
+//      email:'test@transaction.ch'
+//      groupId:'6 apr. 2014'
     });
 
     // First we need a card
