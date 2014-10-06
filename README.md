@@ -1,5 +1,5 @@
 ## Main usage
-The purpose of this project is to provide a simple and intiutive API to handle the postfinance gateway. This API mainly focus on the DirectLink and Alias modules. It's bean designed to work on server side.
+The purpose of this project is to provide a simple and intiutive API to handle the postfinance gateway. This API mainly focus on the DirectLink and Alias modules. It has bean designed to work on server side.
 
 #### Credential
 Node postfinance API is based on the original idea from [Daimyo](https://github.com/HerdHound/Daimyo).
@@ -35,6 +35,9 @@ cloned repository:
     git clone https://github.com/evaletolab/node-postfinance.git
     cd /your/project/dir
     npm install /path/to/postfinance/clone
+
+##Features
+
 
 ## Basic usage
 ```javascript
