@@ -1,7 +1,7 @@
 ## Main usage
 The purpose of this project is to provide a simple and intiutive API to handle the postfinance gateway. This API mainly focus on the DirectLink and Alias modules. It's bean designed to work on server side.
 
-## Credential
+#### Credential
 Node postfinance API is based on the original idea from [Daimyo](https://github.com/HerdHound/Daimyo).
 
 ## Installation
