@@ -12,6 +12,7 @@ var getAdjustedDateparts = require('./fixtures/helpers').getAdjustedDateparts;
 describe("postfinance.card", function(){
 
   var postfinance = require('../index.js');
+  var config = require('../lib/config');
   var messages = require('../lib/messages');
   var test = exports;
 
@@ -29,7 +30,8 @@ describe("postfinance.card", function(){
   testSettings.debug = false; // Enables *blocking* debug output to STDOUT
 
 
-  before(function(done){
+  before(function(done){    
+    config.reset()
     done()
   });
   var card;
@@ -86,7 +88,6 @@ describe("postfinance.card", function(){
     year: testExpiredDate[0].toString(),
     month: testExpiredDate[1].toString()
   };
-
   it("Configure and lock configuration", function(done){
     testSettings.allowMultipleSetOption = false;
     postfinance.configure(testSettings);
@@ -126,7 +127,7 @@ describe("postfinance.card", function(){
     payload.OWNERCITY.should.equal('genève'), 
     payload.OWNERZIP.should.equal('1208'),
     payload.GLOBORDERID.should.equal('groupXXXXXX'),
-    payload.COM.should.equal('"hello world"')
+    payload.COMPLUS.should.equal('"hello world"')
 
     // card format
     card.paymentMethod.should.equal('Postfinance card'),

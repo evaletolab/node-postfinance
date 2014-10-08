@@ -11,18 +11,20 @@ var getAdjustedDateparts = require('./fixtures/helpers').getAdjustedDateparts;
 describe("postfinance.create", function(){
   var postfinance = require('../index.js');
   var messages = require('../lib/messages');
+  var config=require('../lib/config')
   var testNonExpiredDate = getAdjustedDateparts(12); // One year in future
   var testExpiredDate = getAdjustedDateparts(-12); // One year ago
-
   var testSettings = require('../config');
+  var sharedTransaction;
 
 
   // testSettings.sandbox = true;
   testSettings.enabled = false; // Does not make any actual API calls if false
-  testSettings.debug = false; // Enables *blocking* debug output to STDOUT
+  testSettings.debug = true; // Enables *blocking* debug output to STDOUT
 
 
   before(function(done){
+    config.reset()
     done()
   });
   var card;
@@ -71,7 +73,7 @@ var requestPaymentPage = {
   };
 
   var sandboxInvalidCard = {
-    number: '4242-4242-4242-4242',
+    number: '4242-4242-4242-424',
     csc: '123',
     year: testNonExpiredDate[0].toString(),
     month: testNonExpiredDate[1].toString()
@@ -89,6 +91,7 @@ var requestPaymentPage = {
 
   it("Configure and lock configuration", function(done){
     testSettings.allowMultipleSetOption = false;
+
     postfinance.configure(testSettings);
 
     done()
@@ -101,11 +104,11 @@ var requestPaymentPage = {
   it("Create an alias", function(done){    
     this.timeout(20000);
     var Card = postfinance.Card;
-    var card = new Card(testCard);
+    var card = new Card(testCard);//sandboxValidCard
     
-    card.should.have.property('create');
+    card.should.have.property('publish');
 
-    card.create(testAlias,function(err,res) {
+    card.publish(testAlias,function(err,res) {
       // ORDERID="00123" 
       // PAYID="35562138" 
       // NCSTATUS="0" 
@@ -165,7 +168,7 @@ var requestPaymentPage = {
       done()
     }
 
-    card.create(testAlias,function(err) {
+    card.publish(testAlias,function(err) {
       card.load(onLoad);
     });
   });
@@ -314,7 +317,7 @@ var requestPaymentPage = {
     var transaction;
 
     
-    transaction = new postfinance.Transaction({
+    sharedTransaction = new postfinance.Transaction({
       operation: 'purchase',
       amount:13400,
       orderId: 'TX'+Date.now(),
@@ -325,104 +328,126 @@ var requestPaymentPage = {
     // First we need a card
     var card = new postfinance.Card(testAlias);
 
-    transaction.process(card, function(err){
+    sharedTransaction.process(card, function(err,res){
       should.not.exist(err);
+      //  paiem. ID  
+      //    Réf march, Statut, Autorisation, Date paiement, Total, Fichier / ligne, NCID,  
+      //    Erreur,  Action,  Accept in, Méth paiement, num card/cpt
+      // check BRAND
+      // check CARDNO OR ALIAS
+      // check transaction.date
+      // check STATUS
+      // check ACCEPTANCE
+      // check ECI (7)
       done()        
     });
 
 
   });
 
-  it.skip("Execute transaction with bad card", function(done){
+it("cancel transaction ", function(done){
+    this.timeout(20000)
+    var transaction=sharedTransaction;
+
+    
+
+    // First we need a card
+    var card = new postfinance.Card(testAlias);
+
+    transaction.cancel(card, function(err,res){
+      console.log("debug",err)
+      should.not.exist(err);
+      //  paiem. ID  
+      //    Réf march, Statut, Autorisation, Date paiement, Total, Fichier / ligne, NCID,  
+      //    Erreur,  Action,  Accept in, Méth paiement, num card/cpt
+      // check BRAND
+      // check CARDNO OR ALIAS
+      // check transaction.date
+      // check STATUS
+      // check ACCEPTANCE
+      // check ECI (7)
+      done()        
+    });
+
+
+  });
+
+
+  it("Execute transaction with bad card", function(done){
+    this.timeout(20000)
     var transaction;
 
-    function callback(err) {
-      should.not.exist(err); // Failed transaction is not an error
-      transaction.should.have.property('receipt');
-      transaction.receipt.should.have.property('success');
-      transaction.receipt.success.should.equal(false);
-      transaction.should.have.property('messages');
-      transaction.messages.should.have.property('errors');
-      transaction.messages.errors.should.have.property('transaction');
-      transaction.messages.errors.transaction.should.contain('Declined');
-    }
-
+    
     transaction = new postfinance.Transaction({
       operation: 'purchase',
-      data: {
-        billingReference: '123',
-        customerReference: '123',
-        amount: 10
-      }
+      amount:13400,
+      orderId: 'TX'+Date.now(),
+      email:'test@transaction.ch',
+      groupId:'gp-6 apr. 2014'
     });
     
     var card = new postfinance.Card(sandboxInvalidCard);
 
-    card.createAlias(testAlias,function(err) {
-      // We have the alias now.
-      card.should.have.property('alias');
-      transaction.process(card, callback);
+    transaction.process(card, function(err,res){
+      should.exist(err);
+      // Numéro de carte incorrect ou incompatible
+      err.code.should.equal(50001054)
+      done()        
     });
-
-    done()
   });
 
-  it.skip("Using transactions with wrong currency", function(done){
+  it("Using transactions with wrong currency", function(done){
     var transaction;
 
-    function callback(err) {
-      should.exist(err);
-      err.should.have.property('category');
-      err.category.should.equal('system');
-      err.should.have.property('message');
-      err.message.should.equal('Currency not allowed');
-      err.should.have.property('details');
-      err.details.should.equal('GBP');
-      transaction.should.not.have.property('receipt');
-    }
-
+    this.timeout(20000)
+    var transaction;
+    
     transaction = new postfinance.Transaction({
       operation: 'purchase',
-      data: {
-        amount: 10,
-        currency: 'GBP'
-      }
+      amount:13400,
+      orderId: 'TX'+Date.now(),
+      email:'test@transaction.ch',
+      groupId:'gp-6 apr. 2014',
+      currency:'USD'
     });
+    
+    var card = new postfinance.Card(sandboxValidCard);
 
+    transaction.process(card, function(err,res){
+      should.exist(err);
+      err.message.should.equal('Currency not allowed')
+      done()        
+    });
+  });
+
+
+
+  it("Remove an alias", function(done){    
+    this.timeout(20000);
     // First we need a card
-    var card = new postfinance.Card(sandboxValidCard);
+    var card = new postfinance.Card(testAlias);
+    
+    card.should.have.property('redact');
 
-    card.createAlias(testAlias,function(err) {
-      // We have the alias now.
-      card.should.have.property('alias');
-      transaction.process(card, callback);
+    card.redact(testAlias,function(err,res) {
+      // ORDERID="00123" 
+      // PAYID="35562138" 
+      // NCSTATUS="0" 
+      // NCERROR="0" 
+      // ACCEPTANCE="test123" 
+      // STATUS="5" 
+      // IPCTY="99" 
+      // CCCTY="US" 
+      // ECI="7" 
+      // CVCCheck="NO" 
+      // AAVCheck="NO" 
+      // VC="NO" 
+      // amount="1" currency="CHF" PM="CreditCard" BRAND="MasterCard" 
+      // ALIAS="testalias" 
+      // NCERRORPLUS="!"
+      should.not.exist(err);
+      done()
     });
-    done()
-  });
-
-  it.skip("Card with no alias cannot be used for transaction", function(done){
-    var transaction;
-
-    function callback(err) {
-      should.exist(err);
-      err.should.have.property('category');
-      err.category.should.equal('system');
-      err.should.have.property('message');
-      err.message.should.equal('Card has no alias');
-      transaction.should.not.have.property('receipt');
-    }
-
-    transaction = new postfinance.Transaction({
-      operation: 'purchase',
-      data: {
-        amount: 10,
-        currency: 'USD'
-      }
-    });
-
-    var card = new postfinance.Card(sandboxValidCard);
-    transaction.process(card, callback);
-    done()
   });
 
 });
