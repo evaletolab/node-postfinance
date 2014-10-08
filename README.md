@@ -44,10 +44,34 @@ will use most of the time: `Card` and `Transaction`.
 Once created the card objects have the following methods:
 
  + `card.publish()`      : publish a payment methods
+
+```javascript
+var cardData = {..card detail.}, 
+    opts={alias:'testalias'};
+     
+var card = new postfinance.Card(cardData);
+ 
+#Instructs Postfinance to retain (save permanently) the payment method
+card.publish(opts,function(err) {
+  if (err) {
+     console.log(err);
+     return;
+  }
+  console.log('Payment token: ' + card.token);
+});
+```
  + `card.redact()`       : instructs postfinance to redact (delete) the payment method
-   *Note that Postfinance don't allow you to delete an alias with DirectLink (server-to-server). 
-   You can only do this operation by using E-commerce pages. We solve the problem by updating 
-   an alias with a test visa card that expire a the end of current month.*
+*Note that Postfinance don't allow you to delete an alias with DirectLink (server-to-server). You can only do this operation by using E-commerce pages. We solve the problem by updating an alias with a test visa card that expire a the end of current month.*
+
+```javascript
+var card = new postfinance.Card(testAlias),
+    testAlias={alias:'testalias'};
+    
+card.redact(testAlias,function(err,res) {
+  if(err){...}
+});
+```
+
 
  
 The transaction object is constructed using the `Transaction` constructor. The
