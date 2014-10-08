@@ -46,12 +46,13 @@ Once created the card objects have the following methods:
  + `card.publish()`      : publish a payment methods
 
 ```javascript
-var cardData = {..card detail.}, 
+var cardData = {..card detail..}, 
     opts={alias:'testalias'};
      
 var card = new postfinance.Card(cardData);
  
-#Instructs Postfinance to retain (save permanently) the payment method
+//Instructs Postfinance to retain (save permanently) the payment method
+//opts describe the name of the alias 
 card.publish(opts,function(err) {
   if (err) {
      console.log(err);
@@ -65,7 +66,7 @@ card.publish(opts,function(err) {
 
 ```javascript
 var card = new postfinance.Card(testAlias),
-    testAlias={alias:'testalias'};
+    testAlias={alias:'testalias'}; // alias name of the saved card
     
 card.redact(testAlias,function(err,res) {
   if(err){...}
