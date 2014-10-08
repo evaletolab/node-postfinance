@@ -5,6 +5,7 @@ Node postfinance API is based on the original idea from [Daimyo](https://github.
 
 ## Installation
 From github,    
+
     git clone https://github.com/evaletolab/node-postfinance
     cd node-postfinance
     npm install
