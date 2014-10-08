@@ -36,17 +36,20 @@ cloned repository:
     npm install /path/to/postfinance/clone
 
 ##Features
-When using the node-payment gateway, you basically deal with two separate concepts: 
+When using the node-postfinance api, you basically deal with two separate concepts: 
 payment methods (cards) and transactions (making/loosing money).
-node-payment's API provides two main constructors that you
+node-postfinance's API provides two main constructors that you
 will use most of the time: `Card` and `Transaction`.
 
 Once created the card objects have the following methods:
 
- + `card.create()`      : creates a new payment methods
- + `card.update()`      : updates the payment method details
- + `card.redact()`      : instructs PostFinance to tag the payment method from vault
+ + `card.publish()`      : publish a payment methods
+ + `card.redact()`       : instructs postfinance to redact (delete) the payment method
+   *Note that Postfinance don't allow you to delete an alias with DirectLink (server-to-server). 
+   You can only do this operation by using E-commerce pages. We solve the problem by updating 
+   an alias with a test visa card that expire a the end of current month.*
 
+ 
 The transaction object is constructed using the `Transaction` constructor. The
 transaction object only has one method:
 
