@@ -58,7 +58,7 @@ card.publish(opts,function(err) {
      console.log(err);
      return;
   }
-  console.log('Payment token: ' + card.token);
+  console.log('Payment alias: ' + card.alias);
 });
 ```
  + `card.redact()`       : instructs postfinance to redact (delete) the payment method
