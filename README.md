@@ -10,14 +10,14 @@ From github,
     cd node-postfinance
     npm install
     NODE_ENV=test /node_modules/.bin/mocha 
+    
+    #install it in your project
+    cd /your/project/dir
+    npm install /path/to/postfinance/clone
 
 Easiest way to install node-postfinance is by using npm:
 
     npm install node-postfinance
-
-That will install the latest release that we have made. Not that releases prior
-to 0.0.1 are not considered production-ready. See the _Status_ section of this 
-file to find out more about the current progress.
 
 Since node-postfinance is currently still very beta, if you wish to get a newer version
 with more features (please don't do this in production, though), you can add it
@@ -29,17 +29,6 @@ as a dependency to your packages.json like this:
        ....
     }
 
-Using the above method, it is also possible to address individual commits. Go
-to GitHub, switch to a commit you want to depend on, click the download link,
-and right-click the tarball button, copy URL, and paste it into your dependency
-list like above.
-
-Finally, you can clone the node-postfinance repository using git and install from the
-cloned repository:
-    
-    git clone https://github.com/evaletolab/node-postfinance.git
-    cd /your/project/dir
-    npm install /path/to/postfinance/clone
 
 ##Features
 When using the node-postfinance api, you basically deal with two separate concepts: 
