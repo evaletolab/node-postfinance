@@ -1,5 +1,5 @@
 ## Main usage
-The purpose of this project is to provide a simple and intiutive API to handle the postfinance gateway. This API mainly focus on the DirectLink and Alias modules. It has bean designed to work on server side.
+The purpose of this project is to provide a simple and intiutive API to handle the postfinance gateway. This API mainly focus on the [DirectLink](docs/PostFinance_DirectLink_EN.pdf) and [Alias](docs/PostFinance_Alias_FR.pdf) modules. It has bean designed to work on server side.
 
 Node postfinance API is based on the original idea from [Daimyo](https://github.com/HerdHound/Daimyo).
 
