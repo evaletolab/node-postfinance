@@ -30,7 +30,7 @@ as a dependency to your packages.json like this:
     }
 
 
-##Features
+##Overview
 When using the node-postfinance api, you basically deal with two separate concepts: 
 payment methods (cards) and transactions (making/loosing money).
 node-postfinance's API provides two main constructors that you
@@ -57,6 +57,7 @@ card.publish(opts,function(err) {
 });
 ```
  + `card.redact()`       : instructs postfinance to redact (delete) the payment method
+
 *Note that Postfinance don't allow you to delete an alias with DirectLink (server-to-server). You can only do this operation by using E-commerce pages. We solve the problem by updating an alias with a test visa card that expire a the end of current month.*
 
 ```javascript
