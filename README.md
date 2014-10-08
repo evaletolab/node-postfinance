@@ -171,18 +171,6 @@ The dox-generated API documentation can be found at
 also generate the documentation for offline use using the provided makefile.
 See _Offline documentaiton_ section for instructions.
 
-## Offline documentation
-
-You can generate offline documentation for node-postfinance using the
-[dox](https://github.com/visionmedia/dox/) utility from Visionmedia. Install
-dox by typing:
-
-    sudo npm install dox -g
-
-Now you can simpy type ``make docs`` in the project directory. The
-documentation will be generated in a newly created ``docs`` directory. To
-remove the documentation, just type ``make clean``.
-
 ## Running unit tests
 
 To run unit tests you need [Mocha](https://github.com/visionmedia/mocha),
@@ -194,11 +182,10 @@ create a file called `config.js`, and add your keys there:
     exports.apiPassword = 'xxxxxxxxxxxxxxxxxxxxxxxx';
     exports.shaSecret = 'xxxxxxxxxxxxxxxxxxxxxxxx';
 
-The tests are run simply by simply typing `make` in the project directory.
-Alternatively, you can type:
+The tests are run simply by simply typing:
 
     mocha /test/file-to-test.js 
-    mocha
+    NODE_ENV=test mocha
 
 Do not run tests with your live processor. Make sure you are running in a
 sandbox.
@@ -222,9 +209,6 @@ call ``valueOf()`` or ``toString()`` on the key first:
 
 This also applies to situations where you are passing values that are not
 simple types (String, Number), Object, or Array instances.
-
-## Reporting bugs
-
 
 ## License
 The API is available under AGPL V3 to protect the long term interests of the community – you are free to use it with no restrictions but if you change the server code, then those code changes must be contributed back.
