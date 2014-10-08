@@ -1,7 +1,6 @@
 ## Main usage
 The purpose of this project is to provide a simple and intiutive API to handle the postfinance gateway. This API mainly focus on the DirectLink and Alias modules. It has bean designed to work on server side.
 
-#### Credential
 Node postfinance API is based on the original idea from [Daimyo](https://github.com/HerdHound/Daimyo).
 
 ## Installation
@@ -37,6 +36,24 @@ cloned repository:
     npm install /path/to/postfinance/clone
 
 ##Features
+When using the node-payment gateway, you basically deal with two separate concepts: 
+payment methods (cards) and transactions (making/loosing money).
+node-payment's API provides two main constructors that you
+will use most of the time: `Card` and `Transaction`.
+
+Once created the card objects have the following methods:
+
+ + `card.create()`      : creates a new payment methods
+ + `card.update()`      : updates the payment method details
+ + `card.redact()`      : instructs PostFinance to tag the payment method from vault
+
+The transaction object is constructed using the `Transaction` constructor. The
+transaction object only has one method:
+
+ + `transaction.process()`
+
+This method takes a card object as its argument, and runs a transaction against
+the payment method associated with the card.
 
 
 ## Basic usage
@@ -48,22 +65,24 @@ cloned repository:
       pspid: 'xxxxxxxxxxxxxxxxxxxxxxxx',
       apiUser: 'xxxxxxxxxxxxxxxxxxxxxxxx',
       apiPassword: 'xxxxxxxxxxxxxxxxxxxxxxxx',
-      currency: 'CHF', // default
+      withAlias:true, // default
+      currency: 'CHF',// default
       debug: false, // default, should stay off in production at all costs
-      enabled: true, // default
+      enabled: true,// default
     });
 
     // Using transparent redirect with Express
-    app.get('/redirect_target', function(req, res, next) {
-        var token = req.param('payment_method_token');
-        var card = new postfinance.Card({alias: alias});
+    app.get('/order/card', function(req, res, next) {
+        var alias = req.body.alias, usage = req.body.aliasUsage ;
+        var card = new postfinance.Card({alias: alias, aliasUsage:usage});
 
         // Create a new transaction
         var transactionData = {
-            amount: 100,
-            billingReference: 'my billing ref #',
-            customerReference: "user's customer ref #",
-            type: 'purchase'
+          operation: 'purchase', // action
+          amount:13400,  // amount *100
+          orderId: 'TX'+Date.now(), // order handle
+          email:'test@hoho.ch', // mail
+          groupId:'grp-XYZ' // group this transaction
         }
 
         // Process the transaction using the card object
@@ -71,27 +90,16 @@ cloned repository:
 
            if (err) {
              // Handle error and return error page
-             res.render('sorry', {});
+             res.render('sorry', {error:err});
              return;
            }
 
-           if (!transaction.messages.info || 
-               transaction.messages.info[0] === 'success') {
-             // The transaction was not successful
-             res.render('sorry', {messages: transaction.messages});
-             return;
-           }
 
            // Ah, finally! All ur moneys are belong to us!
-           res.render('kthxbye', {});
+           res.render('thks', {});
 
            // Don't forget to Email receipt!
-           emailReceipt({
-             issuer: card.issuer,
-             cardNo: '****-****-****-' + card.last4, 
-             date: transaction.receipt.createdAt,
-             amount: transaction.receipt.amount
-           });
+           emailReceipt({});
         });
     });
 ```
