@@ -4,6 +4,11 @@ The purpose of this project is to provide a simple and intiutive API to handle t
 Node postfinance API is based on the original idea from [Daimyo](https://github.com/HerdHound/Daimyo).
 
 ## Installation
+From github,    
+    git clone https://github.com/evaletolab/node-postfinance
+    cd node-postfinance
+    npm install
+    NODE_ENV=test /node_modules/.bin/mocha 
 
 Easiest way to install node-postfinance is by using npm:
 
