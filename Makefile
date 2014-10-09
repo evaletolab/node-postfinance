@@ -7,10 +7,10 @@ checkamd:
 clean:
 	rm -rf docs
 
-ashigaru:
-	uglifyjs support/ashigaru.js > "ashigaru-`cat VERSION`.min.js"
+angular:
+	uglifyjs support/js/*.js > "angular-postfinance-`cat VERSION`.min.js"
 
 docs:
-	mkdir docs && dox -p --title "Daimyo API documentation" -i GETTING_STARTED.mkd lib/config.js lib/postfinance.js lib/transaction.js support/ashigaru.js lib/check.js lib/xmlutils.js lib/authpost.js lib/ducttape.js lib/messages.js lib/error.js > docs/postfinance.html
+	mkdir docs && dox -p --title "Postfinance API documentation" -i GETTING_STARTED.mkd lib/config.js lib/postfinance.js lib/transaction.js support/ashigaru.js lib/check.js lib/xmlutils.js lib/authpost.js lib/ducttape.js lib/messages.js lib/error.js > docs/postfinance.html
 
 .PHONY: test
