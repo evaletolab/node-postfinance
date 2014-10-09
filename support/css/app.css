@@ -1,0 +1,85 @@
+/*
+ * Style tweaks
+ * --------------------------------------------------
+ */
+
+
+.visa {
+    background-image: ;
+    background-size: auto 50%;
+    background-repeat: no-repeat;
+    background-position-x: 98%;
+    background-position-y: 50%;
+}
+
+.amex {
+    background-image: ;
+    background-size: auto 80%;
+    background-repeat: no-repeat;
+    background-position-x: 98%;
+    background-position-y: 50%;
+}
+
+.mastercard {
+    background-image: ;
+    background-size: auto 80%;
+    background-repeat: no-repeat;
+    background-position-x: 98%;
+    background-position-y: 50%;
+}
+
+.discover {
+    background-image: ;
+    background-size: auto 80%;
+    background-repeat: no-repeat;
+    background-position-x: 98%;
+    background-position-y: 50%;
+}
+
+.payment .ng-invalid {
+  border-color: #f00 !important;
+}
+
+.payment .panel-body { 
+  padding:0px; 
+}
+.payment .list-group { 
+  margin-bottom: 0; 
+}
+.payment .panel-title { 
+  display:inline 
+}
+.payment .label-info { 
+  float: right; 
+}
+.payment li.list-group-item {
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid #ddd;
+  float: left;
+  width: 100%;
+}
+.payment li.list-group-item:hover { 
+  background-color: rgba(86,61,124,.1); 
+}
+.payment li.list-group-item img{
+  max-width: 80px;
+}
+.payment .mic-info { 
+  color: #666666;font-size: 11px; 
+}
+.payment .action {
+ margin-top:5px; 
+}
+.payment .comment-text { 
+  font-size: 12px; 
+}
+.payment .btn-block { 
+  border-top-left-radius:0px;border-top-right-radius:0px; 
+}
+
+/*
+ * Off Canvas
+ * --------------------------------------------------
+ */
+
