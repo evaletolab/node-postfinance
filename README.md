@@ -1,17 +1,23 @@
 ## Main usage
-The purpose of this project is to provide a simple and intiutive API to handle the postfinance gateway. This API mainly focus on the DirectLink and Alias modules. It has bean designed to work on server side.
+The purpose of this project is to provide a simple and intiutive API to handle the postfinance gateway. This API mainly focus on the [DirectLink](docs/PostFinance_DirectLink_EN.pdf) and [Alias](docs/PostFinance_Alias_FR.pdf) modules. It has bean designed to work on server side.
 
 Node postfinance API is based on the original idea from [Daimyo](https://github.com/HerdHound/Daimyo).
 
 ## Installation
+From github,    
+
+    git clone https://github.com/evaletolab/node-postfinance
+    cd node-postfinance
+    npm install
+    NODE_ENV=test /node_modules/.bin/mocha 
+    
+    #install it in your project
+    cd /your/project/dir
+    npm install /path/to/postfinance/clone
 
 Easiest way to install node-postfinance is by using npm:
 
     npm install node-postfinance
-
-That will install the latest release that we have made. Not that releases prior
-to 0.0.1 are not considered production-ready. See the _Status_ section of this 
-file to find out more about the current progress.
 
 Since node-postfinance is currently still very beta, if you wish to get a newer version
 with more features (please don't do this in production, though), you can add it
@@ -23,30 +29,48 @@ as a dependency to your packages.json like this:
        ....
     }
 
-Using the above method, it is also possible to address individual commits. Go
-to GitHub, switch to a commit you want to depend on, click the download link,
-and right-click the tarball button, copy URL, and paste it into your dependency
-list like above.
 
-Finally, you can clone the node-postfinance repository using git and install from the
-cloned repository:
-    
-    git clone https://github.com/evaletolab/node-postfinance.git
-    cd /your/project/dir
-    npm install /path/to/postfinance/clone
-
-##Features
-When using the node-payment gateway, you basically deal with two separate concepts: 
+##Overview
+When using the node-postfinance api, you basically deal with two separate concepts: 
 payment methods (cards) and transactions (making/loosing money).
-node-payment's API provides two main constructors that you
+node-postfinance's API provides two main constructors that you
 will use most of the time: `Card` and `Transaction`.
 
 Once created the card objects have the following methods:
 
- + `card.create()`      : creates a new payment methods
- + `card.update()`      : updates the payment method details
- + `card.redact()`      : instructs PostFinance to tag the payment method from vault
+ + `card.publish()`      : publish a payment methods
 
+```javascript
+var cardData = {..card detail..}, 
+    opts={alias:'testalias'};
+     
+var card = new postfinance.Card(cardData);
+ 
+//Instructs Postfinance to retain (save permanently) the payment method
+//opts describe the name of the alias 
+card.publish(opts,function(err) {
+  if (err) {
+     console.log(err);
+     return;
+  }
+  console.log('Payment alias: ' + card.alias);
+});
+```
+ + `card.redact()`       : instructs postfinance to redact (delete) the payment method
+
+*Note that Postfinance don't allow you to delete an alias with DirectLink (server-to-server). You can only do this operation by using E-commerce pages. We solve the problem by updating an alias with a test visa card that expire a the end of current month.*
+
+```javascript
+var card = new postfinance.Card(testAlias),
+    testAlias={alias:'testalias'}; // alias name of the saved card
+    
+card.redact(testAlias,function(err,res) {
+  if(err){...}
+});
+```
+
+
+ 
 The transaction object is constructed using the `Transaction` constructor. The
 transaction object only has one method:
 
@@ -147,18 +171,6 @@ The dox-generated API documentation can be found at
 also generate the documentation for offline use using the provided makefile.
 See _Offline documentaiton_ section for instructions.
 
-## Offline documentation
-
-You can generate offline documentation for node-postfinance using the
-[dox](https://github.com/visionmedia/dox/) utility from Visionmedia. Install
-dox by typing:
-
-    sudo npm install dox -g
-
-Now you can simpy type ``make docs`` in the project directory. The
-documentation will be generated in a newly created ``docs`` directory. To
-remove the documentation, just type ``make clean``.
-
 ## Running unit tests
 
 To run unit tests you need [Mocha](https://github.com/visionmedia/mocha),
@@ -170,11 +182,10 @@ create a file called `config.js`, and add your keys there:
     exports.apiPassword = 'xxxxxxxxxxxxxxxxxxxxxxxx';
     exports.shaSecret = 'xxxxxxxxxxxxxxxxxxxxxxxx';
 
-The tests are run simply by simply typing `make` in the project directory.
-Alternatively, you can type:
+The tests are run simply by simply typing:
 
     mocha /test/file-to-test.js 
-    mocha
+    NODE_ENV=test mocha
 
 Do not run tests with your live processor. Make sure you are running in a
 sandbox.
@@ -199,4 +210,25 @@ call ``valueOf()`` or ``toString()`` on the key first:
 This also applies to situations where you are passing values that are not
 simple types (String, Number), Object, or Array instances.
 
-## Reporting bugs
+## License
+The API is available under AGPL V3 to protect the long term interests of the community – you are free to use it with no restrictions but if you change the server code, then those code changes must be contributed back.
+
+Copyright (c) 2014 Olivier Evalet (http://evaletolab.ch/)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
