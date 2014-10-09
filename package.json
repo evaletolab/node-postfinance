@@ -1,24 +1,22 @@
 {
-    "name": "daimyo",
-    "description": "Samurai payment gateway API client library for Node.js",
-    "version": "0.1.5",
-    "author" : "Herd Hound <branko@herdhound.com>",
+    "name": "node-postfinance",
+    "description": "Postfinance payment gateway API client library for Node.js",
+    "version": "0.0.1",
+    "author" : "Olivier Evalet <evaleto@gmail.com>",
     "maintainers":[
         {
-            "name":"Branko Vukelic",
-            "email":"branko@herdhound.com"
+            "name":"Olivier Evalet",
+            "email":"evaleto@gmail.com"
         }
     ],
-    "homepage": "http://herdhound.github.com/Daimyo/",
+    "homepage": "http://github.com/evaletolab/node-postfinance",
     "repository" : {
         "type" : "git",
-        "url" : "https://github.com/HerdHound/Daimyo.git"
+        "url" : "https://github.com/evaletolab/node-postfinance.git"
     },
-    "main" : "./lib/mail",
     "licenses" : [
         {
-            "type": "MIT",
-            "url": "https://github.com/HerdHound/Daimyo/blob/master/LICENSE"
+            "type": "GPL"
         }
     ],
     "dependencies": { 
@@ -30,5 +28,5 @@
         "uglify-js": ">= 2.x.x"
     },
     "engine": [ "node >=1.x.0" ],
-    "keywords": ["payment gateway", "payment processing", "samurai", "feefighters"]
+    "keywords": ["payment gateway", "payment processing", "postfinance"]
 }
