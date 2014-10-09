@@ -1,5 +1,6 @@
 /**
- * Daimyo - main module
+ * Postfinance - main module
+ * Copyright (c)2011, by Olivier Evalet <evaleto@gmail.com>
  * Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>
  * Licensed under MIT license (see LICENSE)
  */
