@@ -20,7 +20,7 @@ describe("postfinance.create", function(){
 
   // testSettings.sandbox = true;
   testSettings.enabled = false; // Does not make any actual API calls if false
-  testSettings.debug = true; // Enables *blocking* debug output to STDOUT
+  testSettings.debug = false; // Enables *blocking* debug output to STDOUT
 
 
   before(function(done){
