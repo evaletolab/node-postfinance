@@ -15,7 +15,7 @@ From github,
     cd /your/project/dir
     npm install /path/to/postfinance/clone
 
-Easiest way to install node-postfinance is by using npm:
+Easiest way to install node-postfinance is by using npm *(not yet ready)*:
 
     npm install node-postfinance
 
