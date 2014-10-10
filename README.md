@@ -75,6 +75,8 @@ The transaction object is constructed using the `Transaction` constructor. The
 transaction object only has one method:
 
  + `transaction.process()`
+ + `transaction.cancel()`
+ + `transaction.refund()`
 
 This method takes a card object as its argument, and runs a transaction against
 the payment method associated with the card.
