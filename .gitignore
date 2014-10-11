@@ -1,5 +1,5 @@
 *.swo
 *.swp
 tmp
-config.js
+config-pf.js
 node_modules
