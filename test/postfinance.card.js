@@ -255,6 +255,7 @@ describe("postfinance.card", function(){
     card.should.have.property('lastName');
     card.lastName.should.equal('Bar Joe');
 
+    card.isExpired().should.equal(false);
 
     done()
   });

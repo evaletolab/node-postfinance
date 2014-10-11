@@ -14,7 +14,7 @@ describe("postfinance.cancel", function(){
   var config=require('../lib/config')
   var testNonExpiredDate = getAdjustedDateparts(12); // One year in future
   var testExpiredDate = getAdjustedDateparts(-12); // One year ago
-  var testSettings = require('../config');
+  var testSettings = require('../config-pf');
 
 
   // testSettings.sandbox = true;
