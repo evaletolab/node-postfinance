@@ -15,7 +15,7 @@ From github,
     cd /your/project/dir
     npm install /path/to/postfinance/clone
 
-Easiest way to install node-postfinance is by using npm:
+Easiest way to install node-postfinance is by using npm *(not yet ready)*:
 
     npm install node-postfinance
 
@@ -75,6 +75,8 @@ The transaction object is constructed using the `Transaction` constructor. The
 transaction object only has one method:
 
  + `transaction.process()`
+ + `transaction.cancel()`
+ + `transaction.refund()`
 
 This method takes a card object as its argument, and runs a transaction against
 the payment method associated with the card.
@@ -214,6 +216,7 @@ simple types (String, Number), Object, or Array instances.
 The API is available under AGPL V3 to protect the long term interests of the community – you are free to use it with no restrictions but if you change the server code, then those code changes must be contributed back.
 
 Copyright (c) 2014 Olivier Evalet (http://evaletolab.ch/)
+Copyright (c) 2011, by Branko Vukelic <branko@herdhound.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the “Software”), to deal
