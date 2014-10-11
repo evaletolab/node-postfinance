@@ -351,6 +351,23 @@ describe("postfinance.card", function(){
     done()
   });
 
+
+ 
+  it("Card hidden number VISA", function(done){
+    var Card = postfinance.Card;
+    card = new Card(sandboxValidCard);
+    card.hiddenNumber.should.equal('41XXXXXXXXXX1111')
+    done()
+  });
+
+  it("Card hidden number MC", function(done){
+    var Card = postfinance.Card;
+    card = new Card(testCard);
+    card.hiddenNumber.should.equal('53XXXXXXXXXX9999')
+    done()
+  });
+
+
   it("Card expiration check", function(done){
     var Card = postfinance.Card;
 
