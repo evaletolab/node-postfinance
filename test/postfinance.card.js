@@ -201,6 +201,7 @@ describe("postfinance.card", function(){
     done()
   });
 
+
   it("Creating a bogus card", function(done){
     var Card = postfinance.Card;
 
@@ -225,6 +226,39 @@ describe("postfinance.card", function(){
     card.number.should.equal('4111111111111111');
     done()
   });
+
+  it("Creating a card from his short representation", function(done){
+    var Card = postfinance.Card;
+
+    card = new Card({
+      name:'Foo Bar Joe',
+      number:'4111-1111-1111-1111',
+      expiry:'0915',
+      csc:'123'
+    });
+
+    card.should.have.property('number');
+    card.number.should.equal('4111111111111111');
+
+    card.should.have.property('issuer');
+    card.issuer.should.equal('Visa');
+
+    card.should.have.property('year');
+    card.year.should.equal(15);
+
+    card.should.have.property('month');
+    card.month.should.equal(9);
+
+    card.should.have.property('firstName');
+    card.firstName.should.equal('Foo');
+
+    card.should.have.property('lastName');
+    card.lastName.should.equal('Bar Joe');
+
+
+    done()
+  });
+
 
   it("Creating card without card number or CSC throws", function(done){
     var Card = postfinance.Card;
