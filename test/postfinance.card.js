@@ -244,7 +244,7 @@ describe("postfinance.card", function(){
     card.issuer.should.equal('Visa');
 
     card.should.have.property('year');
-    card.year.should.equal(15);
+    card.year.should.equal(2015);
 
     card.should.have.property('month');
     card.month.should.equal(9);
@@ -259,6 +259,37 @@ describe("postfinance.card", function(){
 
     done()
   });
+
+  it("Card with date as MM/YY", function(done){
+    var Card = postfinance.Card;
+
+    card = new Card({
+      name:'Foo Bar Joe',
+      number:'4111-1111-1111-1111',
+      expiry:'09/15',
+      csc:'123'
+    });
+    card.year.should.equal(2015);
+    card.month.should.equal(9);
+    card.isExpired().should.equal(false);
+    done()
+  });
+
+  it("Card with date as MM/YYYY", function(done){
+    var Card = postfinance.Card;
+
+    card = new Card({
+      name:'Foo Bar Joe',
+      number:'4111-1111-1111-1111',
+      expiry:'09/2015',
+      csc:'123'
+    });
+    card.year.should.equal(15);
+    card.month.should.equal(9);
+    card.isExpired().should.equal(false);
+    done()
+  });
+
 
 
   it("Creating card without card number or CSC throws", function(done){
