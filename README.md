@@ -8,26 +8,35 @@ From github,
 
     git clone https://github.com/evaletolab/node-postfinance
     cd node-postfinance
-    npm install
-    NODE_ENV=test /node_modules/.bin/mocha 
-    
-    #install it in your project
-    cd /your/project/dir
-    npm install /path/to/postfinance/clone
 
 Easiest way to install node-postfinance is by using npm *(not yet ready)*:
 
-    npm install node-postfinance
+    npm install --save node-postfinance
 
 Since node-postfinance is currently still very beta, if you wish to get a newer version
 with more features (please don't do this in production, though), you can add it
 as a dependency to your packages.json like this:
 
-    dependencies: {
-       ....
-      ,"postfinance": "https://github.com/evaletolab/node-postfinance/tarball/master"
-       ....
-    }
+    npm install --save https://github.com/evaletolab/node-postfinance/tarball/master
+
+## Running unit tests
+
+To run unit tests you need [Mocha](https://github.com/visionmedia/mocha),
+and [should.js](https://github.com/visionmedia/should.js). You also need to
+create a file called `config-pf.js`, and add your keys there:
+
+    exports.pspid = 'xxxxxxxxxxxxxxxxxxxxxxxx';
+    exports.apiUser = 'xxxxxxxxxxxxxxxxxxxxxxxx';
+    exports.apiPassword = 'xxxxxxxxxxxxxxxxxxxxxxxx';
+    exports.shaSecret = 'xxxxxxxxxxxxxxxxxxxxxxxx';
+
+The tests are run simply by simply typing:
+
+    ./node_modules/.bin/mocha /test/file-to-test.js 
+    NODE_ENV=test ./node_modules/.bin/mocha
+
+Do not run tests with your live processor. Make sure you are running in a
+sandbox.
 
 
 ##Overview
@@ -172,25 +181,6 @@ The dox-generated API documentation can be found at
 [evaletolab.github.com/node-postfinance/](http://evaletolab.github.com/node-postfinance/). You can
 also generate the documentation for offline use using the provided makefile.
 See _Offline documentaiton_ section for instructions.
-
-## Running unit tests
-
-To run unit tests you need [Mocha](https://github.com/visionmedia/mocha),
-and [should.js](https://github.com/visionmedia/should.js). You also need to
-create a file called `config.js`, and add your keys there:
-
-    exports.pspid = 'xxxxxxxxxxxxxxxxxxxxxxxx';
-    exports.apiUser = 'xxxxxxxxxxxxxxxxxxxxxxxx';
-    exports.apiPassword = 'xxxxxxxxxxxxxxxxxxxxxxxx';
-    exports.shaSecret = 'xxxxxxxxxxxxxxxxxxxxxxxx';
-
-The tests are run simply by simply typing:
-
-    mocha /test/file-to-test.js 
-    NODE_ENV=test mocha
-
-Do not run tests with your live processor. Make sure you are running in a
-sandbox.
 
 ## Known issues and solutions
 
