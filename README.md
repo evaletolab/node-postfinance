@@ -206,7 +206,6 @@ simple types (String, Number), Object, or Array instances.
 The API is available under AGPL V3 to protect the long term interests of the community – you are free to use it with no restrictions but if you change the server code, then those code changes must be contributed back.
 
 > Copyright (c) 2014 Olivier Evalet (http://evaletolab.ch/)
-
 > Copyright (c) 2011, by Branko Vukelic <branko@herdhound.com>
 > 
 > Permission is hereby granted, free of charge, to any person obtaining a copy
