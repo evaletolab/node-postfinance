@@ -14,7 +14,6 @@ describe("postfinance.create", function(){
   var config=require('../lib/config')
   var testNonExpiredDate = getAdjustedDateparts(12); // One year in future
   var testExpiredDate = getAdjustedDateparts(-12); // One year ago
-  var sharedTransaction;
 
   var testSettings;
 
@@ -311,12 +310,74 @@ var requestPaymentPage = {
     done()
   });
 
+  it("Ask authorisation for 130CHF and capture 120CHF get success", function(done){
+    this.timeout(20000)
+    var transaction;
+
+    
+    transaction = new postfinance.Transaction({
+      operation: 'authorize',
+      amount:13000,
+      orderId: 'TX'+Date.now(),
+      email:'test@transaction.ch',
+      groupId:'gp-6 apr. 2014'
+    });
+
+    var card = new postfinance.Card(testAlias);
+
+    transaction.process(card, function(err,res){
+      should.not.exist(err);
+      transaction.update({
+        operation:'capture',
+        amount:12000
+      });
+
+      transaction.process(card, function(err,res){
+        should.not.exist(err);
+        done()        
+      });
+    });
+  });
+
+  it("Ask authorisation for 100CHF and capture 130CHF get an error", function(done){
+    this.timeout(20000)
+    var transaction;
+
+    
+    transaction = new postfinance.Transaction({
+      operation: 'authorize',
+      amount:10000,
+      orderId: 'TX'+Date.now(),
+      email:'test@transaction.ch',
+      groupId:'gp-6 apr. 2014'
+    });
+
+    var card = new postfinance.Card(testAlias);
+
+    transaction.process(card, function(err,res){
+      should.not.exist(err);
+
+      //
+      // update the saved transaction 
+      transaction.update({
+        operation:'capture',
+        amount:13400
+      });
+
+      transaction.process(card, function(err,res){
+        should.exist(err);
+        err.code.should.equal(50001126)
+        done()        
+      });
+    });
+  });
+
   it("Execute transaction (purchase) with alias", function(done){
     this.timeout(20000)
     var transaction;
 
     
-    sharedTransaction = new postfinance.Transaction({
+    transaction = new postfinance.Transaction({
       operation: 'purchase',
       amount:13400,
       orderId: 'TX'+Date.now(),
@@ -327,7 +388,7 @@ var requestPaymentPage = {
     // First we need a card
     var card = new postfinance.Card(testAlias);
 
-    sharedTransaction.process(card, function(err,res){
+    transaction.process(card, function(err,res){
       should.not.exist(err);
       //  paiem. ID  
       //    Réf march, Statut, Autorisation, Date paiement, Total, Fichier / ligne, NCID,  
@@ -340,8 +401,6 @@ var requestPaymentPage = {
       // check ECI (7)
       done()        
     });
-
-
   });
 
 
