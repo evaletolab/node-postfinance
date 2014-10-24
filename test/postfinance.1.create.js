@@ -14,16 +14,15 @@ describe("postfinance.create", function(){
   var config=require('../lib/config')
   var testNonExpiredDate = getAdjustedDateparts(12); // One year in future
   var testExpiredDate = getAdjustedDateparts(-12); // One year ago
-  var testSettings = require('../config-pf');
   var sharedTransaction;
 
+  var testSettings;
 
-  // testSettings.sandbox = true;
-  testSettings.enabled = false; // Does not make any actual API calls if false
-  testSettings.debug = false; // Enables *blocking* debug output to STDOUT
 
 
   before(function(done){
+    testSettings = require('../config-pf');
+    testSettings.debug = false; // Enables *blocking* debug output to STDOUT
     config.reset()
     done()
   });

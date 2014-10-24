@@ -8,17 +8,17 @@ var assert = require('assert');
 var should = require('should');
 var getAdjustedDateparts = require('./fixtures/helpers').getAdjustedDateparts;
 
-describe("postfinance.cancel", function(){
+describe("postfinance.disabled", function(){
   var postfinance = require('../index.js');
   var messages = require('../lib/messages');
   var config=require('../lib/config')
   var testNonExpiredDate = getAdjustedDateparts(12); // One year in future
   var testExpiredDate = getAdjustedDateparts(-12); // One year ago
-  var testSettings
-
+  var testSettings;
 
   before(function(done){
     testSettings = require('../config-pf');
+    testSettings.enabled = false; // Does not make any actual API calls if false
     testSettings.debug = false; // Enables *blocking* debug output to STDOUT
     config.reset()
     done()
@@ -63,7 +63,7 @@ describe("postfinance.cancel", function(){
 
     card.publish(testAlias,function(err,res) {
       should.not.exist(err);
-      card.alias.should.equal(testAlias.alias);
+      card.alias.should.equal('FAKE');
       card.should.have.property('payId');
       done()
     });
@@ -90,8 +90,9 @@ describe("postfinance.cancel", function(){
     transaction.process(card, function(err,res){
       should.not.exist(err);
       transaction.cancel(card, function(err,res){
-        should.exist(err);
-        err.code.should.equal(50001127)
+        should.not.exist(err);
+        // 50001127 in real life, 0 in fake
+        res.body.ACCEPTANCE.should.equal('111111')
         done()        
       });
     });

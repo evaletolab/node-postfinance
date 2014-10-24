@@ -25,7 +25,7 @@ describe("postfinance.card", function(){
   testSettings.apiUser='test1'
   testSettings.apiPassword = 'testabc';
   testSettings.shaSecret = '2345';
-  testSettings.sandbox = true;
+  testSettings.sandbox = false;
   testSettings.enabled = false; // Does not make any actual API calls if false
   testSettings.debug = false; // Enables *blocking* debug output to STDOUT
 
@@ -388,14 +388,14 @@ describe("postfinance.card", function(){
   it("Card hidden number VISA", function(done){
     var Card = postfinance.Card;
     card = new Card(sandboxValidCard);
-    card.hiddenNumber.should.equal('41XXXXXXXXXX1111')
+    card.hiddenNumber.should.equal('41xxxxxxxxxx1111')
     done()
   });
 
   it("Card hidden number MC", function(done){
     var Card = postfinance.Card;
     card = new Card(testCard);
-    card.hiddenNumber.should.equal('53XXXXXXXXXX9999')
+    card.hiddenNumber.should.equal('53xxxxxxxxxx9999')
     done()
   });
 
