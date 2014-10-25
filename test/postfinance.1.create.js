@@ -286,6 +286,25 @@ var requestPaymentPage = {
     done()
   });
 
+  it("using wrong serialized string throws an error", function(done){
+    this.timeout(20000)
+    var transaction, transaction2;
+    assert.throws(function() {
+      transaction = new postfinance.Transaction("");
+    });
+    done()    
+  });
+
+  it("using incomplet serialized string throws an error", function(done){
+    this.timeout(20000)
+    var transaction, transaction2;
+    assert.throws(function() {
+      transaction = new postfinance.Transaction("{}");
+    });
+    done()    
+  });
+
+
   it("New transaction has a few extra properties", function(done){
     var transaction = new postfinance.Transaction({
       operation: 'purchase',
@@ -339,7 +358,7 @@ var requestPaymentPage = {
     });
   });
 
-  it("as before, 2 steps payment with serialized form", function(done){
+  it("2 steps payment by using serialized transaction", function(done){
     this.timeout(20000)
     var transaction1, transaction2;
 
