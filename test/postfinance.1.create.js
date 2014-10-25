@@ -339,6 +339,37 @@ var requestPaymentPage = {
     });
   });
 
+  it("as before, 2 steps payment with serialized form", function(done){
+    this.timeout(20000)
+    var transaction1, transaction2;
+
+    
+    transaction1 = new postfinance.Transaction({
+      operation: 'authorize',
+      amount:13000,
+      orderId: 'TX'+Date.now(),
+      email:'test@transaction.ch',
+      groupId:'gp-6 apr. 2014'
+    });
+
+    var card = new postfinance.Card(testAlias);
+
+    transaction1.process(card, function(err,res){
+      should.not.exist(err);
+      transaction2=new postfinance.Transaction(transaction1.toJSON())
+      transaction2.update({
+        operation:'capture',
+        amount:12000
+      });
+
+      transaction2.process(card, function(err,res){
+        should.not.exist(err);
+        done()        
+      });
+    });
+  });
+
+
   it("Ask authorisation for 100CHF and capture 130CHF get an error", function(done){
     this.timeout(20000)
     var transaction;
