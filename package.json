@@ -1,7 +1,7 @@
 {
     "name": "node-postfinance",
     "description": "Postfinance payment gateway API client library for Node.js",
-    "version": "0.10.0",
+    "version": "0.11.0",
     "author" : "Olivier Evalet <evaleto@gmail.com>",
     "maintainers":[
         {

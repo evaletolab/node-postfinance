@@ -77,7 +77,7 @@ describe("postfinance.cancel", function(){
 
     var transaction = new postfinance.Transaction({
       operation: 'purchase',
-      amount:13400,
+      amount:134.00,
       orderId: 'TX'+Date.now(),
       email:'test@transaction.ch',
       groupId:'gp-6 apr. 2014'
@@ -106,7 +106,7 @@ describe("postfinance.cancel", function(){
     
     var transaction = new postfinance.Transaction({
       operation: 'purchase',
-      amount:13400,
+      amount:134.00,
       orderId: 'TX'+Date.now(),
       email:'test@transaction.ch',
       groupId:'gp-6 apr. 2014'
@@ -143,7 +143,7 @@ describe("postfinance.cancel", function(){
     
     var transaction = new postfinance.Transaction({
       operation: 'purchase',
-      amount:13400,
+      amount:134.00,
       orderId: 'TX'+Date.now(),
       email:'test@transaction.ch',
       groupId:'gp-6 apr. 2014'
@@ -171,22 +171,7 @@ describe("postfinance.cancel", function(){
     
     card.should.have.property('redact');
 
-    card.redact(testAlias,function(err,res) {
-      // ORDERID="00123" 
-      // PAYID="35562138" 
-      // NCSTATUS="0" 
-      // NCERROR="0" 
-      // ACCEPTANCE="test123" 
-      // STATUS="5" 
-      // IPCTY="99" 
-      // CCCTY="US" 
-      // ECI="7" 
-      // CVCCheck="NO" 
-      // AAVCheck="NO" 
-      // VC="NO" 
-      // amount="1" currency="CHF" PM="CreditCard" BRAND="MasterCard" 
-      // ALIAS="testalias" 
-      // NCERRORPLUS="!"
+    card.redact(function(err,res) {
       should.not.exist(err);
       done()
     });

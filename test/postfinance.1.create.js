@@ -304,6 +304,20 @@ var requestPaymentPage = {
     done()    
   });
 
+  it("payment above the max amount throws an error", function(done){
+    this.timeout(20000)
+    var transaction, transaction2;
+    assert.throws(function() {
+      transaction = new postfinance.Transaction({
+        operation: 'purchase',
+        orderId:'abc',
+        amount: 600
+      });
+    });
+    done()    
+  });
+
+
 
   it("New transaction has a few extra properties", function(done){
     var transaction = new postfinance.Transaction({
@@ -336,7 +350,7 @@ var requestPaymentPage = {
     
     transaction = new postfinance.Transaction({
       operation: 'authorize',
-      amount:13000,
+      amount:130.00,
       orderId: 'TX'+Date.now(),
       email:'test@transaction.ch',
       groupId:'gp-6 apr. 2014'
@@ -348,7 +362,7 @@ var requestPaymentPage = {
       should.not.exist(err);
       transaction.update({
         operation:'capture',
-        amount:12000
+        amount:120.00
       });
 
       transaction.process(card, function(err,res){
@@ -365,7 +379,7 @@ var requestPaymentPage = {
     
     transaction1 = new postfinance.Transaction({
       operation: 'authorize',
-      amount:13000,
+      amount:130.00,
       orderId: 'TX'+Date.now(),
       email:'test@transaction.ch',
       groupId:'gp-6 apr. 2014'
@@ -378,7 +392,7 @@ var requestPaymentPage = {
       transaction2=new postfinance.Transaction(transaction1.toJSON())
       transaction2.update({
         operation:'capture',
-        amount:12000
+        amount:120.00
       });
 
       transaction2.process(card, function(err,res){
@@ -396,7 +410,7 @@ var requestPaymentPage = {
     
     transaction = new postfinance.Transaction({
       operation: 'authorize',
-      amount:10000,
+      amount:100.00,
       orderId: 'TX'+Date.now(),
       email:'test@transaction.ch',
       groupId:'gp-6 apr. 2014'
@@ -411,7 +425,7 @@ var requestPaymentPage = {
       // update the saved transaction 
       transaction.update({
         operation:'capture',
-        amount:13400
+        amount:134.00
       });
 
       transaction.process(card, function(err,res){
@@ -429,7 +443,7 @@ var requestPaymentPage = {
     
     transaction = new postfinance.Transaction({
       operation: 'purchase',
-      amount:13400,
+      amount:134.00,
       orderId: 'TX'+Date.now(),
       email:'test@transaction.ch',
       groupId:'gp-6 apr. 2014'
@@ -462,7 +476,7 @@ var requestPaymentPage = {
     
     transaction = new postfinance.Transaction({
       operation: 'purchase',
-      amount:13400,
+      amount:134.00,
       orderId: 'TX'+Date.now(),
       email:'test@transaction.ch',
       groupId:'gp-6 apr. 2014'
@@ -486,7 +500,7 @@ var requestPaymentPage = {
     
     transaction = new postfinance.Transaction({
       operation: 'purchase',
-      amount:13400,
+      amount:134.00,
       orderId: 'TX'+Date.now(),
       email:'test@transaction.ch',
       groupId:'gp-6 apr. 2014',
@@ -511,7 +525,7 @@ var requestPaymentPage = {
     
     card.should.have.property('redact');
 
-    card.redact(testAlias,function(err,res) {
+    card.redact(function(err,res) {
       // ORDERID="00123" 
       // PAYID="35562138" 
       // NCSTATUS="0" 
