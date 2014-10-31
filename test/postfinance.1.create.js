@@ -28,7 +28,7 @@ describe("postfinance.create", function(){
   var card;
 
   var testAlias={
-    alias:"testalias.1",
+    alias:"test1337895720979712",
     aliasUsage:"karibou payment"
   }
 
@@ -99,28 +99,28 @@ var requestPaymentPage = {
 
 
 
-  it("Create an alias", function(done){    
+  it("Create an alias", function(done){
     this.timeout(20000);
     var Card = postfinance.Card;
     var card = new Card(testCard);//sandboxValidCard
-    
+
     card.should.have.property('publish');
 
     card.publish(testAlias,function(err,res) {
-      // ORDERID="00123" 
-      // PAYID="35562138" 
-      // NCSTATUS="0" 
-      // NCERROR="0" 
-      // ACCEPTANCE="test123" 
-      // STATUS="5" 
-      // IPCTY="99" 
-      // CCCTY="US" 
-      // ECI="7" 
-      // CVCCheck="NO" 
-      // AAVCheck="NO" 
-      // VC="NO" 
-      // amount="1" currency="CHF" PM="CreditCard" BRAND="MasterCard" 
-      // ALIAS="testalias" 
+      // ORDERID="00123"
+      // PAYID="35562138"
+      // NCSTATUS="0"
+      // NCERROR="0"
+      // ACCEPTANCE="test123"
+      // STATUS="5"
+      // IPCTY="99"
+      // CCCTY="US"
+      // ECI="7"
+      // CVCCheck="NO"
+      // AAVCheck="NO"
+      // VC="NO"
+      // amount="1" currency="CHF" PM="CreditCard" BRAND="MasterCard"
+      // ALIAS="testalias"
       // NCERRORPLUS="!"
       should.not.exist(err);
       card.alias.should.equal(testAlias.alias);
@@ -130,7 +130,7 @@ var requestPaymentPage = {
   });
 
 
-  it.skip("Alias can load payment method", function(done){    
+  it.skip("Alias can load payment method", function(done){
     this.timeout(20000);
     var Card = postfinance.Card;
     var card = new Card(testAlias);
@@ -155,7 +155,7 @@ var requestPaymentPage = {
     var card = new Card(testCard);
     var card1;
     var alias;
-   
+
     done()
   });
 
@@ -255,7 +255,7 @@ var requestPaymentPage = {
 
     assert.throws(function() {
       transaction = new postfinance.Transaction({
-        operation: null, 
+        operation: null,
         amount: 10
       });
     });
@@ -292,7 +292,7 @@ var requestPaymentPage = {
     assert.throws(function() {
       transaction = new postfinance.Transaction("");
     });
-    done()    
+    done()
   });
 
   it("using incomplet serialized string throws an error", function(done){
@@ -301,7 +301,7 @@ var requestPaymentPage = {
     assert.throws(function() {
       transaction = new postfinance.Transaction("{}");
     });
-    done()    
+    done()
   });
 
   it("payment above the max amount throws an error", function(done){
@@ -314,7 +314,7 @@ var requestPaymentPage = {
         amount: 600
       });
     });
-    done()    
+    done()
   });
 
 
@@ -347,7 +347,7 @@ var requestPaymentPage = {
     this.timeout(20000)
     var transaction;
 
-    
+
     transaction = new postfinance.Transaction({
       operation: 'authorize',
       amount:130.00,
@@ -367,7 +367,7 @@ var requestPaymentPage = {
 
       transaction.process(card, function(err,res){
         should.not.exist(err);
-        done()        
+        done()
       });
     });
   });
@@ -376,7 +376,7 @@ var requestPaymentPage = {
     this.timeout(20000)
     var transaction1, transaction2;
 
-    
+
     transaction1 = new postfinance.Transaction({
       operation: 'authorize',
       amount:130.00,
@@ -397,7 +397,7 @@ var requestPaymentPage = {
 
       transaction2.process(card, function(err,res){
         should.not.exist(err);
-        done()        
+        done()
       });
     });
   });
@@ -407,7 +407,7 @@ var requestPaymentPage = {
     this.timeout(20000)
     var transaction;
 
-    
+
     transaction = new postfinance.Transaction({
       operation: 'authorize',
       amount:100.00,
@@ -422,7 +422,7 @@ var requestPaymentPage = {
       should.not.exist(err);
 
       //
-      // update the saved transaction 
+      // update the saved transaction
       transaction.update({
         operation:'capture',
         amount:134.00
@@ -431,7 +431,7 @@ var requestPaymentPage = {
       transaction.process(card, function(err,res){
         should.exist(err);
         err.code.should.equal(50001126)
-        done()        
+        done()
       });
     });
   });
@@ -440,7 +440,7 @@ var requestPaymentPage = {
     this.timeout(20000)
     var transaction;
 
-    
+
     transaction = new postfinance.Transaction({
       operation: 'purchase',
       amount:134.00,
@@ -454,8 +454,8 @@ var requestPaymentPage = {
 
     transaction.process(card, function(err,res){
       should.not.exist(err);
-      //  paiem. ID  
-      //    Réf march, Statut, Autorisation, Date paiement, Total, Fichier / ligne, NCID,  
+      //  paiem. ID
+      //    Réf march, Statut, Autorisation, Date paiement, Total, Fichier / ligne, NCID,
       //    Erreur,  Action,  Accept in, Méth paiement, num card/cpt
       // check BRAND
       // check CARDNO OR ALIAS
@@ -463,7 +463,7 @@ var requestPaymentPage = {
       // check STATUS
       // check ACCEPTANCE
       // check ECI (7)
-      done()        
+      done()
     });
   });
 
@@ -473,7 +473,7 @@ var requestPaymentPage = {
     this.timeout(20000)
     var transaction;
 
-    
+
     transaction = new postfinance.Transaction({
       operation: 'purchase',
       amount:134.00,
@@ -481,14 +481,14 @@ var requestPaymentPage = {
       email:'test@transaction.ch',
       groupId:'gp-6 apr. 2014'
     });
-    
+
     var card = new postfinance.Card(sandboxInvalidCard);
 
     transaction.process(card, function(err,res){
       should.exist(err);
       // Numéro de carte incorrect ou incompatible
       err.code.should.equal(50001054)
-      done()        
+      done()
     });
   });
 
@@ -497,7 +497,7 @@ var requestPaymentPage = {
 
     this.timeout(20000)
     var transaction;
-    
+
     transaction = new postfinance.Transaction({
       operation: 'purchase',
       amount:134.00,
@@ -506,40 +506,40 @@ var requestPaymentPage = {
       groupId:'gp-6 apr. 2014',
       currency:'USD'
     });
-    
+
     var card = new postfinance.Card(sandboxValidCard);
 
     transaction.process(card, function(err,res){
       should.exist(err);
       err.message.should.equal('Currency not allowed')
-      done()        
+      done()
     });
   });
 
 
 
-  it("Remove an alias", function(done){    
+  it("Remove an alias", function(done){
     this.timeout(20000);
     // First we need a card
     var card = new postfinance.Card(testAlias);
-    
+
     card.should.have.property('redact');
 
     card.redact(function(err,res) {
-      // ORDERID="00123" 
-      // PAYID="35562138" 
-      // NCSTATUS="0" 
-      // NCERROR="0" 
-      // ACCEPTANCE="test123" 
-      // STATUS="5" 
-      // IPCTY="99" 
-      // CCCTY="US" 
-      // ECI="7" 
-      // CVCCheck="NO" 
-      // AAVCheck="NO" 
-      // VC="NO" 
-      // amount="1" currency="CHF" PM="CreditCard" BRAND="MasterCard" 
-      // ALIAS="testalias" 
+      // ORDERID="00123"
+      // PAYID="35562138"
+      // NCSTATUS="0"
+      // NCERROR="0"
+      // ACCEPTANCE="test123"
+      // STATUS="5"
+      // IPCTY="99"
+      // CCCTY="US"
+      // ECI="7"
+      // CVCCheck="NO"
+      // AAVCheck="NO"
+      // VC="NO"
+      // amount="1" currency="CHF" PM="CreditCard" BRAND="MasterCard"
+      // ALIAS="testalias"
       // NCERRORPLUS="!"
       should.not.exist(err);
       done()

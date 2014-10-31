@@ -26,7 +26,7 @@ describe("postfinance.cancel", function(){
   var card;
 
   var testAlias={
-    alias:"testalias.1",
+    alias:"test1337895720979712",
     aliasUsage:"karibou payment"
   }
 
@@ -54,11 +54,11 @@ describe("postfinance.cancel", function(){
   });
 
 
-  it("Create alias", function(done){    
+  it("Create alias", function(done){
     this.timeout(20000);
     var Card = postfinance.Card;
     var card = new Card(testCard);//sandboxValidCard
-    
+
     card.should.have.property('publish');
 
     card.publish(testAlias,function(err,res) {
@@ -73,7 +73,7 @@ describe("postfinance.cancel", function(){
   it("cancel transaction is not possible on transaction with status payed", function(done){
     this.timeout(20000)
     var transaction;
-    
+
 
     var transaction = new postfinance.Transaction({
       operation: 'purchase',
@@ -92,7 +92,7 @@ describe("postfinance.cancel", function(){
       transaction.cancel(card, function(err,res){
         should.exist(err);
         err.code.should.equal(50001127)
-        done()        
+        done()
       });
     });
 
@@ -103,7 +103,7 @@ describe("postfinance.cancel", function(){
     this.timeout(20000)
     var transaction;
 
-    
+
     var transaction = new postfinance.Transaction({
       operation: 'purchase',
       amount:134.00,
@@ -119,8 +119,8 @@ describe("postfinance.cancel", function(){
       should.not.exist(err);
       transaction.refund(card, function(err,res){
         should.not.exist(err);
-        //  paiem. ID  
-        //    Réf march, Statut, Autorisation, Date paiement, Total, Fichier / ligne, NCID,  
+        //  paiem. ID
+        //    Réf march, Statut, Autorisation, Date paiement, Total, Fichier / ligne, NCID,
         //    Erreur,  Action,  Accept in, Méth paiement, num card/cpt
         // check BRAND
         // check CARDNO OR ALIAS
@@ -128,7 +128,7 @@ describe("postfinance.cancel", function(){
         // check STATUS
         // check ACCEPTANCE
         // check ECI (7)
-        done()        
+        done()
       });
     });
 
@@ -140,7 +140,7 @@ describe("postfinance.cancel", function(){
     this.timeout(20000)
     var transaction;
 
-    
+
     var transaction = new postfinance.Transaction({
       operation: 'purchase',
       amount:134.00,
@@ -157,18 +157,18 @@ describe("postfinance.cancel", function(){
       transaction.cancel(card, function(err,res){
         console.log("debug",err)
         should.not.exist(err);
-        done()        
+        done()
       });
     });
 
 
   });
 
-  it.skip("Remove an alias", function(done){    
+  it.skip("Remove an alias", function(done){
     this.timeout(20000);
     // First we need a card
     var card = new postfinance.Card(testAlias);
-    
+
     card.should.have.property('redact');
 
     card.redact(function(err,res) {
