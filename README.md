@@ -69,10 +69,9 @@ card.publish(opts,function(err) {
 *Note that Postfinance don't allow you to delete an alias with DirectLink (server-to-server). You can only do this operation by using E-commerce pages. We solve the problem by updating an alias with a test visa card that expire a the end of current month.*
 
 ```javascript
-var card = new postfinance.Card(testAlias),
-    testAlias={alias:'testalias'}; // alias name of the saved card
-    
-card.redact(testAlias,function(err,res) {
+var card = new postfinance.Card({alias:'testalias'}); // alias name of the saved card
+
+card.redact(function(err,res) {
   if(err){...}
 });
 ```
