@@ -32,7 +32,7 @@ create a file called `config-pf.js`, and add your keys there:
 
 The tests are run simply by simply typing:
 
-    ./node_modules/.bin/mocha /test/file-to-test.js 
+    NODE_ENV=test ./node_modules/.bin/mocha /test/file-to-test.js 
     NODE_ENV=test ./node_modules/.bin/mocha
 
 Do not run tests with your live processor. Make sure you are running in a
@@ -66,7 +66,6 @@ card.publish(opts,function(err) {
 });
 ```
  + `card.redact()`       : instructs postfinance to redact (delete) the payment method
-
 *Note that Postfinance don't allow you to delete an alias with DirectLink (server-to-server). You can only do this operation by using E-commerce pages. We solve the problem by updating an alias with a test visa card that expire a the end of current month.*
 
 ```javascript
@@ -77,8 +76,6 @@ card.redact(testAlias,function(err,res) {
   if(err){...}
 });
 ```
-
-
  
 The transaction object is constructed using the `Transaction` constructor. The
 transaction object only has one method:
