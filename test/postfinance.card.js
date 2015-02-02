@@ -156,6 +156,7 @@ describe("postfinance.card", function(){
 
       // card format
       card.paymentMethod.toLowerCase().should.equal('Postfinance card'.toLowerCase())
+      card.issuer.toLowerCase().should.equal('Postfinance card'.toLowerCase())
       card.orderId.should.containEql('AS')
       card.email.should.equal('o@o.com')
       card.firstName.should.equal('Foo')
