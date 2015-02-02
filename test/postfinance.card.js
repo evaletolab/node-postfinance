@@ -36,11 +36,9 @@ describe("postfinance.card", function(){
   });
   var card;
 
-  var requestPaymentPage = {
+  var postfinanceCard = {
     //Credit
     paymentMethod: 'Postfinance card',
-    orderId:'oidYYYY1',
-    amount:123.00,
     email:'o@o.com',
     firstName: 'Foo',
     lastName: 'Bar',
@@ -48,7 +46,9 @@ describe("postfinance.card", function(){
     address2: '', // blank
     city: 'genève', // blank
     zip: '1208',
-    groupId:'groupXXXXXX',
+    groupId:'groupXXXXXX', //
+    orderId:'oidYYYY1',    // removed fields
+    amount:123.00,         //
     custom:'hello world'
   };
 
@@ -88,6 +88,13 @@ describe("postfinance.card", function(){
     year: testExpiredDate[0].toString(),
     month: testExpiredDate[1].toString()
   };
+
+  var testAlias={
+    alias:"test1337895720979712",
+    aliasUsage:"karibou payment"
+  }
+
+
   it("Configure and lock configuration", function(done){
     testSettings.allowMultipleSetOption = false;
     postfinance.configure(testSettings);
@@ -110,41 +117,60 @@ describe("postfinance.card", function(){
     done();
   });
 
+  it("Prepare CC alias for Postfinance online form", function(done){
+    this.timeout(20000);
+    var Card = postfinance.Card;
+    var card = new Card(sandboxValidCard);
 
-  it("Creating a new request for postfinance form ", function(done){
-    var card = new postfinance.Card(requestPaymentPage);
-    var payload=card.getPayload()
+    card.should.have.property('publishForEcommerce');
 
-    //PF format
-    payload.PM.should.equal('Postfinance card'),
-    payload.PSPID.should.equal('test')
-    payload.USERID.should.equal('test1')
-    payload.ORDERID.should.equal('oidYYYY1'),
-    payload.AMOUNT.should.equal(12300),
-    payload.EMAIL.should.equal('o@o.com'),
-    payload.CN.should.equal('Foo Bar'),
-    payload.OWNERADDRESS.should.equal('221 Foo st'),
-    payload.OWNERCITY.should.equal('genève'), 
-    payload.OWNERZIP.should.equal('1208'),
-    payload.GLOBORDERID.should.equal('groupXXXXXX'),
-    payload.COMPLUS.should.equal('"hello world"')
-
-    // card format
-    card.paymentMethod.should.equal('Postfinance card'),
-    card.orderId.should.equal('oidYYYY1'),
-    card.amount.should.equal(123),
-    card.email.should.equal('o@o.com'),
-    card.firstName.should.equal('Foo'),
-    card.lastName.should.equal('Bar'),
-    card.address1.should.equal('221 Foo st'),
-    card.city.should.equal('genève'), 
-    card.zip.should.equal('1208'),
-    card.groupId.should.equal('groupXXXXXX'),
-    card.custom.should.equal('hello world')
-
-
-    done()
+    card.publishForEcommerce(testAlias,function(err,res) {
+      should.not.exist(err);
+      // console.log('------------------>',res)
+      done()
+    });
   });
+
+  it("Prepare PFCard alias for Postfinance", function(done){
+    this.timeout(20000);
+    var Card = postfinance.Card;
+    var card = new Card(postfinanceCard);
+
+    card.should.have.property('publishForEcommerce');
+
+    card.publishForEcommerce(testAlias,function(err,res) {
+      should.not.exist(err);
+      should.not.exist(card.amount);
+
+      res.body.PM.should.equal('Postfinance card')
+      res.body.PSPID.should.equal('test')
+      res.body.USERID.should.equal('test1')
+      res.body.ORDERID.should.containEql('AS')
+      res.body.AMOUNT.should.equal(100),
+      res.body.EMAIL.should.equal('o@o.com')
+      res.body.CN.should.equal('Foo Bar')
+      res.body.OWNERADDRESS.should.equal('221 Foo st')
+      res.body.OWNERCITY.should.equal('genève')
+      res.body.OWNERZIP.should.equal('1208')
+      res.body.COMPLUS.should.equal('"hello world"')
+
+      // card format
+      card.paymentMethod.should.equal('Postfinance card')
+      card.orderId.should.containEql('AS')
+      card.email.should.equal('o@o.com')
+      card.firstName.should.equal('Foo')
+      card.lastName.should.equal('Bar')
+      card.address1.should.equal('221 Foo st')
+      card.city.should.equal('genève')
+      card.zip.should.equal('1208')
+      card.custom.should.equal('hello world')
+
+
+      done()
+    });
+  });
+
+
 
   it("Creating a new card", function(done){
     var Card = postfinance.Card,
@@ -186,17 +212,17 @@ describe("postfinance.card", function(){
     card.zip.should.equal('1208');
 
     var payload=card.getPayload()
-
     payload.PSPID.should.equal('test')
     payload.USERID.should.equal('test1')
     payload.PSWD.should.equal('testabc')
-    payload.AMOUNT.should.equal(100),
-    payload.ED.should.equal('1015'),
-    payload.CVC.should.equal('111'),
-    payload.CARDNO.should.equal('5399999999999999'),
-    payload.CN.should.equal('Foo Bar'),
-    payload.OWNERADDRESS.should.equal('221 Foo st'),
-    payload.OWNERZIP.should.equal('1208'),
+    payload.AMOUNT.should.equal(100)
+    // build 3 digits date
+    payload.ED.should.containEql((testNonExpiredDate[0]-2000+testNonExpiredDate[1]*100)+''),
+    payload.CVC.should.equal('111')
+    payload.CARDNO.should.equal('5399999999999999')
+    payload.CN.should.equal('Foo Bar')
+    payload.OWNERADDRESS.should.equal('221 Foo st')
+    payload.OWNERZIP.should.equal('1208')
 
     done()
   });

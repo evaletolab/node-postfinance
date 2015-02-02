@@ -32,19 +32,16 @@ describe("postfinance.create", function(){
     aliasUsage:"karibou payment"
   }
 
-var requestPaymentPage = {
-    //Credit
+//
+// this is available only for alias creation
+var postfinanceCard = {
     paymentMethod: 'Postfinance card',
-    orderId:'oidYYYY1',
-    amount:123.00,
-    email:'o@o.com',
     firstName: 'Foo',
     lastName: 'Bar',
     address1: '221 Foo st',
     address2: '', // blank
     city: 'genève', // blank
     zip: '1208',
-    groupId:'groupXXXXXX',
     custom:'hello world'
   };
 
@@ -85,7 +82,6 @@ var requestPaymentPage = {
     month: testExpiredDate[1].toString()
   };
 
-  var globalCard;
 
   it("Configure and lock configuration", function(done){
     testSettings.allowMultipleSetOption = false;
@@ -102,29 +98,41 @@ var requestPaymentPage = {
   it("Create an alias", function(done){
     this.timeout(20000);
     var Card = postfinance.Card;
-    var card = new Card(testCard);//sandboxValidCard
+    var card = new Card(testCard);
 
     card.should.have.property('publish');
 
     card.publish(testAlias,function(err,res) {
-      // ORDERID="00123"
-      // PAYID="35562138"
-      // NCSTATUS="0"
-      // NCERROR="0"
-      // ACCEPTANCE="test123"
-      // STATUS="5"
-      // IPCTY="99"
-      // CCCTY="US"
-      // ECI="7"
-      // CVCCheck="NO"
-      // AAVCheck="NO"
-      // VC="NO"
-      // amount="1" currency="CHF" PM="CreditCard" BRAND="MasterCard"
-      // ALIAS="testalias"
-      // NCERRORPLUS="!"
       should.not.exist(err);
       card.alias.should.equal(testAlias.alias);
       card.should.have.property('payId');
+      done()
+    });
+  });
+
+  it("Prepare CC alias for Postfinance online form", function(done){
+    this.timeout(20000);
+    var Card = postfinance.Card;
+    var card = new Card(sandboxValidCard);
+
+    card.should.have.property('publishForEcommerce');
+
+    card.publishForEcommerce(testAlias,function(err,res) {
+      should.not.exist(err);
+      // console.log('------------------>',res)
+      done()
+    });
+  });
+
+  it("Prepare PFCard alias for Postfinance", function(done){
+    this.timeout(20000);
+    var Card = postfinance.Card;
+    var card = new Card(postfinanceCard);
+
+    card.should.have.property('publishForEcommerce');
+
+    card.publishForEcommerce(testAlias,function(err,res) {
+      should.not.exist(err);
       done()
     });
   });
@@ -148,28 +156,6 @@ var requestPaymentPage = {
 
 
 
-
-
-  it.skip("Created card can load payment method data", function(done){
-    var Card = postfinance.Card;
-    var card = new Card(testCard);
-    var card1;
-    var alias;
-
-    done()
-  });
-
-  it.skip("Create a bad payment method", function(done){
-    var card = new postfinance.Card(bogusCard);
-
-    function onLoad(err) {
-      done()
-    }
-
-    card.publish(testAlias,function(err) {
-      card.load(onLoad);
-    });
-  });
 
   it.skip("Card has _dirty property which lists changed fields", function(done){
     // Initially, all fields are dirty
@@ -482,6 +468,29 @@ var requestPaymentPage = {
       groupId:'gp-6 apr. 2014'
     });
 
+    var card = new postfinance.Card(bogusCard);
+
+    transaction.process(card, function(err,res){
+      should.exist(err);
+      // Numéro de carte incorrect ou incompatible
+      err.code.should.equal(50001111)
+      done()
+    });
+  });
+
+  it("Execute transaction with bogus card", function(done){
+    this.timeout(20000)
+    var transaction;
+
+
+    transaction = new postfinance.Transaction({
+      operation: 'purchase',
+      amount:134.00,
+      orderId: 'TX'+Date.now(),
+      email:'test@transaction.ch',
+      groupId:'gp-6 apr. 2014'
+    });
+
     var card = new postfinance.Card(sandboxInvalidCard);
 
     transaction.process(card, function(err,res){
@@ -491,6 +500,7 @@ var requestPaymentPage = {
       done()
     });
   });
+
 
   it("Using transactions with wrong currency", function(done){
     var transaction;

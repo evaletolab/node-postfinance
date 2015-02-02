@@ -135,6 +135,41 @@ describe("postfinance.cancel", function(){
 
   });
 
+it("Ask authorisation for 130CHF, capture 120CHF and refund 120CHF", function(done){
+    this.timeout(20000)
+    var transaction;
+
+
+    transaction = new postfinance.Transaction({
+      operation: 'authorize',
+      amount:130.00,
+      orderId: 'TX'+Date.now(),
+      email:'test@transaction.ch',
+      groupId:'gp-6 apr. 2014'
+    });
+
+    var card = new postfinance.Card(testAlias);
+
+    transaction.process(card, function(err,res){
+      should.not.exist(err);
+      transaction.update({
+        operation:'capture',
+        amount:120.00
+      });
+
+      transaction.process(card, function(err,res){
+        should.not.exist(err);
+        // console.log('-------------- capture',res.body)
+        transaction.refund(card, function(err,res){
+          should.not.exist(err);        
+          // console.log('-------------- refund',res.body)
+          done()
+        });
+
+      });
+    });
+  });
+
 
   it.skip("Refund transaction with alias", function(done){
     this.timeout(20000)
