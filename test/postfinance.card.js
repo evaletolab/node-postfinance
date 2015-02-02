@@ -38,7 +38,7 @@ describe("postfinance.card", function(){
 
   var postfinanceCard = {
     //Credit
-    paymentMethod: 'Postfinance card',
+    paymentMethod: 'Postfinance Card',
     email:'o@o.com',
     firstName: 'Foo',
     lastName: 'Bar',
@@ -142,7 +142,7 @@ describe("postfinance.card", function(){
       should.not.exist(err);
       should.not.exist(card.amount);
 
-      res.body.PM.should.equal('Postfinance card')
+      res.body.PM.toLowerCase().should.equal('Postfinance Card'.toLowerCase())
       res.body.PSPID.should.equal('test')
       res.body.USERID.should.equal('test1')
       res.body.ORDERID.should.containEql('AS')
@@ -155,7 +155,7 @@ describe("postfinance.card", function(){
       res.body.COMPLUS.should.equal('"hello world"')
 
       // card format
-      card.paymentMethod.should.equal('Postfinance card')
+      card.paymentMethod.toLowerCase().should.equal('Postfinance card'.toLowerCase())
       card.orderId.should.containEql('AS')
       card.email.should.equal('o@o.com')
       card.firstName.should.equal('Foo')
@@ -164,7 +164,6 @@ describe("postfinance.card", function(){
       card.city.should.equal('genève')
       card.zip.should.equal('1208')
       card.custom.should.equal('hello world')
-
 
       done()
     });
