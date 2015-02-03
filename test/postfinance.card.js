@@ -131,6 +131,20 @@ describe("postfinance.card", function(){
     });
   });
 
+  it("Prepare PFCard alias without usage get error", function(done){
+    this.timeout(20000);
+    var Card = postfinance.Card;
+    var card = new Card(postfinanceCard);
+
+    card.should.have.property('publishForEcommerce');
+
+    card.publishForEcommerce({alias:'testalias'},function(err,res) {
+      should.exist(err);
+      err.message.should.equal('Vous devez spécifier l\'option Alias Usage.')
+      done();
+    });
+  });
+
   it("Prepare PFCard alias for Postfinance", function(done){
     this.timeout(20000);
     var Card = postfinance.Card;
@@ -140,17 +154,17 @@ describe("postfinance.card", function(){
 
     card.publishForEcommerce(testAlias,function(err,res) {
       should.not.exist(err);
-      should.not.exist(card.amount);
+      should.not.exist(res.body.USERID);
+      should.not.exist(res.body.PSWD);
 
       res.body.PM.toLowerCase().should.equal('Postfinance Card'.toLowerCase())
       res.body.PSPID.should.equal('test')
-      res.body.USERID.should.equal('test1')
       res.body.ORDERID.should.containEql('AS')
       res.body.AMOUNT.should.equal(100),
       res.body.EMAIL.should.equal('o@o.com')
       res.body.CN.should.equal('Foo Bar')
-      res.body.OWNERADDRESS.should.equal('221 Foo st')
-      res.body.OWNERCITY.should.equal('genève')
+      // res.body.OWNERADDRESS.should.equal('221 Foo st')
+      // res.body.OWNERCITY.should.equal('genève')
       res.body.OWNERZIP.should.equal('1208')
       res.body.COMPLUS.should.equal('"hello world"')
 

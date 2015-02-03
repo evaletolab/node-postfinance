@@ -8,8 +8,11 @@
 var postfinance = require('./lib/postfinance');
 var transaction = require('./lib/transaction');
 var config = require('./lib/config');
+var check = require('./lib/check');
 
 exports.configure = config.configure;
 exports.option = config.option;
 exports.Card = postfinance.Card;
+exports.shaSign = check.shaSign;
+exports.isValidSha= check.isValidSha;
 exports.Transaction = transaction.Transaction;

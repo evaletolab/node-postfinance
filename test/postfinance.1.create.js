@@ -1,7 +1,6 @@
 /**
- * Daimyo - unit tests for the main Daimyo module
- * Copyright (c)2011, by Branko Vukelic.
- * Licensed under MIT license (see LICENSE)
+ * unit tests for the main postfinance module
+ * psp error: http://docs.openstream.ch/payment-provider/postfinance-error-messages/
  */
 
 var assert = require('assert');
@@ -32,18 +31,6 @@ describe("postfinance.create", function(){
     aliasUsage:"karibou payment"
   }
 
-//
-// this is available only for alias creation
-var postfinanceCard = {
-    paymentMethod: 'Postfinance card',
-    firstName: 'Foo',
-    lastName: 'Bar',
-    address1: '221 Foo st',
-    address2: '', // blank
-    city: 'genève', // blank
-    zip: '1208',
-    custom:'hello world'
-  };
 
   var testCard = {
     number: '5399999999999999', // MasterCard
@@ -51,6 +38,7 @@ var postfinanceCard = {
     year: testNonExpiredDate[0].toString(),
     month: testNonExpiredDate[1].toString(),
     firstName: 'Foo',
+    // firstName: 'Foô',
     lastName: 'Bar',
     address1: '221 Foo st',
     address2: '', // blank
@@ -103,36 +91,10 @@ var postfinanceCard = {
     card.should.have.property('publish');
 
     card.publish(testAlias,function(err,res) {
+      // process.exit(0)
       should.not.exist(err);
       card.alias.should.equal(testAlias.alias);
       card.should.have.property('payId');
-      done()
-    });
-  });
-
-  it("Prepare CC alias for Postfinance online form", function(done){
-    this.timeout(20000);
-    var Card = postfinance.Card;
-    var card = new Card(sandboxValidCard);
-
-    card.should.have.property('publishForEcommerce');
-
-    card.publishForEcommerce(testAlias,function(err,res) {
-      should.not.exist(err);
-      // console.log('------------------>',res)
-      done()
-    });
-  });
-
-  it("Prepare PFCard alias for Postfinance", function(done){
-    this.timeout(20000);
-    var Card = postfinance.Card;
-    var card = new Card(postfinanceCard);
-
-    card.should.have.property('publishForEcommerce');
-
-    card.publishForEcommerce(testAlias,function(err,res) {
-      should.not.exist(err);
       done()
     });
   });

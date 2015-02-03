@@ -137,7 +137,7 @@ describe("postfinance.disabled", function(){
   });
 
 
-  it.skip("Refund transaction with alias", function(done){
+  it.skip("Cancel purchase transaction with alias", function(done){
     this.timeout(20000)
     var transaction;
 
