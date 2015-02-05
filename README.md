@@ -134,6 +134,24 @@ the payment method associated with the card.
         });
     });
 ```
+#Configuration Back-End (PostFinance)
+ You must use your account details, which you have received from PostFinance in order to log into http://e-payment.postfinance.ch
+##Global transaction parameter
+* create an API user
+* cehck SHA256
+* check UTF-8
+* update the ECI value for your usage
+* use same password for all the SHA-SIGN
+
+##Data and origin verification
+* ...
+
+##Transaction feedback
+* ...
+
+###Direct HTTP-server-to-server request
+* ...
+
 ## Using the ``check`` as AMD module in browsers
 
 The `lib/check.js`` module contains generic functions for performing various
@@ -195,19 +213,19 @@ simple types (String, Number), Object, or Array instances.
 ## License
 The API is available under AGPL V3 to protect the long term interests of the community – you are free to use it with no restrictions but if you change the server code, then those code changes must be contributed back.
 
-> Copyright (c) 2014 Olivier Evalet (http://evaletolab.ch/)
+> Copyright (c) 2014 Olivier Evalet (http://evaletolab.ch/)<br/>
 > Copyright (c) 2011, by Branko Vukelic <branko@herdhound.com>
-> 
+> <br/><br/>
 > Permission is hereby granted, free of charge, to any person obtaining a copy
 > of this software and associated documentation files (the “Software”), to deal
 > in the Software without restriction, including without limitation the rights
 > to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 > copies of the Software, and to permit persons to whom the Software is
 > furnished to do so, subject to the following conditions:
-> 
+> <br/>
 > The above copyright notice and this permission notice shall be included in
 > all copies or substantial portions of the Software.
-> 
+> <br/>
 > THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 > IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 > FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE

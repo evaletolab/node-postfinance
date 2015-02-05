@@ -1,7 +1,7 @@
 /**
- * Daimyo - unit tests for the main Daimyo module
- * Copyright (c)2011, by Branko Vukelic.
- * Licensed under MIT license (see LICENSE)
+ * Copyright (c)2014, by Olivier Evalet <evaleto@gmail.com>
+ * Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>
+ * Licensed under GPL license (see LICENSE)
  */
 
 var assert = require('assert');

@@ -1,6 +1,6 @@
 /**
  * Postfinance - main module
- * Copyright (c)2011, by Olivier Evalet <evaleto@gmail.com>
+ * Copyright (c)2014, by Olivier Evalet <evaleto@gmail.com>
  * Copyright (c)2011, by Branko Vukelic <branko@herdhound.com>
  * Licensed under GPL license (see LICENSE)
  */
