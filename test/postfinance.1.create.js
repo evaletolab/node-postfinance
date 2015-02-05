@@ -92,7 +92,7 @@ describe("postfinance.create", function(){
     card.should.have.property('publish');
 
     card.publish(testAlias,function(err,res) {
-      process.exit(0)
+      // process.exit(0)
       should.not.exist(err);
       card.alias.should.equal(testAlias.alias);
       card.should.have.property('payId');
