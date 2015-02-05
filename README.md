@@ -134,6 +134,43 @@ the payment method associated with the card.
         });
     });
 ```
+## Using the ``check`` as AMD module in browsers
+
+The `lib/check.js`` module contains generic functions for performing various
+checks on credit cards. It performs Luhn Mod-10 check to ensure that the card
+number is valid (although the card itself may not be valid), get the name of
+the issuer, or make sure that the CSC (also called CVV, CVC, or CCV) has the
+right number of digits, etc. It is always a good idea to perform this check
+browser-side to ensure that obviously invalid cards do not make it to the
+system, or that any typing errors are caught early on.
+
+This module can be used in browsers with minimal modifications. For
+convenience, the ``checkamd`` target is provided in the makefile, which builds
+an AMD module compatible with loaders like [RequireJS](http://requirejs.org/).
+
+To build the AMD version of check, simply type:
+
+    make checkamd
+
+This will result in creation of a new file called ``check.js`` in the project
+directory. The file is not minified. If you want to minify it, you can use
+tools such as [UglifyJS](https://github.com/mishoo/UglifyJS).
+
+To use it, simply require it from your module as usual:
+
+    // mymodule.js
+    define(['jquery', 'check'], function($, check) {
+        var cardNumber = $('input[name=card]).val();
+        var csc = $('input[name=csc]').val();
+        
+        var isVaild = check.mod10check(cardNumber) ? true : false;
+        var isValid = isValid && check.cscCheck(cardNumber, csc) ? true : false
+        
+        var issuer = check.getIssuer(cardNumber);
+        alert('Your card was issued by ' + issuer);
+    });
+
+
 
 ## Known issues and solutions
 

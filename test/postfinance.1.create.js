@@ -20,7 +20,7 @@ describe("postfinance.create", function(){
 
   before(function(done){
     testSettings = require('../config-pf');
-    testSettings.debug = false; // Enables *blocking* debug output to STDOUT
+    testSettings.debug = true; // Enables *blocking* debug output to STDOUT
     config.reset()
     done()
   });
@@ -37,6 +37,7 @@ describe("postfinance.create", function(){
     csc: '111',
     year: testNonExpiredDate[0].toString(),
     month: testNonExpiredDate[1].toString(),
+    email:'foo@bar.io',
     firstName: 'Foo',
     // firstName: 'Foô',
     lastName: 'Bar',
@@ -91,7 +92,7 @@ describe("postfinance.create", function(){
     card.should.have.property('publish');
 
     card.publish(testAlias,function(err,res) {
-      // process.exit(0)
+      process.exit(0)
       should.not.exist(err);
       card.alias.should.equal(testAlias.alias);
       card.should.have.property('payId');
