@@ -92,6 +92,7 @@ describe("postfinance.create", function(){
     card.should.have.property('publish');
 
     card.publish(testAlias,function(err,res) {
+      // console.log(err)
       // process.exit(0)
       should.not.exist(err);
       card.alias.should.equal(testAlias.alias);
@@ -266,6 +267,18 @@ describe("postfinance.create", function(){
     done()
   });
 
+  it("(32.3 round issue ) this payment should not throws an error", function(done){
+    this.timeout(20000)
+    var transaction, transaction2;
+    assert.doesNotThrow(function() {
+      transaction = new postfinance.Transaction({
+        operation: 'purchase',
+        orderId:'abc',
+        amount: 32.30
+      });
+    });
+    done()
+  });
 
 
   it("New transaction has a few extra properties", function(done){
