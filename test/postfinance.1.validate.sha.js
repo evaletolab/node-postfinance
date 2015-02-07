@@ -7,7 +7,7 @@ var assert = require('assert');
 var should = require('should');
 var getAdjustedDateparts = require('./fixtures/helpers').getAdjustedDateparts;
 
-describe("postfinance.create", function(){
+describe("postfinance.sha", function(){
   var postfinance = require('../index.js');
   var messages = require('../lib/messages');
   var config=require('../lib/config')
