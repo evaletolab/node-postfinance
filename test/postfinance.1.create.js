@@ -20,7 +20,7 @@ describe("postfinance.create", function(){
 
   before(function(done){
     testSettings = require('../config-pf');
-    testSettings.debug = true; // Enables *blocking* debug output to STDOUT
+    testSettings.debug = false; // Enables *blocking* debug output to STDOUT
     config.reset()
     done()
   });
@@ -38,8 +38,8 @@ describe("postfinance.create", function(){
     year: testNonExpiredDate[0].toString(),
     month: testNonExpiredDate[1].toString(),
     email:'foo@bar.io',
-    firstName: 'Foo',
-    // firstName: 'Foô',
+    // firstName: 'Foo',
+    firstName: 'Foô',
     lastName: 'Bar',
     address1: '221 Foo st',
     address2: '', // blank
