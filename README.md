@@ -109,11 +109,9 @@ the payment method associated with the card.
 
         // Create a new transaction
         var transactionData = {
-          operation: 'purchase', // action
-          amount:13400,  // amount *100
-          orderId: 'TX'+Date.now(), // order handle
-          email:'test@hoho.ch', // mail
-          groupId:'grp-XYZ' // group this transaction
+          operation: 'purchase', // available actions: purchase, authorize, capture, cancel, refund
+          amount:134.00,  
+          email:'test@hoho.ch', 
         }
 
         // Process the transaction using the card object
