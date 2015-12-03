@@ -120,11 +120,11 @@ describe("postfinance.card", function(){
 
   it("Prepare CC alias for Postfinance online form", function(done){
     this.timeout(20000);
+    var validCard=_.extend({},sandboxValidCard,{inline:true});
     var Card = postfinance.Card;
-    var card = new Card(sandboxValidCard);
-    var validCard=_.extend({},testAlias,{webForm:true});
+    var card = new Card(validCard);
 
-    card.publish(validCard,function(err,res) {
+    card.publish(testAlias,function(err,res) {
       should.not.exist(err);
 
       done()
@@ -134,10 +134,10 @@ describe("postfinance.card", function(){
   it("Prepare PFCard alias without usage get error", function(done){
     this.timeout(20000);
     var Card = postfinance.Card;
-    var card = new Card(postfinanceCard);
-    var validCard=_.extend({},{alias:'testalias'},{webForm:true});
+    var validCard=_.extend({},postfinanceCard,{inline:true});
+    var card = new Card(validCard);
 
-    card.publish(validCard,function(err,res) {
+    card.publish({alias:'testAlias'},function(err,res) {
       should.exist(err);
       err.message.should.equal('Vous devez spécifier l\'option Alias Usage.')
       done();
@@ -147,10 +147,10 @@ describe("postfinance.card", function(){
   it("Prepare PFCard alias for Postfinance", function(done){
     this.timeout(20000);
     var Card = postfinance.Card;
-    var card = new Card(postfinanceCard);
-    var validCard=_.extend({},testAlias,{webForm:true});
+    var validCard=_.extend({},postfinanceCard,{inline:true});
+    var card = new Card(validCard);
 
-    card.publish(validCard,function(err,res) {
+    card.publish(testAlias,function(err,res) {
       should.not.exist(err);
       should.not.exist(res.body.USERID);
       should.not.exist(res.body.PSWD);

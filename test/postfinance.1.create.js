@@ -5,6 +5,7 @@
 
 var assert = require('assert');
 var should = require('should');
+var _=require('underscore');
 var getAdjustedDateparts = require('./fixtures/helpers').getAdjustedDateparts;
 
 describe("postfinance.create", function(){
@@ -303,6 +304,29 @@ describe("postfinance.create", function(){
     transaction.data.should.not.have.property('currency');
     transaction.data.should.not.have.property('operation');
     done()
+  });
+
+  it("Simple capture of 130CHF with inline form output", function(done){
+    this.timeout(20000)
+    var transaction;
+
+
+    transaction = new postfinance.Transaction({
+      operation: 'capture',
+      amount:130.00,
+      orderId: 'TX'+Date.now(),
+      email:'test@transaction.ch',
+      groupId:'gp-6 apr. 2014'
+    });
+
+    var validCard=_.extend({},testCard,{inline:true});
+    var card = new postfinance.Card(validCard);
+
+    transaction.process(card, function(err,res){
+      should.not.exist(err);
+      console.log('-----------------',res)
+      done();
+    });
   });
 
   it("Ask authorisation for 130CHF and capture 120CHF get success", function(done){
