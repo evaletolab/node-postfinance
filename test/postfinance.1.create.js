@@ -32,6 +32,20 @@ describe("postfinance.create", function(){
     aliasUsage:"karibou payment"
   }
 
+  var inlineCard={
+    email:'foo@bar.io',
+    // firstName: 'Foo',
+    firstName: 'Foô',
+    lastName: 'Bar',
+    address1: '221 Foo st',
+    address2: '', // blank
+    city: '', // blank
+    state: '', // blank
+    zip: '1208',
+    paymentMethod:'postfinance card',
+    inline:true
+
+  };
 
   var testCard = {
     number: '5399999999999999', // MasterCard
@@ -103,21 +117,6 @@ describe("postfinance.create", function(){
   });
 
 
-  it.skip("Alias can load payment method", function(done){
-    this.timeout(20000);
-    var Card = postfinance.Card;
-    var card = new Card(testAlias);
-
-    card.should.have.property('load');
-    card.load(function(err) {
-      should.not.exist(err);
-      card.number.should.equal('XXXXXXXXXXXX9999')
-      card.issuer.should.equal('MasterCard')
-      card.month.should.equal(10)
-      card.year.should.equal(2015)
-      done()
-    });
-  });
 
 
 
@@ -191,15 +190,7 @@ describe("postfinance.create", function(){
     done()
   });
 
-  it.skip("Retain card", function(done){
-    var card = new postfinance.Card(testCard);
-    done()
-  });
 
-  it.skip("Redact card", function(done){
-    var card = new postfinance.Card(testCard);
-    done()
-  });
 
   it("Creating new transaction object throws if no operation", function(done){
     var transaction;
@@ -316,15 +307,19 @@ describe("postfinance.create", function(){
       amount:130.00,
       orderId: 'TX'+Date.now(),
       email:'test@transaction.ch',
-      groupId:'gp-6 apr. 2014'
+      groupId:'gp-6 apr. 2014',
+      inline:{
+        title:'Charger de votre compte avec votre carte chez Postfinance',
+        bgcolor:'#F2F4F2',
+        tp:"http://localhost:4001/v1/psp/std",
+        paramplus:'transferWallet=true&user=012345',
+      }
     });
 
-    var validCard=_.extend({},testCard,{inline:true});
-    var card = new postfinance.Card(validCard);
+    var card = new postfinance.Card(inlineCard);
 
     transaction.process(card, function(err,res){
       should.not.exist(err);
-      console.log('-----------------',res)
       done();
     });
   });
@@ -452,8 +447,6 @@ describe("postfinance.create", function(){
       done()
     });
   });
-
-
 
   it("Execute transaction with bad card", function(done){
     this.timeout(20000)
