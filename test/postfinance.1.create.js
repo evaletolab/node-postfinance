@@ -320,6 +320,23 @@ describe("postfinance.create", function(){
 
     transaction.process(card, function(err,res){
       should.not.exist(err);
+
+      should.not.exist(res.body.USERID);
+      should.not.exist(res.body.PSWD);
+      should.not.exist(res.body.OPERATION);
+      should.exist(res.body.TITLE);
+      should.exist(res.body.TP);
+      should.exist(res.body.PSPID);
+
+      res.body.PM.toLowerCase().should.equal('postfinance card')
+      res.body.ORDERID.should.containEql('TX')
+      res.body.AMOUNT.should.equal(13000),
+      res.body.EMAIL.should.equal('test@transaction.ch')
+      res.body.CN.should.equal('Foô Bar')
+      // res.body.OWNERADDRESS.should.equal('221 Foo st')
+      // res.body.OWNERCITY.should.equal('genève')
+      res.body.OWNERZIP.should.equal('1208')
+
       done();
     });
   });
